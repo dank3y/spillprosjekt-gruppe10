@@ -47,6 +47,11 @@ export class Sprite extends GameObject {
         }
     }
 
+    public get left() { return this.x - 0.5 * this.width; }
+    public get right() { return this.x + 0.5 * this.width; }
+    public get top() { return this.y - 0.5 * this.height; }
+    public get bottom() { return this.y + 0.5 * this.height; }
+
     private createSpriteImage(src: string): HTMLImageElement{
         let img = new Image();
             img.src = src;        
@@ -62,6 +67,7 @@ export class PhysicsBody extends Sprite {
     constructor(public x: number,
                 public y: number,
                 _sprite: string,
+                public mass: number = 80,
                 width?: number,
                 height?: number,
                 public dx: number = 0,

@@ -13,13 +13,16 @@ let dummy  = new Dummy(100, 0, 50, 100);
 
 let player = new Player(0,0);
 
-engine.sprites.push(player, dummy);
+engine.entities.push(player, dummy);
+engine.renderer.camera.lookAt(player);
+engine.renderer.config.zeroDot = true;
+
+setTimeout(() => {
+    engine.renderer.camera.lookAt(dummy);
+}, 3000)
 
 
-
-//skal senere deles opp i ett separat physics- og draw-loop
 setInterval(() => {
-    //player.x += 1;
-    engine.camera.lookAt(player);
-    engine.drawFrame();
+    player.x += 1;
+    engine.loop()
 }, 1/60*1000);
