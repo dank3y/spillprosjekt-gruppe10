@@ -28,11 +28,15 @@ export class Camera {
      */
     lookAt(target: InstanceType<typeof GameObject>): void{
         this.x = -target.x + 0.5 * this.canvas.width;
-        this.y = -target.y + 0.5 * this.canvas.height;
-        console.log(this.x - target.x);
-        
+        this.y = -target.y + 0.5 * this.canvas.height;        
     }
 
+    /**
+     * 
+     * @param target Målet må arve fra gameobject
+     * @param tick 
+     * Kommende funksjon som skal, over tid, fokusere på et objekt
+     */
     panTo(target: InstanceType<typeof GameObject>, tick: number): void {
         
     }
