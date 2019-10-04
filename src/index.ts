@@ -19,7 +19,7 @@ engine.sprites.push(player, dummy);
 
 //skal senere deles opp i ett separat physics- og draw-loop
 setInterval(() => {
-    player.x += 1;
+    //player.x += 1;
     engine.camera.lookAt(player);
     engine.drawFrame();
 }, 1/60*1000);
