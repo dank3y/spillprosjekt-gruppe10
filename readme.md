@@ -13,6 +13,12 @@
 for å oppdatere din lokale versjon til den nyeste, skriv `git pull`
 for å lagre endringer, skriv `git add <filnavn, eller * for alle filer>` og deretter `git push`
 
+#Verdt å få gjort
+Lagre navn, email og passord:
+`git config --gloabl user.name <navn>`
+`git config --gloabl user.email <ntnu-epostadresse>`
+`git config --gloabl user.password <ntnu-passord>`
+
 # Kort Om
 Dette er et prosjekt laget med Typescript, siden dette så og si er standarden for alle større prosjekt
 i informatikk-verden. Typescript gjør det lettere å holde styr på ting, samtidig som at det minker
