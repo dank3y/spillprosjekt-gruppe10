@@ -24,3 +24,6 @@ Dette er et prosjekt laget med Typescript, siden dette så og si er standarden f
 i informatikk-verden. Typescript gjør det lettere å holde styr på ting, samtidig som at det minker
 sjansen for feil betydeligt. Andreas Ipsen har tatt seg av Webpack, slik at prosjektet fungerer
 "out of the box" for alle dets øvrige utviklere
+
+# Trello lenke
+`https://trello.com/b/6mGpOWJI/spillprosjekt-inft1003-team-10`
