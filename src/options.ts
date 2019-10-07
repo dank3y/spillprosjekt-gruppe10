@@ -10,3 +10,6 @@
 //     const value: any;
 //     export default value;
 // }
+// interface Function {
+//     isExtentionOf(target: Object): boolean;
+// }

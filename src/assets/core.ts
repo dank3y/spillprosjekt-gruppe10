@@ -1,3 +1,4 @@
+import { Player } from "./entities/player/player";
 
 
 /**
@@ -20,6 +21,24 @@ export class GameObject {
     constructor(public x: number, public y: number){}
     public logPositon(): void {
         console.log(`My position is (${this.x}, ${this.y})`);
+    }
+
+
+    // funksjon som PhysicsEngine bruker, ikke tenk på det
+    public isExtentionOf(target: any): boolean {
+        if (this.constructor === target) {
+            return true;
+        } else {
+            let prev = this;
+            while (prev.constructor != Object) {
+                let next = Object.getPrototypeOf(prev);
+                if (next.constructor == target) {
+                    return true;
+                }
+                prev = next;
+            }
+            return false;
+        }
     }
 }
 /**
@@ -52,6 +71,7 @@ export class Sprite extends GameObject {
     public get top() { return this.y - 0.5 * this.height; }
     public get bottom() { return this.y + 0.5 * this.height; }
 
+
     private createSpriteImage(src: string): HTMLImageElement{
         let img = new Image();
             img.src = src;        
@@ -64,15 +84,37 @@ export class Sprite extends GameObject {
  * altså x, y, bredde, høyde, sprite, dx og dy
  */
 export class PhysicsBody extends Sprite {
-    constructor(public x: number,
-                public y: number,
+    constructor(x: number,
+                y: number,
                 _sprite: string,
-                public mass: number = 80,
                 width?: number,
                 height?: number,
+                public mass: number = 80,
                 public dx: number = 0,
                 public dy: number = 0){
         super(x, y, _sprite, width, height);
         
     }
+}
+
+export class NPC extends PhysicsBody {
+    constructor(
+        x: number,
+        y: number,
+        _sprite: string,
+        width?: number,
+        height?: number,
+        mass?: number,
+        dx?: number,
+        dy?: number,
+        public _angle = 0,
+    ){
+        super(x, y, _sprite, width, height, mass, dx, dy);
+    }
+
+    //skal senere gjøre slik at store tall kan minskes
+    get angle(): number {
+        return this._angle;
+    }
+
 }

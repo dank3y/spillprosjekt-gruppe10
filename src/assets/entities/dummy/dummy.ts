@@ -7,7 +7,7 @@ export class Dummy extends Sprite {
         y: number,
         width?: number,
         height?: number
-    ){
-        super(x, y, sprite, width, height);
+    ){        
+        super(x, y, sprite, width, height);        
     }
 }

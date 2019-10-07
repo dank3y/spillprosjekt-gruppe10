@@ -1,4 +1,4 @@
-import { PhysicsBody } from "../../core";
+import { PhysicsBody, NPC } from "../../core";
 // definer sprite-en her
 const sprite = require('./sprite.png');
 
@@ -6,7 +6,7 @@ const sprite = require('./sprite.png');
  * @param width valgfritt, hvis ikke oppgitt så finner den bredde utifra bildets bredde
  * @param height valgfritt, hvis ikke oppgitt så finner den bredde utifra bildets bredde
  */
-export class Player extends PhysicsBody {
+export class Player extends NPC {
 
     //boolean verdier som tilsier om knappene er trykket ned
     public w: boolean = false;
@@ -16,12 +16,16 @@ export class Player extends PhysicsBody {
 
 
     constructor(
-        public x: number,
-        public y: number,
+        x: number,
+        y: number,
         width?: number,
         height?: number,
+        mass?: number,
+        dx: number = 0,
+        dy: number = 0,
+        angle: number = 0,
         ){
-        super(x, y, sprite);
+        super(x, y, sprite, width, height, mass, dx, dy, angle);
         // legg til key-events
         window.onkeydown = (ev: KeyboardEvent) => this.KEYDOWN_EVENT_HANDLER(ev);
         window.onkeyup = (ev: KeyboardEvent) => this.KEYUP_EVENT_HANDLER(ev);
