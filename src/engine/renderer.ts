@@ -10,6 +10,7 @@ export interface RendererConfig {
     antiAliasing: boolean;
     cursorMode: boolean;
     drawLookDirection: boolean;
+    drawZeroLine: boolean;
 }
 
 export const RendererConfigDefault: RendererConfig = {
@@ -17,7 +18,8 @@ export const RendererConfigDefault: RendererConfig = {
     lineWidth: 3,
     antiAliasing: false,
     cursorMode: false,
-    drawLookDirection: false
+    drawLookDirection: false,
+    drawZeroLine: false
 }
 
 /**
@@ -35,11 +37,12 @@ export class Renderer {
 
     public render(entities: GameObject[]){
         entities.forEach((s, i) => {
-            if (s instanceof Sprite){
+            if (s.isExtentionOf(Sprite)){
                 this.drawSprite(<Sprite>s);
             }
         });
         if (this.config.zeroDot) this.drawZeroDot();
+        if (this.config.drawZeroLine) this.drawZeroLine();
     }
 
     /**
@@ -85,6 +88,15 @@ export class Renderer {
      */
     private isInView(target: InstanceType<typeof Sprite>): boolean {
         return true;
+    }
+
+    private drawZeroLine(): void {
+        this.ctx.beginPath();
+        this.ctx.save();
+        this.ctx.translate(0, 0 + this.camera.y);
+        this.ctx.fillRect(0,0,this.canvas.width, 5);
+        this.ctx.restore();
+        this.ctx.closePath();
     }
 
     private drawZeroDot(): void {

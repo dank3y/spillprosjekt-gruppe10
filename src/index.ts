@@ -17,6 +17,7 @@ engine.entities.push(player,dummy);
 engine.renderer.camera.lookAt(player);
 engine.renderer.config.zeroDot = false;
 engine.renderer.config.drawLookDirection = true;
+engine.renderer.config.drawZeroLine = true;
 
 
 setTimeout(() => {

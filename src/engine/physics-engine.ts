@@ -28,8 +28,8 @@ export class PhysicsEngine {
         this.applyGraviy(target);
         target.x += target.dx;
         target.y += target.dy;
-        if (target.y >= 50) { 
-            target.y = 50;
+        if (target.y + 0.5 * target.height >= 0) { 
+            target.y = -0.5 * target.height;
             target.dy = 0;
         }
     }
