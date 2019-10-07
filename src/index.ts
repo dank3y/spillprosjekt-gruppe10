@@ -23,6 +23,6 @@ setTimeout(() => {
 
 
 setInterval(() => {
-    player.x += 1;
+    player.x += 10;
     engine.loop()
 }, 1/60*1000);
