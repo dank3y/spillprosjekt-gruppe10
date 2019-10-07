@@ -11,10 +11,12 @@ export class PhysicsEngine {
     public g = 9.81;
 
     update(entities: GameObject[]): void{        
-        entities.forEach((entity, index) => {                 
-            if (entity.isExtentionOf(Player))      this.updatePlayer(<Player>entity);
+        entities.forEach((entity, index) => {
+            //særtilfelle for spiller               
+            if (entity.isExtentionOf(Player)) this.updatePlayer(<Player>entity);
+            //alle ting som reagerer på tyngdekraft
             if (entity.isExtentionOf(PhysicsBody)){
-                this.applyGraviy(<PhysicsBody>entity);
+                // this.applyGraviy(<PhysicsBody>entity);
                 this.updatePhysicsBody(<PhysicsBody>entity);
             } 
             
@@ -26,12 +28,15 @@ export class PhysicsEngine {
         this.applyGraviy(target);
         target.x += target.dx;
         target.y += target.dy;
-        if (target.y >= 50) target.y = 50;
+        if (target.y >= 50) { 
+            target.y = 50;
+            target.dy = 0;
+        }
     }
 
     private applyGraviy(target: PhysicsBody): void {
         // legg til tyngdekraft over 60 frames (1 sekund)
-        target.dy += target.mass * this.g / 60; 
+        target.dy += target.mass * this.g / 1000; 
     }
 
     applyForce(target: PhysicsBody, factor: number, angle: number): void {
@@ -42,7 +47,7 @@ export class PhysicsEngine {
     private updatePlayer(player: Player): void{
         // midlertidig
         const step = 5;
-        if (player.w) player.y -= step;
+        if (player.w && player.dy === 0) this.applyForce(player, 10, -Math.PI/2);
         if (player.a) player.x -= step;
         if (player.s) player.y += step;
         if (player.d) player.x += step;
