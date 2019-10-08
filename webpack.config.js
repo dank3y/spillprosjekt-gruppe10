@@ -3,7 +3,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 module.exports = {
-    entry: ['./src/options.ts', './src/index.ts'],
+    entry: ['./src/options.ts', './src/index.ts', './src/utility/level.loader.ts'],
     devtool: 'inline-source-map',
     devServer: {
         contentBase: path.join(__dirname, 'dist'),

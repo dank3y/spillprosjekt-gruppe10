@@ -2,7 +2,8 @@ import '../main.css';
 import { Canvas } from "./engine/canvas";
 import { GameEngine } from "./engine/engine";
 import { Player } from './assets/entities/player/player';
-import { Dummy } from './assets/entities/dummy/dummy';
+import { Dummy } from './assets/entities/dummy/dummy'
+
 
 const c = <HTMLCanvasElement>document.getElementById('canvas');
 const canvas = new Canvas(c);
@@ -26,8 +27,5 @@ setTimeout(() => {
 
 
 setInterval(() => {
-    // player.x += 1;
-    engine.loop()
-    // console.log(player);
-    
+    engine.loop()    
 }, 1/60*1000);
