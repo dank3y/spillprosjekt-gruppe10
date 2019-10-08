@@ -27,10 +27,11 @@ export class GameEngine {
         // gjør klar canvas
         canvas.resizeCanvas();
         canvas.clear();
-        // start renderer
-        this.renderer = new Renderer(canvas);
         // start physics-engine
         this.physics = new PhysicsEngine();
+        // start renderer
+        this.renderer = new Renderer(canvas);
+        this.runRenderer();
         window.onresize  = (event: UIEvent) => {
             // må ta hensyn til at objektet "forsvinner" når nettleseren
             // skal tegne en ny frame
@@ -38,15 +39,19 @@ export class GameEngine {
         }
     }
 
+    private runRenderer(): void {
+        // tegn
+        const that = this;
+        that.canvas.clear();
+        that.renderer.render(this.entities);
+        window.requestAnimationFrame(this.runRenderer.bind(that));
+    }
     
-
     public loop(): void{
         // gjør utregninger
         this.physics.update(this.entities)
-        // tegn
-        this.canvas.clear();
         this.renderer.camera.update();
-        this.renderer.render(this.entities);
+
     }
 
 }

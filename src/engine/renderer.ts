@@ -11,6 +11,7 @@ export interface RendererConfig {
     cursorMode: boolean;
     drawLookDirection: boolean;
     drawZeroLine: boolean;
+    showFps: boolean;
 }
 
 export const RendererConfigDefault: RendererConfig = {
@@ -19,16 +20,24 @@ export const RendererConfigDefault: RendererConfig = {
     antiAliasing: false,
     cursorMode: false,
     drawLookDirection: false,
-    drawZeroLine: false
+    drawZeroLine: false,
+    showFps: true
 }
 
 /**
  * Class som tar seg av tegning
  */
 export class Renderer {
+    // config
     public config = RendererConfigDefault;
+    // referanse som gjør at vi faktisk kan tegne
     private ctx: CanvasRenderingContext2D;
+    // referanse til kamera
     public camera: Camera;
+
+    // kun til å regne ut fps
+    public fps: number = 0;
+    private timings: number[] = [];
 
     constructor(private canvas: Canvas){
         this.ctx = canvas.ctx;
@@ -43,6 +52,7 @@ export class Renderer {
         });
         if (this.config.zeroDot) this.drawZeroDot();
         if (this.config.drawZeroLine) this.drawZeroLine();
+        if (this.config.showFps) this.showFps();
     }
 
     /**
@@ -89,7 +99,7 @@ export class Renderer {
     private isInView(target: InstanceType<typeof Sprite>): boolean {
         return true;
     }
-
+    // debug funksjoner
     private drawZeroLine(): void {
         this.ctx.beginPath();
         this.ctx.save();
@@ -112,5 +122,22 @@ export class Renderer {
         this.ctx.fillStyle = '#000';
         this.ctx.restore();
         this.ctx.closePath();
+    }
+
+    private showFps(): void {
+        const now = performance.now();
+        while (this.timings.length > 0 && this.timings[0] <= now - 1000) {
+            this.timings.shift();
+        }
+        this.timings.push(now);
+        this.fps = this.timings.length - 1;
+        this.ctx.beginPath();
+        this.ctx.save();
+        this.ctx.translate(5, 20);
+        this.ctx.font = '20px Arial';
+        this.ctx.fillText(String(this.fps), 0, 0);
+        this.ctx.restore();
+        this.ctx.closePath();
+        
     }
 }

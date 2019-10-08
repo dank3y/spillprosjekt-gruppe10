@@ -21,11 +21,11 @@ export class Player extends NPC {
         width?: number,
         height?: number,
         mass?: number,
-        dx: number = 0,
-        dy: number = 0,
+        vx: number = 0,
+        vy: number = 0,
         angle: number = 0,
         ){
-        super(x, y, sprite, width, height, mass, dx, dy, angle);
+        super(x, y, sprite, width, height, mass, vx, vy, angle);
         // legg til key-events
         window.onkeydown = (ev: KeyboardEvent) => this.KEYDOWN_EVENT_HANDLER(ev);
         window.onkeyup = (ev: KeyboardEvent) => this.KEYUP_EVENT_HANDLER(ev);

@@ -36,8 +36,8 @@ export class Camera {
     }
 
     public update(): void {
-        this.x = -this.target.x + 0.5 * this.canvas.width;
-        this.y = -this.target.y + 0.5 * this.canvas.height;
+        this.x = (-this.target.x) + 0.5 * this.canvas.width;
+        this.y = (-this.target.y) + 0.5 * this.canvas.height;
     }
 
     /**

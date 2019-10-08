@@ -90,8 +90,8 @@ export class PhysicsBody extends Sprite {
                 width?: number,
                 height?: number,
                 public mass: number = 80,
-                public dx: number = 0,
-                public dy: number = 0){
+                public vx: number = 0,
+                public vy: number = 0){
         super(x, y, _sprite, width, height);
         
     }
@@ -105,11 +105,11 @@ export class NPC extends PhysicsBody {
         width?: number,
         height?: number,
         mass?: number,
-        dx?: number,
-        dy?: number,
+        vx?: number,
+        vy?: number,
         public _angle = 0,
     ){
-        super(x, y, _sprite, width, height, mass, dx, dy);
+        super(x, y, _sprite, width, height, mass, vx, vy);
     }
 
     //skal senere gjøre slik at store tall kan minskes
