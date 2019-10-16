@@ -1,5 +1,25 @@
 import { DefaultBiome } from "../assets/levels/biomes/default/default.biome";
 
+
+
+export const blocksHex: { [key: string]: string } = {
+  '#ffffff': 'air',
+  '#000': 'base',
+}
+
+export const BLOCKS: { [key: string]: Block } = {
+  'air' : { solid: false, friction: 0.1},
+  'base': { solid: true,  bounce: 0.0, friction: 1.0 },
+  'bouncePad': { solid: true, bounce: 1.1, friction: 1.0 },
+}
+
+export class Block {
+    solid: boolean;
+    friction: number;
+    bounce?: number;
+    texture?: string;
+}
+
 async function loadImg(src: string): Promise<HTMLImageElement> {
   return new Promise((res, rej) => {
     setTimeout(() => {
@@ -14,7 +34,7 @@ async function loadImg(src: string): Promise<HTMLImageElement> {
 }
 
 
-const loadLevel = async (source: string): Promise<void> => {
+const convertImage = async (source: string): Promise<string[][]> => {
 
   let img = await loadImg(source);
 
@@ -26,24 +46,39 @@ const loadLevel = async (source: string): Promise<void> => {
   const h = img.naturalHeight;
 
   let level: any[] = [];
-
+  
   for (let y = 0; y < h; y++) {
     let xLevel: any[] = [];
     for (let x = 0; x < w; x++) {
       xLevel.push(
-        ctx.getImageData(x, y, 1, 1).data.slice(0, 2)
+        '#' + String(Array.from(ctx.getImageData(x, y, 1, 1).data).slice(0,3).map(t => t.toString(16)).join(''))
       )
     }
     level.push(xLevel);
   }
 
-  let t = window.open('', '_blank');
-      t.document.body.style.fontFamily = 'monospace';
-      t.document.write(JSON.stringify(level));
-  
-
+  return level;
 }
 
-// let test = DefaultBiome;
-// loadLevel(test);
+export function convertData(data: string[][]){  
+  return data.map(row => row.map(t => blocksHex[t]));
+}
+
+export function writeToNewWindow(data: string[][]): void {
+  let w = window.open('', '_blank');
+  w.document.write(JSON.stringify(data));
+}
+
+(async () => {
+  let data = await convertImage(DefaultBiome)
+  // console.log(data);
+  let fin = convertData(data);
+  // console.log(fin);
+  writeToNewWindow(fin)
+  
+  
+  
+})()
+
+
 
