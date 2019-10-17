@@ -15,13 +15,14 @@ const engine = new GameEngine(canvas);
 // let dummy  = new Dummy(100, 0, 50, 100);
 // engine.entities.push(dummy);
 
-let player = new Player(0,0, 32, 64, 80, 0, 0, 0);
+let player = new Player(0, 0, 32, 64, 80, 0, 0, 0);
 engine.addBiome(DefaultBiome, 'left');
 engine.entities.push(player);
 engine.renderer.camera.lookAt(player);
 engine.renderer.config.zeroDot = false;
 engine.renderer.config.drawLookDirection = true;
 engine.renderer.config.drawZeroLine = false;
+engine.renderer.config.drawWireframe = true;
 
 
 setTimeout(() => {

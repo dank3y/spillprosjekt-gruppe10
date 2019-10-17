@@ -1,3 +1,5 @@
+import { Block } from "../../../utility/level.loader";
+
 /*
 Hver biome har en datafil, som på forhånd er konvertert fra et bilde.
 En biome må:
