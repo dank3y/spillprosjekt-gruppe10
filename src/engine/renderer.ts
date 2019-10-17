@@ -2,6 +2,10 @@ import { Canvas } from "./canvas";
 import { Sprite, GameObject } from "../assets/core";
 import { Camera } from "./camera";
 import { Player } from "../assets/entities/player/player";
+import { Level } from "../assets/levels/level";
+import { Biome } from "../assets/levels/biomes/biome";
+import { Block, BLOCKS } from "../utility/level.loader";
+import { BLOCKSIZE } from "./engine";
 
 
 export interface RendererConfig {
@@ -44,7 +48,7 @@ export class Renderer {
         this.camera = new Camera(0,0, canvas);
     }
 
-    public render(entities: GameObject[]){
+    public renderEntities(entities: GameObject[]){
         entities.forEach((s, i) => {
             if (s.isExtentionOf(Sprite)){
                 this.drawSprite(<Sprite>s);
@@ -53,6 +57,33 @@ export class Renderer {
         if (this.config.zeroDot) this.drawZeroDot();
         if (this.config.drawZeroLine) this.drawZeroLine();
         if (this.config.showFps) this.showFps();
+    }
+
+    public renderLevel(level: Level){
+        level.forEach((biome: Biome, biomeIndex: number) => {
+            this.drawBiome(biome)
+        })
+    }
+
+    private drawBiome(biome: Biome){
+        biome.data.forEach((_v, yindex) => {
+            _v.forEach((v, xindex) => {
+                this.drawBlock(BLOCKS[v], xindex, yindex)
+            })
+        })
+    }
+
+    public drawBlock(block: Block, xindex: number, yindex: number){
+        if (block.defaultColor !== ''){
+            this.ctx.beginPath();
+            this.ctx.save();
+            this.ctx.translate(xindex * BLOCKSIZE + (this.camera.x - 0.5 * BLOCKSIZE), yindex * BLOCKSIZE + (this.camera.y - 0.5 * BLOCKSIZE));
+            //midlertidig løsning, få til endring av farge senere
+            this.ctx.fillStyle = block.defaultColor;
+            this.ctx.fillRect(0, 0, BLOCKSIZE, BLOCKSIZE);
+            this.ctx.restore();
+            this.ctx.closePath();
+        }
     }
 
     /**

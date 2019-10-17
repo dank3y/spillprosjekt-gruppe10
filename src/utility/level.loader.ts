@@ -1,6 +1,4 @@
-import { DefaultBiome } from "../assets/levels/biomes/default/default.biome";
-
-
+import { BIOMEDATA, BIOMEIMAGE } from "../assets/levels/biomes/default/default.biome";
 
 export const blocksHex: { [key: string]: string } = {
   '#ffffff': 'air',
@@ -8,14 +6,15 @@ export const blocksHex: { [key: string]: string } = {
 }
 
 export const BLOCKS: { [key: string]: Block } = {
-  'air' : { solid: false, friction: 0.1},
-  'base': { solid: true,  bounce: 0.0, friction: 1.0 },
-  'bouncePad': { solid: true, bounce: 1.1, friction: 1.0 },
+  'air' : { solid: false, friction: 0.1, defaultColor: ''},
+  'base': { solid: true,  bounce: 0.0, friction: 1.0, defaultColor: '#000000' },
+  'bouncePad': { solid: true, bounce: 1.1, friction: 1.0, defaultColor: '#FF0000' },
 }
 
 export class Block {
     solid: boolean;
     friction: number;
+    defaultColor: string;
     bounce?: number;
     texture?: string;
 }
@@ -69,16 +68,15 @@ export function writeToNewWindow(data: string[][]): void {
   w.document.write(JSON.stringify(data));
 }
 
-(async () => {
-  let data = await convertImage(DefaultBiome)
-  // console.log(data);
-  let fin = convertData(data);
-  // console.log(fin);
-  writeToNewWindow(fin)
-  
-  
-  
-})()
+// (async () => {
+//   // endre på denne
+//   let img = BIOMEIMAGE;
+//   let data = await convertImage(img);
+//   // console.log(data);
+//   let fin = convertData(data);
+//   // console.log(fin);
+//   writeToNewWindow(fin)  
+// })()
 
 
 

@@ -2,10 +2,15 @@ import { Canvas } from "./canvas";
 import { Sprite, GameObject, PhysicsBody } from "../assets/core";
 import { Renderer } from "./renderer";
 import { PhysicsEngine } from './physics-engine';
+import { Biome, BiomeList } from "../assets/levels/biomes/biome";
+
+
+export const BLOCKSIZE: number = 32;
 
 
 export class GameEngine {
 
+    level: Biome[] = [];
 
     //holde styr på muskordinater
     public mouseX: number = 0;
@@ -43,7 +48,8 @@ export class GameEngine {
         // tegn
         const that = this;
         that.canvas.clear();
-        that.renderer.render(this.entities);
+        that.renderer.renderLevel(this.level);        
+        that.renderer.renderEntities(this.entities);
         window.requestAnimationFrame(this.runRenderer.bind(that));
     }
     
@@ -51,7 +57,16 @@ export class GameEngine {
         // gjør utregninger
         this.physics.update(this.entities)
         this.renderer.camera.update();
+    }
 
+    // legg til 
+    public addBiome(biome: Biome, side: 'left' | 'right'){
+        // vurder om biomen skal legges til på venstre eller høyre side
+        if (side === 'left'){
+            this.level.unshift(biome);
+        } else {
+            this.level.push(biome);
+        }
     }
 
 }

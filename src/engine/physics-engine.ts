@@ -25,13 +25,13 @@ export class PhysicsEngine {
 
     private updatePhysicsBody(target: PhysicsBody): void {
         // tyngdekraft        
-        this.applyGraviy(target);
+        // this.applyGraviy(target);
         target.x += target.vx;
         target.y += target.vy;
-        if (target.y + 0.5 * target.height >= 0) { 
-            target.y = -0.5 * target.height;
-            target.vy = 0;
-        }
+        // if (target.y + 0.5 * target.height >= 0) { 
+        //     target.y = -0.5 * target.height;
+        //     target.vy = 0;
+        // }
     }
 
     private applyGraviy(target: PhysicsBody): void {
@@ -47,7 +47,8 @@ export class PhysicsEngine {
     private updatePlayer(player: Player): void{
         // midlertidig
         const step = 5;
-        if (player.w && player.vy === 0) this.applyForce(player, 10, -Math.PI/2);
+        // if (player.w && player.vy === 0) this.applyForce(player, 10, -Math.PI/2);
+        if (player.w) player.y -= step;
         if (player.a) player.x -= step;
         if (player.s) player.y += step;
         if (player.d) player.x += step;
