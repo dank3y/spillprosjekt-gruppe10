@@ -25,7 +25,7 @@ export class GameObject {
 
 
     // funksjon som PhysicsEngine bruker, ikke tenk på det
-    public isExtentionOf(target: any): boolean {
+    public isExtensionOf(target: any): boolean {
         if (this.constructor === target) {
             return true;
         } else {

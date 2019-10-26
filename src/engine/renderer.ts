@@ -52,7 +52,7 @@ export class Renderer {
 
     public renderEntities(entities: GameObject[]){
         entities.forEach((s, i) => {
-            if (s.isExtentionOf(Sprite)){
+            if (s.isExtensionOf(Sprite)){
                 this.drawSprite(<Sprite>s);
             }
         });
