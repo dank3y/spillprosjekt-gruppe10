@@ -10,10 +10,17 @@ export class Canvas {
         // skaper en forbinnelse til Canvas-elementet i HTML
         this.ctx = c.getContext('2d');
         this.ctx.imageSmoothingEnabled = false;
+        c.addEventListener('mousemove', (ev: MouseEvent) => {
+            this.onmousemove.call(false, ev);
+        })
     }
 
     get width()  { return this.c.width; }
     get height() { return this.c.height; }
+
+    // event til når mus beveger seg
+    public onmousemove: Function = () => {};
+
 
     /**
      * Endre størrelsen på canvas, slik at én pixel er én ekte pixel
