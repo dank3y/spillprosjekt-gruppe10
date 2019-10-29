@@ -3,6 +3,7 @@ import { Sprite, GameObject, PhysicsBody } from "../assets/core";
 import { Renderer } from "./renderer";
 import { PhysicsEngine } from './physics-engine';
 import { Biome, BiomeList } from "../assets/levels/biomes/biome";
+import { Player } from "../assets/entities/player/player";
 
 
 export const BLOCKSIZE: number = 32;
@@ -16,6 +17,7 @@ export class GameEngine {
     public mouseX: number = 0;
     public mouseY: number = 0;
 
+    public player: Player;
     public renderer: Renderer;
     public physics: PhysicsEngine;
     /**
@@ -37,6 +39,16 @@ export class GameEngine {
         // start renderer
         this.renderer = new Renderer(canvas);
         this.runRenderer();
+        // legg til spiller
+        this.player = new Player(32, 300);
+        this.entities.push(this.player);
+        this.renderer.camera.lookAt(this.player);
+
+        this.canvas.onmousemove = (ev: MouseEvent) => {
+            this.mouseX = ev.offsetX;
+            this.mouseY = ev.offsetY;            
+        }
+
         window.onresize  = (event: UIEvent) => {
             // må ta hensyn til at objektet "forsvinner" når nettleseren
             // skal tegne en ny frame
@@ -55,8 +67,17 @@ export class GameEngine {
     
     public loop(): void{
         // gjør utregninger
+        this.updatePlayerAngle();
         this.physics.update(this.entities)
         this.renderer.camera.update();
+    }
+
+    private updatePlayerAngle(){
+        let x = this.player.x + this.renderer.camera.x;
+        let y = this.player.y + this.renderer.camera.y;
+        
+        let angle = Math.atan2(this.mouseY - y, this.mouseX - x);
+        this.player._angle = angle;
     }
 
     // legg til 
