@@ -40,7 +40,7 @@ export class GameEngine {
         this.renderer = new Renderer(canvas);
         this.runRenderer();
         // legg til spiller
-        this.player = new Player(32, 300);
+        this.player = new Player(32, 300, 32, 64);
         this.entities.push(this.player);
         this.renderer.camera.lookAt(this.player);
 
