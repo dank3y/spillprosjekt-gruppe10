@@ -12,13 +12,8 @@ const canvas = new Canvas(c);
 
 const engine = new GameEngine(canvas);
 
-// let dummy  = new Dummy(100, 0, 50, 100);
-// engine.entities.push(dummy);
-
-let player = new Player(0, 0, 32, 64, 80, 0, 0, 0);
 engine.addBiome(DefaultBiome, 'left');
-engine.entities.push(player);
-engine.renderer.camera.lookAt(player);
+
 engine.renderer.config.zeroDot = false;
 engine.renderer.config.drawLookDirection = true;
 engine.renderer.config.drawZeroLine = false;
@@ -31,7 +26,6 @@ setTimeout(() => {
 
 
 setInterval(() => {
-    player._angle += 0.01;
     // engine.renderer.drawBlock(BLOCKS['base'], 0, 0)
     engine.loop()
 }, 1/60*1000);
