@@ -16,6 +16,7 @@ export interface RendererConfig {
     drawLookDirection: boolean;
     drawZeroLine: boolean;
     showFps: boolean;
+    drawWireframe: boolean;
 }
 
 export const RendererConfigDefault: RendererConfig = {
@@ -25,7 +26,8 @@ export const RendererConfigDefault: RendererConfig = {
     cursorMode: false,
     drawLookDirection: false,
     drawZeroLine: false,
-    showFps: true
+    showFps: true,
+    drawWireframe: false
 }
 
 /**
@@ -50,7 +52,7 @@ export class Renderer {
 
     public renderEntities(entities: GameObject[]){
         entities.forEach((s, i) => {
-            if (s.isExtentionOf(Sprite)){
+            if (s.isExtensionOf(Sprite)){
                 this.drawSprite(<Sprite>s);
             }
         });
@@ -77,10 +79,24 @@ export class Renderer {
         if (block.defaultColor !== ''){
             this.ctx.beginPath();
             this.ctx.save();
-            this.ctx.translate(xindex * BLOCKSIZE + (this.camera.x - 0.5 * BLOCKSIZE), yindex * BLOCKSIZE + (this.camera.y - 0.5 * BLOCKSIZE));
+            this.ctx.translate(xindex * BLOCKSIZE + this.camera.x - (0.5 * BLOCKSIZE), yindex * BLOCKSIZE + this.camera.y - (0.5 * BLOCKSIZE));
             //midlertidig løsning, få til endring av farge senere
             this.ctx.fillStyle = block.defaultColor;
             this.ctx.fillRect(0, 0, BLOCKSIZE, BLOCKSIZE);
+            this.ctx.restore();
+            this.ctx.closePath();
+        }
+        if (this.config.drawWireframe) {
+            this.ctx.beginPath();
+            this.ctx.save();
+            this.ctx.translate(xindex * BLOCKSIZE + this.camera.x - (0.5 * BLOCKSIZE), yindex * BLOCKSIZE + this.camera.y - (0.5 * BLOCKSIZE));
+            this.ctx.lineTo(0, 0);
+            this.ctx.lineTo(BLOCKSIZE, 0);
+            this.ctx.lineTo(BLOCKSIZE, BLOCKSIZE);
+            this.ctx.lineTo(0, BLOCKSIZE);
+            this.ctx.lineTo(0, 0);
+            this.ctx.strokeStyle = '#F00';
+            this.ctx.stroke();
             this.ctx.restore();
             this.ctx.closePath();
         }
@@ -93,19 +109,27 @@ export class Renderer {
     private drawSprite(sprite: InstanceType<typeof Sprite>): void {
         this.ctx.beginPath();
         this.ctx.save();
-        this.ctx.translate(sprite.x + this.camera.x, sprite.y + this.camera.y);
+        this.ctx.translate(sprite.x + this.camera.x - (0.5 * sprite.width), sprite.y + this.camera.y - (0.5 * sprite.height));
         this.ctx.drawImage(
             /* bilder tegnes fra øverste venstre hjørne,
             // så man må translere halvparten av bredden og
              høyden tilbake */
             sprite.sprite,
-            -0.5 * sprite.width,
-            -0.5 * sprite.height,
+            0,
+            0,
             sprite.width,
             sprite.height
         );
         this.ctx.restore();
         this.ctx.closePath();
+
+        // this.ctx.beginPath();
+        // this.ctx.save();
+        // this.ctx.translate(sprite.x + this.camera.x, sprite.y + this.camera.y)
+        // this.ctx.arc(0,0,64, 0, 2*Math.PI);
+        // this.ctx.stroke();
+        // this.ctx.restore();
+        // this.ctx.closePath();
         //debug
         if (this.config.drawLookDirection && sprite instanceof Player) {                      
             this.ctx.beginPath();

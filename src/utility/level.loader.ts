@@ -6,7 +6,7 @@ export const blocksHex: { [key: string]: string } = {
 }
 
 export const BLOCKS: { [key: string]: Block } = {
-  'air' : { solid: false, friction: 0.1, defaultColor: ''},
+  'air' : { solid: false, friction: 1, defaultColor: ''},
   'base': { solid: true,  bounce: 0.0, friction: 1.0, defaultColor: '#000000' },
   'bouncePad': { solid: true, bounce: 1.1, friction: 1.0, defaultColor: '#FF0000' },
 }
