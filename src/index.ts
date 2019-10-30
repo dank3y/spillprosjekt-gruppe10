@@ -22,7 +22,7 @@ engine.renderer.camera.lookAt(player);
 engine.renderer.config.zeroDot = false;
 engine.renderer.config.drawLookDirection = true;
 engine.renderer.config.drawZeroLine = false;
-engine.renderer.config.drawWireframe = true;
+engine.renderer.config.drawWireframe = false;
 
 
 setTimeout(() => {
