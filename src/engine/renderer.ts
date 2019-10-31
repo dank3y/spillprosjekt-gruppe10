@@ -50,12 +50,55 @@ export class Renderer {
         this.camera = new Camera(0,0, canvas);
     }
 
+    //borders med relativ posisjon i henhold til camera-posisjon
+    private get borderLeft(): number {
+        return -this.camera.x;
+        // return this.camera.x - 0.5 * this.canvas.width;
+    }
+    private get borderRight(): number {
+        return -this.camera.x + this.canvas.width;
+    }
+    private get borderTop(): number {
+        return -this.camera.y ;
+    }
+    private get borderBottom(): number {
+        return -this.camera.y + this.canvas.height;
+    }
+
+    private checkIfEntityInView(target: Sprite): boolean {
+        if (target instanceof Sprite){            
+            if (
+                target.right < this.borderLeft ||
+                target.left > this.borderRight ||
+                target.top < this.borderTop ||
+                target.bottom > this.borderBottom
+            ) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private checkIfBlockInView(x: number, y: number): boolean {
+        if (
+            BLOCKSIZE * (x + 0.5) < this.borderLeft ||
+            BLOCKSIZE * (x - 0.5) > this.borderRight ||
+            BLOCKSIZE * (y + 0.5) < this.borderTop ||
+            BLOCKSIZE * (y - 0.5) > this.borderBottom
+        ){
+            return false;
+        }
+        return true;
+    }
+
     public renderEntities(entities: GameObject[]){
         entities.forEach((s, i) => {
             if (s.isExtensionOf(Sprite)){
-                this.drawSprite(<Sprite>s);
+                if (this.checkIfEntityInView(<Sprite>s)) {
+                    this.drawSprite(<Sprite>s);
+                }
             }
-        });
+        });        
         if (this.config.zeroDot) this.drawZeroDot();
         if (this.config.drawZeroLine) this.drawZeroLine();
         if (this.config.showFps) this.showFps();
@@ -70,7 +113,9 @@ export class Renderer {
     private drawBiome(biome: Biome){
         biome.data.forEach((_v, yindex) => {
             _v.forEach((v, xindex) => {
-                this.drawBlock(BLOCKS[v], xindex, yindex);
+               if (this.checkIfBlockInView(xindex, yindex)){
+                   this.drawBlock(BLOCKS[v], xindex, yindex);
+               }
             })
         })
     }
@@ -112,8 +157,8 @@ export class Renderer {
         this.ctx.translate(sprite.x + this.camera.x - (0.5 * sprite.width), sprite.y + this.camera.y - (0.5 * sprite.height));
         this.ctx.drawImage(
             /* bilder tegnes fra øverste venstre hjørne,
-            // så man må translere halvparten av bredden og
-             høyden tilbake */
+               så man må translere halvparten av bredden og
+               høyden tilbake */
             sprite.sprite,
             0,
             0,
@@ -122,15 +167,6 @@ export class Renderer {
         );
         this.ctx.restore();
         this.ctx.closePath();
-
-        // this.ctx.beginPath();
-        // this.ctx.save();
-        // this.ctx.translate(sprite.x + this.camera.x, sprite.y + this.camera.y)
-        // this.ctx.arc(0,0,64, 0, 2*Math.PI);
-        // this.ctx.stroke();
-        // this.ctx.restore();
-        // this.ctx.closePath();
-        //debug
         if (this.config.drawLookDirection && sprite instanceof Player) {                      
             this.ctx.beginPath();
             this.ctx.save();
