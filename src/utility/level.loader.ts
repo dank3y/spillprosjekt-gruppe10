@@ -27,7 +27,7 @@ async function loadImg(src: string): Promise<HTMLImageElement> {
     let img = new Image();
     img.src = src;
     img.onload = () => {
-      res(img)
+      res(img);
     }
   })
 }

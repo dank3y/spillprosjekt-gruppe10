@@ -49,7 +49,4 @@ export class Camera {
     panTo(target: InstanceType<typeof GameObject>, tick: number): void {
         
     }
-
-
-
 }

@@ -14,7 +14,6 @@ export class Player extends NPC {
     public d: boolean = false;
     public s: boolean = false;
 
-
     constructor(
         x: number,
         y: number,
@@ -48,5 +47,4 @@ export class Player extends NPC {
             case 'd': this.d = false; break;
         }
     }
-
 }

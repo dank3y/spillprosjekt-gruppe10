@@ -19,13 +19,7 @@ engine.renderer.config.drawLookDirection = true;
 engine.renderer.config.drawZeroLine = false;
 engine.renderer.config.drawWireframe = false;
 
-
-setTimeout(() => {
-    // engine.renderer.camera.lookAt(dummy);
-}, 3000)
-
-
 setInterval(() => {
     // engine.renderer.drawBlock(BLOCKS['base'], 0, 0)
-    engine.loop()
+    engine.loop();
 }, 1/60*1000);

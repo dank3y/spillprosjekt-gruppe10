@@ -10,7 +10,7 @@ export class SettingsHelper {
      * @param changes Endringene som skal foretas
      * @param defaultSettings Standard innstillinger
      */
-    static MergeWidthDefault(changes: object, defaultSettings: object) {
+    static MergeWithDefault(changes: object, defaultSettings: object) {
         return Object.assign(changes, defaultSettings);
     }
 }

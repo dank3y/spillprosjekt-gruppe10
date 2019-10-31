@@ -63,14 +63,14 @@ export class Renderer {
 
     public renderLevel(level: Level){
         level.forEach((biome: Biome, biomeIndex: number) => {
-            this.drawBiome(biome)
+            this.drawBiome(biome);
         })
     }
 
     private drawBiome(biome: Biome){
         biome.data.forEach((_v, yindex) => {
             _v.forEach((v, xindex) => {
-                this.drawBlock(BLOCKS[v], xindex, yindex)
+                this.drawBlock(BLOCKS[v], xindex, yindex);
             })
         })
     }
@@ -137,8 +137,8 @@ export class Renderer {
             this.ctx.translate(sprite.x + this.camera.x, sprite.y + this.camera.y);
             this.ctx.lineWidth = 3;
             this.ctx.fillStyle = '#000';
-            this.ctx.moveTo(0,0) 
-            this.ctx.lineTo(50*Math.cos(sprite.angle), 50*Math.sin(sprite.angle))
+            this.ctx.moveTo(0,0);
+            this.ctx.lineTo(50*Math.cos(sprite.angle), 50*Math.sin(sprite.angle));
             this.ctx.stroke();
             this.ctx.restore();
             this.ctx.closePath();

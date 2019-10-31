@@ -37,7 +37,7 @@ export class Canvas {
     public clear(): void {
         this.ctx.beginPath();
         this.ctx.clearRect(0, 0, this.c.width, this.c.height);
-        this.ctx.closePath()
+        this.ctx.closePath();
     }
 
 }

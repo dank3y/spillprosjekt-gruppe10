@@ -71,7 +71,7 @@ export class PhysicsEngine {
         }
 
         // TOP
-        if (biome[gridY - 1] && biome[gridY - 1][gridX]){
+        if (biome[gridY - 1] && biome[gridY - 1][gridX]) {
             top = BLOCKSIZE * (gridY - 1 + 0.5);
             topBlock = BLOCKS[biome[gridY - 1][gridX]];
         }
@@ -91,12 +91,12 @@ export class PhysicsEngine {
         // COLLISION DETECTION
         // AIR FRICTION
         if (targetBlock){            
-            if (!targetBlock.solid){
-                if (targetBlock.friction){
-                    if (target.vx > 0.05){
+            if (!targetBlock.solid) {
+                if (targetBlock.friction) {
+                    if (target.vx > 0.05) {
                         target.vx -= targetBlock.friction;
                     } else if (target.vx < -0.05) {
-                        target.vx += targetBlock.friction
+                        target.vx += targetBlock.friction;
                     } else {
                         target.vx = 0;
                     }
@@ -105,7 +105,7 @@ export class PhysicsEngine {
         }
 
         // BOTTOM
-        if (bottom && (target.bottom >= bottom)){
+        if (bottom && (target.bottom >= bottom)) {
             if (bottomBlock.solid){
                 target.vy = 0;
                 target.y  = bottom - 0.5 * target.height;                

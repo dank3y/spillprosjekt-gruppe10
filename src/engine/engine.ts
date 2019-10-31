@@ -68,7 +68,7 @@ export class GameEngine {
     public loop(): void{
         // gjør utregninger
         this.updatePlayerAngle();
-        this.physics.update(this.entities, this.level[0])
+        this.physics.update(this.entities, this.level[0]);
         this.renderer.camera.update();
     }
 
