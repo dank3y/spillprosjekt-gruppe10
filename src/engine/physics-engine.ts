@@ -17,12 +17,15 @@ export class PhysicsEngine {
         entities.forEach((entity, index) => {
             //særtilfelle for spiller               
             if (entity.isExtensionOf(Player)) this.updatePlayer(<Player>entity);
+            // Beveg NPCer
+            if(entity.isExtensionOf(NPC) && !(entity.isExtensionOf(Player))) {
+                this.updateNPC(<NPC>entity);
+            }
             //alle ting som reagerer på tyngdekraft
             if (entity.isExtensionOf(PhysicsBody)){
                 // this.applyGraviy(<PhysicsBody>entity);
                 this.updatePhysicsBody(<PhysicsBody>entity, currentBiome);
             } 
-            
         })
     }
 
@@ -157,5 +160,13 @@ export class PhysicsEngine {
         if (player.d) this.applyForce(player, 1.5, 0);
     }
 
+    private updateNPC(npc: NPC): void {
+        if(npc.a) {
+            this.applyForce(npc, 1, -Math.PI);
+        }
+        if(npc.d) {
+            this.applyForce(npc, 1, 0);
+        }
+    }
 }
 

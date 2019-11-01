@@ -9,11 +9,6 @@ const sprite = require('./sprite.png');
 export class Player extends NPC {
 
     //boolean verdier som tilsier om knappene er trykket ned
-    public w: boolean = false;
-    public a: boolean = false;
-    public d: boolean = false;
-    public s: boolean = false;
-
     constructor(
         x: number,
         y: number,
