@@ -64,6 +64,14 @@ export class Sprite extends GameObject {
             this.width = this.sprite.naturalWidth;
             this.height = this.sprite.naturalHeight; 
         }
+
+        // check om bredde eller høyde er delelig på blocksize
+        if (
+            this.width  % 32 !== 0 ||
+            this.height % 32 !== 0
+        ) {
+            console.error('Sprite har ikke korrekt bredde/høyde', this)
+        }
     }
 
     public get left() { return this.x - 0.5 * this.width; }
