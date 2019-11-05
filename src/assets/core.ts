@@ -70,7 +70,7 @@ export class Sprite extends GameObject {
             this.width  % 32 !== 0 ||
             this.height % 32 !== 0
         ) {
-            console.error('Sprite har ikke korrekt bredde/høyde', this)
+            throw new Error('Sprite har ikke korrekt bredde/høyde')
         }
     }
 
