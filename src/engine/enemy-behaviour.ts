@@ -25,19 +25,35 @@ export class EnemyBehaviour {
 
         // Om NPC er inntil en vegg eller ved en kant, bytt retning.
         if(target.d) {
-           if(BLOCKS[biome[gridY][gridX + 1]].solid) {
+           if(
+               biome[gridY] &&
+               biome[gridY][gridX + 1] &&
+               BLOCKS[biome[gridY][gridX + 1]].solid
+            ) {
                target.d = false;
                target.a = true;
-           } else if(!BLOCKS[biome[gridY + 1][gridX+1]].solid) {
+           } else if(
+               biome[gridY + 1] &&
+               biome[gridY + 1][gridX + 1] &&
+               !BLOCKS[biome[gridY + 1][gridX+1]].solid
+            ) {
                target.d = false;
                target.a = true;
            }
         } 
         if(target.a) {
-            if(BLOCKS[biome[gridY][gridX - 1]].solid) {
+            if(
+                biome[gridY] &&
+                biome[gridY][gridX - 1] &&
+                BLOCKS[biome[gridY][gridX - 1]].solid
+            ) {
                 target.a = false;
                 target.d = true;
-            } else if(!BLOCKS[biome[gridY+1][gridX - 1]].solid) {
+            } else if(
+                biome[gridY + 1] &&
+                biome[gridY + 1][gridX - 1] &&
+                !BLOCKS[biome[gridY+1][gridX - 1]].solid
+            ) {
                 target.a = false;
                 target.d = true;
             }
