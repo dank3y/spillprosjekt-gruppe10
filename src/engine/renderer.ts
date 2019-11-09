@@ -71,7 +71,7 @@ export class Renderer {
                 target.right < this.borderLeft ||
                 target.left > this.borderRight ||
                 target.top < this.borderTop ||
-                target.bottom > this.borderBottom
+                target.bottom > this.borderBottom + target.height
             ) {
                 return false;
             }
