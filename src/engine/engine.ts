@@ -81,7 +81,7 @@ export class GameEngine {
         // gjør utregninger
         this.updatePlayerAngle();
         this.physics.update(this.entities, this.level[0]);
-        this.enemyBehaviour.update(this.entities, this.level[0]);
+        this.enemyBehaviour.update(this.entities, this.level[0], this.player);
         this.renderer.camera.update();
     }
 

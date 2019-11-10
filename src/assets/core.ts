@@ -121,6 +121,8 @@ export class NPC extends PhysicsBody {
         vx?: number,
         vy?: number,
         public _angle = 0,
+        public speed: number = 1,
+        public jumpheight: number = 12
     ){
         super(x, y, _sprite, width, height, mass, vx, vy);
     }

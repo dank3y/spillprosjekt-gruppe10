@@ -162,10 +162,13 @@ export class PhysicsEngine {
 
     private updateNPC(npc: NPC): void {
         if(npc.a) {
-            this.applyForce(npc, 1, -Math.PI);
+            this.applyForce(npc, npc.speed, -Math.PI);
         }
         if(npc.d) {
-            this.applyForce(npc, 1, 0);
+            this.applyForce(npc, npc.speed, 0);
+        }
+        if(npc.w && npc.vy <= 1e-15 && npc.vy >= -1e-15) {
+            this.applyForce(npc, npc.jumpheight, Math.PI/2);
         }
     }
 }
