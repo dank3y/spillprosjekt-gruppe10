@@ -1,4 +1,4 @@
-import { GameObject, Sprite } from "../assets/core";
+import { GameObject, Sprite } from "../assets/entities/core";
 import { Canvas } from "./canvas";
 
 const ZOOM_DEFAULT = 1;

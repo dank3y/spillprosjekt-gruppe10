@@ -1,4 +1,4 @@
-import { Player } from "./entities/player/player";
+import { Player } from "./player/player";
 
 
 /**
@@ -64,6 +64,14 @@ export class Sprite extends GameObject {
             this.width = this.sprite.naturalWidth;
             this.height = this.sprite.naturalHeight; 
         }
+
+        // check om bredde eller høyde er delelig på blocksize
+        if (
+            this.width  % 32 !== 0 ||
+            this.height % 32 !== 0
+        ) {
+            throw new Error('Sprite har ikke korrekt bredde/høyde')
+        }
     }
 
     public get left() { return this.x - 0.5 * this.width; }
@@ -98,6 +106,11 @@ export class PhysicsBody extends Sprite {
 }
 
 export class NPC extends PhysicsBody {
+    public w: boolean = false;
+    public a: boolean = false;
+    public d: boolean = false;
+    public s: boolean = false;
+    
     constructor(
         x: number,
         y: number,
@@ -108,6 +121,8 @@ export class NPC extends PhysicsBody {
         vx?: number,
         vy?: number,
         public _angle = 0,
+        public speed: number = 1,
+        public jumpheight: number = 12
     ){
         super(x, y, _sprite, width, height, mass, vx, vy);
     }

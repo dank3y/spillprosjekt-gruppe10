@@ -1,9 +1,11 @@
 import { Canvas } from "./canvas";
-import { Sprite, GameObject, PhysicsBody } from "../assets/core";
+import { Sprite, GameObject, PhysicsBody } from "../assets/entities/core";
 import { Renderer } from "./renderer";
 import { PhysicsEngine } from './physics-engine';
 import { Biome, BiomeList } from "../assets/levels/biomes/biome";
 import { Player } from "../assets/entities/player/player";
+import { EnemyBehaviour } from "./enemy-behaviour";
+import { Enemy } from "../assets/entities/enemy/enemy";
 
 
 export const BLOCKSIZE: number = 32;
@@ -18,8 +20,10 @@ export class GameEngine {
     public mouseY: number = 0;
 
     public player: Player;
+    public enemy: Enemy;
     public renderer: Renderer;
     public physics: PhysicsEngine;
+    public enemyBehaviour: EnemyBehaviour;
     /**
      * liste som inneholder alle objekter i spillet
      */
@@ -39,9 +43,17 @@ export class GameEngine {
         // start renderer
         this.renderer = new Renderer(canvas);
         this.runRenderer();
+        // Start enemy-behaviour
+        this.enemyBehaviour = new EnemyBehaviour();
         // legg til spiller
         this.player = new Player(32, 300, 32, 64);
         this.entities.push(this.player);
+
+        // FOR TESTING
+        this.enemy = new Enemy(500, 300, 32, 64);
+        this.enemy.d = true;
+        this.entities.push(this.enemy);
+
         this.renderer.camera.lookAt(this.player);
 
         this.canvas.onmousemove = (ev: MouseEvent) => {
@@ -69,6 +81,7 @@ export class GameEngine {
         // gjør utregninger
         this.updatePlayerAngle();
         this.physics.update(this.entities, this.level[0]);
+        this.enemyBehaviour.update(this.entities, this.level[0], this.player);
         this.renderer.camera.update();
     }
 

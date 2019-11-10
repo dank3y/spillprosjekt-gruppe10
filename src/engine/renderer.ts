@@ -1,5 +1,5 @@
 import { Canvas } from "./canvas";
-import { Sprite, GameObject } from "../assets/core";
+import { Sprite, GameObject } from "../assets/entities/core";
 import { Camera } from "./camera";
 import { Player } from "../assets/entities/player/player";
 import { Level } from "../assets/levels/level";
@@ -71,7 +71,7 @@ export class Renderer {
                 target.right < this.borderLeft ||
                 target.left > this.borderRight ||
                 target.top < this.borderTop ||
-                target.bottom > this.borderBottom
+                target.bottom > this.borderBottom + target.height
             ) {
                 return false;
             }

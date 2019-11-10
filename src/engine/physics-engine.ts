@@ -1,4 +1,4 @@
-import { PhysicsBody, GameObject, NPC } from "../assets/core";
+import { PhysicsBody, GameObject, NPC } from "../assets/entities/core";
 import { Player } from "../assets/entities/player/player";
 import { Dummy } from "../assets/entities/dummy/dummy";
 import { Biome } from "../assets/levels/biomes/biome";
@@ -17,12 +17,15 @@ export class PhysicsEngine {
         entities.forEach((entity, index) => {
             //særtilfelle for spiller               
             if (entity.isExtensionOf(Player)) this.updatePlayer(<Player>entity);
+            // Beveg NPCer
+            if(entity.isExtensionOf(NPC) && !(entity.isExtensionOf(Player))) {
+                this.updateNPC(<NPC>entity);
+            }
             //alle ting som reagerer på tyngdekraft
             if (entity.isExtensionOf(PhysicsBody)){
                 // this.applyGraviy(<PhysicsBody>entity);
                 this.updatePhysicsBody(<PhysicsBody>entity, currentBiome);
             } 
-            
         })
     }
 
@@ -157,5 +160,16 @@ export class PhysicsEngine {
         if (player.d) this.applyForce(player, 1.5, 0);
     }
 
+    private updateNPC(npc: NPC): void {
+        if(npc.a) {
+            this.applyForce(npc, npc.speed, -Math.PI);
+        }
+        if(npc.d) {
+            this.applyForce(npc, npc.speed, 0);
+        }
+        if(npc.w && npc.vy <= 1e-15 && npc.vy >= -1e-15) {
+            this.applyForce(npc, npc.jumpheight, Math.PI/2);
+        }
+    }
 }
 
