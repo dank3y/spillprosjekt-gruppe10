@@ -1,11 +1,12 @@
 import { Canvas } from "./canvas";
-import { Sprite, GameObject, PhysicsBody } from "../assets/entities/core";
+import { Sprite, GameObject, PhysicsBody, NPC } from "../assets/entities/core";
 import { Renderer } from "./renderer";
 import { PhysicsEngine } from './physics-engine';
 import { Biome, BiomeList } from "../assets/levels/biomes/biome";
 import { Player } from "../assets/entities/player/player";
 import { EnemyBehaviour } from "./enemy-behaviour";
 import { Enemy } from "../assets/entities/enemy/enemy";
+import { Pistol } from "../assets/weapons/pistol/pistol";
 
 
 export const BLOCKSIZE: number = 32;
@@ -14,6 +15,8 @@ export const BLOCKSIZE: number = 32;
 export class GameEngine {
 
     level: Biome[] = [];
+
+    public paused = false;
 
     //holde styr på muskordinater
     public mouseX: number = 0;
@@ -48,6 +51,10 @@ export class GameEngine {
         // legg til spiller
         this.player = new Player(32, 300, 32, 64);
         this.entities.push(this.player);
+        this.player.weapons.push(
+            new Pistol(this.player.x, this.player.y, 16, 32)
+        );
+        
 
         // FOR TESTING
         this.enemy = new Enemy(500, 300, 32, 64);
@@ -59,6 +66,12 @@ export class GameEngine {
         this.canvas.onmousemove = (ev: MouseEvent) => {
             this.mouseX = ev.offsetX;
             this.mouseY = ev.offsetY;            
+        }
+        this.canvas.onmousedown = () => {
+            this.player.attack = true;
+        }
+        this.canvas.onmouseup = () => {
+            this.player.attack = false;
         }
 
         window.onresize  = (event: UIEvent) => {
@@ -79,10 +92,13 @@ export class GameEngine {
     
     public loop(): void{
         // gjør utregninger
-        this.updatePlayerAngle();
-        this.physics.update(this.entities, this.level[0]);
-        this.enemyBehaviour.update(this.entities, this.level[0], this.player);
-        this.renderer.camera.update();
+        if (!this.paused){
+            this.updatePlayerAngle();
+            this.physics.update(this.entities, this.level[0]);
+            this.enemyBehaviour.update(this.entities, this.level[0], this.player);
+            this.updateWeapons(this.entities)
+            this.renderer.camera.update();
+        }
     }
 
     private updatePlayerAngle(){
@@ -101,6 +117,24 @@ export class GameEngine {
         } else {
             this.level.push(biome);
         }
+    }
+
+    public updateWeapons(entitites: InstanceType<typeof GameObject>[]): void {
+        entitites.forEach(e => {
+            if (e instanceof NPC){
+                
+                if (e.attack && e.weapon){                    
+                    const time = Date.now();                                                            
+                    if (time - e.weapon.lastBullet > e.weapon.RPMms){
+                        e.weapon.shoot();
+                        e.weapon.lastBullet = time;
+                        console.log('attack');
+                    }
+                    
+                }
+                
+            }
+        })
     }
 
 }

@@ -1,11 +1,11 @@
-import { Sprite } from "../core";
+import { Sprite } from "../entities/core";
 
 
 
-// ROF er Rate Of Fire, med enhet Rounds/min
+// RPM er Rounds Per Minute
 export class Weapon extends Sprite {
   public leftInMag: number;
-  public lastBullet: number;
+  public lastBullet: number = 0;
 
   constructor(
     x: number,
@@ -13,13 +13,17 @@ export class Weapon extends Sprite {
     _sprite: string,
     public magSize: number,
     public reloadTime: number,
-    public ROF: number,
+    public RPM: number,
     width: number,
     height: number,
   ) {
     super(x, y, _sprite, width, height);
 
     this.leftInMag = this.magSize;
+  }
+
+  get RPMms() {
+    return (60 / this.RPM) * 1000;
   }
   shoot(): void {}
 }
