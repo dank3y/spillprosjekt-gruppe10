@@ -1,4 +1,4 @@
-import { NPC } from "../../core";
+import { NPC } from "../core";
 const sprite = require('./sprite.png');
 
 export class Enemy extends NPC {

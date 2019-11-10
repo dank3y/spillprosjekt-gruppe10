@@ -1,4 +1,4 @@
-import { PhysicsBody, GameObject, NPC } from "../assets/core";
+import { PhysicsBody, GameObject, NPC } from "../assets/entities/core";
 import { Player } from "../assets/entities/player/player";
 import { Dummy } from "../assets/entities/dummy/dummy";
 import { Biome } from "../assets/levels/biomes/biome";

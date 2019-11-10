@@ -1,4 +1,4 @@
-import { Sprite } from "../../core";
+import { Sprite } from "../core";
 const sprite = require('./sprite.png');
 
 export class Dummy extends Sprite {

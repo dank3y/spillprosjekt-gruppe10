@@ -1,4 +1,4 @@
-import { Player } from "./entities/player/player";
+import { Player } from "./player/player";
 
 
 /**

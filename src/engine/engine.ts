@@ -1,5 +1,5 @@
 import { Canvas } from "./canvas";
-import { Sprite, GameObject, PhysicsBody } from "../assets/core";
+import { Sprite, GameObject, PhysicsBody } from "../assets/entities/core";
 import { Renderer } from "./renderer";
 import { PhysicsEngine } from './physics-engine';
 import { Biome, BiomeList } from "../assets/levels/biomes/biome";

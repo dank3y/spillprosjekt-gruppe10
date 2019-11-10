@@ -1,4 +1,4 @@
-import { PhysicsBody, NPC } from "../../core";
+import { PhysicsBody, NPC } from "../core";
 // definer sprite-en her
 const sprite = require('./sprite.png');
 

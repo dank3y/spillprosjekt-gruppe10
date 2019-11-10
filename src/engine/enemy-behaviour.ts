@@ -1,4 +1,4 @@
-import { GameObject, NPC } from "../assets/core";
+import { GameObject, NPC } from "../assets/entities/core";
 import { Biome } from "../assets/levels/biomes/biome";
 import { BLOCKSIZE } from "./engine";
 import { BLOCKS } from "../utility/level.loader";
