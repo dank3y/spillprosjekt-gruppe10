@@ -1,9 +1,11 @@
-import { Sprite } from "../entities/core";
+import { Sprite, NPC, GameObject } from "../entities/core";
 
-
+export interface Shoot {
+  shoot: Function;
+}
 
 // RPM er Rounds Per Minute
-export class Weapon extends Sprite {
+export class Weapon extends Sprite implements Shoot {
   public leftInMag: number;
   public lastBullet: number = 0;
 
@@ -25,7 +27,8 @@ export class Weapon extends Sprite {
   get RPMms() {
     return (60 / this.RPM) * 1000;
   }
-  shoot(): void {}
+
+  public shoot(list: Projectile[], shooter: NPC): void {};
 }
 
 // "g" tilsier hvor mye prosjektilet skal falle,

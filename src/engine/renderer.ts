@@ -6,6 +6,7 @@ import { Level } from "../assets/levels/level";
 import { Biome } from "../assets/levels/biomes/biome";
 import { Block, BLOCKS } from "../utility/level.loader";
 import { BLOCKSIZE } from "./engine";
+import { Projectile } from "../assets/weapons/core";
 
 
 export interface RendererConfig {
@@ -92,16 +93,27 @@ export class Renderer {
     }
 
     public renderEntities(entities: GameObject[]){
-        entities.forEach((s, i) => {
-            if (s.isExtensionOf(Sprite)){
+        entities.forEach((s, i) => {                        
+            if (s instanceof Sprite){
                 if (this.checkIfEntityInView(<Sprite>s)) {
-                    this.drawSprite(<Sprite>s);
+                    this.drawSprite(<Sprite>s);                    
                 }
             }
         });        
         if (this.config.zeroDot) this.drawZeroDot();
         if (this.config.drawZeroLine) this.drawZeroLine();
         if (this.config.showFps) this.showFps();
+    }
+
+    public renderProjectiles(proj: Projectile[]){
+        for (let i = 0; i < proj.length; i++){
+            if (this.checkIfEntityInView(<Sprite>proj[i])) {
+                this.drawProjectile(proj[i])
+            } else {
+                proj.splice(i, 1);
+                i--;
+            }
+        }
     }
 
     public renderLevel(level: Level){
@@ -145,6 +157,25 @@ export class Renderer {
             this.ctx.restore();
             this.ctx.closePath();
         }
+    }
+
+    private drawProjectile(sprite: InstanceType<typeof Projectile>): void {
+        this.ctx.beginPath();
+        this.ctx.save();
+        this.ctx.translate(sprite.x + this.camera.x , sprite.y + this.camera.y );
+        this.ctx.rotate(sprite.angle);
+        this.ctx.drawImage(
+            /* bilder tegnes fra øverste venstre hjørne,
+               så man må translere halvparten av bredden og
+               høyden tilbake */
+            sprite.sprite,
+            - (0.5 * sprite.width),
+            - (0.5 * sprite.height),
+            sprite.width,
+            sprite.height
+        );
+        this.ctx.restore();
+        this.ctx.closePath();
     }
 
     /**

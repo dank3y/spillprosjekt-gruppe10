@@ -7,6 +7,7 @@ import { Player } from "../assets/entities/player/player";
 import { EnemyBehaviour } from "./enemy-behaviour";
 import { Enemy } from "../assets/entities/enemy/enemy";
 import { Pistol } from "../assets/weapons/pistol/pistol";
+import { Projectile, Weapon } from "../assets/weapons/core";
 
 
 export const BLOCKSIZE: number = 32;
@@ -34,6 +35,8 @@ export class GameEngine {
     /**
      * tick som brukes til forskjellige ting, som f.eks aminasjoner
      */
+    public projectiles: Projectile[] = [];
+    
     public tick: number = 0;
 
     constructor(private canvas: Canvas) {
@@ -87,6 +90,7 @@ export class GameEngine {
         that.canvas.clear();
         that.renderer.renderLevel(this.level);        
         that.renderer.renderEntities(this.entities);
+        that.renderer.renderProjectiles(this.projectiles);
         window.requestAnimationFrame(this.runRenderer.bind(that));
     }
     
@@ -96,7 +100,8 @@ export class GameEngine {
             this.updatePlayerAngle();
             this.physics.update(this.entities, this.level[0]);
             this.enemyBehaviour.update(this.entities, this.level[0], this.player);
-            this.updateWeapons(this.entities)
+            this.updateWeapons(this.entities);
+            this.updateProjectiles(this.projectiles)
             this.renderer.camera.update();
         }
     }
@@ -119,16 +124,23 @@ export class GameEngine {
         }
     }
 
+    public updateProjectiles(entitites: GameObject[]): void {
+        this.projectiles.forEach((p, i) => {
+            p.update();
+        })
+    }
+
     public updateWeapons(entitites: InstanceType<typeof GameObject>[]): void {
         entitites.forEach(e => {
             if (e instanceof NPC){
                 
                 if (e.attack && e.weapon){                    
-                    const time = Date.now();                                                            
+                    const time = Date.now();
+                                                                                
                     if (time - e.weapon.lastBullet > e.weapon.RPMms){
-                        e.weapon.shoot();
+                        e.weapon.shoot(this.projectiles, e);
                         e.weapon.lastBullet = time;
-                        console.log('attack');
+                        
                     }
                     
                 }

@@ -1,13 +1,32 @@
-import { Weapon } from "../core";
+import { Weapon, Projectile } from "../core";
+import { NPC, GameObject } from "../../entities/core";
+import { LightProjectile } from "../projectiles/light/light-projectile";
 
 const sprite = require('./sprite.png')
 
 
 const magSize = 15;
 const reloadTime = 1.5;
-const ROF = 500;
+const ROF = 250;
+const width = 10;
+const height = 4;
+const g = 1;
+const vel = 20;
 
 export class Pistol extends Weapon {
+  _shoot(list: Projectile[], shooter: NPC): void {
+    let angle = shooter.angle + (0.10 * Math.random() - 0.05);
+    const proj = new LightProjectile(
+      shooter.x,
+      shooter.y,
+      width,
+      height,
+      angle,
+      g,
+      vel
+    );
+    list.push(proj);
+  }
   constructor(
     x: number,
     y: number,
@@ -15,5 +34,8 @@ export class Pistol extends Weapon {
     height: number
   ){
     super(x, y, sprite, magSize, reloadTime, ROF, width, height);
+    super.shoot = this._shoot;
   }
+
+
 }
