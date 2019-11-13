@@ -13,26 +13,34 @@ import { GameObject } from "../assets/entities/core";
 export class LevelGen {
     constructor(){}
 
+    /**
+     * Genererer et level med et visst antall rom.
+     */
     public makeLevel(): Room {
-        // GENERER ROM
 
+        // Antall rom som skal genereres. Start- og sluttrom legges til utenom.
         const ROOM_AMOUNT: number = 5;
+        // De tilgjengelige romene som kan genereres.
         const AVAILABLE_ROOMS: Room[] = [Room1, Room2, Room3, Room4];
 
+        // Brukes for å plassere data riktig.
         let roomOffset: number = 0;
 
         let rooms: Array<[Room, number]> = [];
 
+        // Legger til startrom.
         rooms.push([RoomStart, roomOffset]);
         roomOffset += RoomStart.data[0].length;
 
+        // Legger til et tilfeldig rom fra listen og øker offset for hver gang.
         for(let i: number = 0; i < ROOM_AMOUNT; i++) {
-            let randomRoom = Math.floor(Math.random()*AVAILABLE_ROOMS.length);
+            let randomRoom: number = Math.floor(Math.random()*AVAILABLE_ROOMS.length);
             rooms.push([AVAILABLE_ROOMS[randomRoom], roomOffset]);
 
             roomOffset += AVAILABLE_ROOMS[randomRoom].data[0].length;
         }
 
+        // Legger til sluttrom.
         rooms.push([RoomEnd, roomOffset]);
 
         // SETT SAMMEN ALT TIL LEVEL
@@ -53,7 +61,7 @@ export class LevelGen {
                 let entityX: number = entity[0] + BLOCKSIZE * offset;
                 let entityY: number = entity[1];
                 let entityType: string = entity[2];
-                let entityObject: (Enemy | Goal);
+                let entityObject: GameObject;
                 if(entityType == "enemy") {
                     entityObject = new Enemy(entityX, entityY, 32, 64);
                 } else if (entityType == "goal") {
