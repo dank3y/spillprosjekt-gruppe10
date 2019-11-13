@@ -1,9 +1,8 @@
 import { PhysicsBody, GameObject, NPC } from "../assets/entities/core";
 import { Player } from "../assets/entities/player/player";
-import { Dummy } from "../assets/entities/dummy/dummy";
-import { Biome } from "../assets/levels/biomes/biome";
+import { Room } from "../assets/rooms/room";
 import { BLOCKSIZE } from "./engine";
-import { Block, BLOCKS } from "../utility/level.loader";
+import { BLOCKS } from "../utility/level.loader";
 
 /**
  * Skal håndtere tyngdekraft osv
@@ -13,7 +12,7 @@ export class PhysicsEngine {
 
     public g = 9.81;
 
-    update(entities: GameObject[], currentBiome: Biome): void{        
+    update(entities: GameObject[], gameLevel: Room): void{        
         entities.forEach((entity, index) => {
             //særtilfelle for spiller               
             if (entity.isExtensionOf(Player)) this.updatePlayer(<Player>entity);
@@ -24,12 +23,12 @@ export class PhysicsEngine {
             //alle ting som reagerer på tyngdekraft
             if (entity.isExtensionOf(PhysicsBody)){
                 // this.applyGraviy(<PhysicsBody>entity);
-                this.updatePhysicsBody(<PhysicsBody>entity, currentBiome);
+                this.updatePhysicsBody(<PhysicsBody>entity, gameLevel);
             } 
         })
     }
 
-    private updatePhysicsBody(target: PhysicsBody, currentBiome: Biome): void {
+    private updatePhysicsBody(target: PhysicsBody, gameLevel: Room): void {
         target.x += target.vx;
         target.y += target.vy;
 
@@ -48,11 +47,11 @@ export class PhysicsEngine {
         }
         
         this.applyGravity(target);
-        this.checkGridCollision(target, currentBiome);
+        this.checkGridCollision(target, gameLevel);
     }
 
-    private checkGridCollision(target: PhysicsBody, currentBiome: Biome){
-        const biome = currentBiome.data;
+    private checkGridCollision(target: PhysicsBody, gameLevel: Room){
+        const level = gameLevel.data;
         
         // Få posisjon i grid
         const gridX = Math.round(target.x / BLOCKSIZE);
@@ -63,32 +62,32 @@ export class PhysicsEngine {
         let bottom, top, left, right;
 
         // TARGET
-        if (biome[gridY] && biome[gridY][gridX]){
-            targetBlock = BLOCKS[biome[gridY][gridX]];
+        if (level[gridY] && level[gridY][gridX]){
+            targetBlock = BLOCKS[level[gridY][gridX]];
         }
 
         // BOTTOM
-        if (biome[gridY + 1] && biome[gridY + 1][gridX]) {
+        if (level[gridY + 1] && level[gridY + 1][gridX]) {
             bottom = BLOCKSIZE * (gridY + 1 - 0.5);
-            bottomBlock = BLOCKS[biome[gridY + 1][gridX]];
+            bottomBlock = BLOCKS[level[gridY + 1][gridX]];
         }
 
         // TOP
-        if (biome[gridY - 1] && biome[gridY - 1][gridX]) {
+        if (level[gridY - 1] && level[gridY - 1][gridX]) {
             top = BLOCKSIZE * (gridY - 1 + 0.5);
-            topBlock = BLOCKS[biome[gridY - 1][gridX]];
+            topBlock = BLOCKS[level[gridY - 1][gridX]];
         }
 
         // LEFT
-        if (biome[gridY] && biome[gridY][gridX - 1]) {
+        if (level[gridY] && level[gridY][gridX - 1]) {
             left = BLOCKSIZE * (gridX - 1 + 0.5);
-            leftBlock = BLOCKS[biome[gridY][gridX - 1]];
+            leftBlock = BLOCKS[level[gridY][gridX - 1]];
         }
 
         // RIGHT
-        if (biome[gridY] && biome[gridY][gridX + 1]) {
+        if (level[gridY] && level[gridY][gridX + 1]) {
             right = BLOCKSIZE * (gridX + 1 - 0.5);
-            rightBlock = BLOCKS[biome[gridY][gridX + 1]];
+            rightBlock = BLOCKS[level[gridY][gridX + 1]];
         }
         
         // COLLISION DETECTION

@@ -1,4 +1,4 @@
-import { Sprite } from "../core";
+import { Sprite } from "../entities/core";
 
 
 

@@ -2,8 +2,7 @@ import { Canvas } from "./canvas";
 import { Sprite, GameObject } from "../assets/entities/core";
 import { Camera } from "./camera";
 import { Player } from "../assets/entities/player/player";
-import { Level } from "../assets/levels/level";
-import { Biome } from "../assets/levels/biomes/biome";
+import { Room } from "../assets/rooms/room";
 import { Block, BLOCKS } from "../utility/level.loader";
 import { BLOCKSIZE } from "./engine";
 
@@ -70,7 +69,7 @@ export class Renderer {
             if (
                 target.right < this.borderLeft ||
                 target.left > this.borderRight ||
-                target.top < this.borderTop ||
+                target.top < this.borderTop - target.height ||
                 target.bottom > this.borderBottom + target.height
             ) {
                 return false;
@@ -104,14 +103,8 @@ export class Renderer {
         if (this.config.showFps) this.showFps();
     }
 
-    public renderLevel(level: Level){
-        level.forEach((biome: Biome, biomeIndex: number) => {
-            this.drawBiome(biome);
-        })
-    }
-
-    private drawBiome(biome: Biome){
-        biome.data.forEach((_v, yindex) => {
+    public renderLevel(level: Room){
+        level.data.forEach((_v, yindex) => {
             _v.forEach((v, xindex) => {
                if (this.checkIfBlockInView(xindex, yindex)){
                    this.drawBlock(BLOCKS[v], xindex, yindex);
