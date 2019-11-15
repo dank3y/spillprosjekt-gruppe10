@@ -8,6 +8,7 @@ import { EnemyBehaviour } from "./enemy-behaviour";
 import { Enemy } from "../assets/entities/enemy/enemy";
 import { Pistol } from "../assets/weapons/pistol/pistol";
 import { Projectile, Weapon } from "../assets/weapons/core";
+import { Screenshake } from "./camera";
 
 
 export const BLOCKSIZE: number = 32;
@@ -102,13 +103,14 @@ export class GameEngine {
             this.enemyBehaviour.update(this.entities, this.level[0], this.player);
             this.updateWeapons(this.entities);
             this.updateProjectiles(this.projectiles)
-            this.renderer.camera.update();
+            this.renderer.camera.update(this.tick);
+            this.tick++;
         }
     }
 
     private updatePlayerAngle(){
-        let x = this.player.x + this.renderer.camera.x;
-        let y = this.player.y + this.renderer.camera.y;
+        let x = (this.player.x - this.renderer.camera.x) + this.renderer.WIDTH_OFFSET;
+        let y = (this.player.y - this.renderer.camera.y) + this.renderer.HEIGHT_OFFSET;
         
         let angle = Math.atan2(this.mouseY - y, this.mouseX - x);
         this.player._angle = angle;
@@ -140,6 +142,7 @@ export class GameEngine {
                     if (time - e.weapon.lastBullet > e.weapon.RPMms){
                         e.weapon.shoot(this.projectiles, e);
                         e.weapon.lastBullet = time;
+                        this.renderer.camera.actionList.push(new Screenshake(this.tick, this.tick + 5, 3));
                         
                     }
                     

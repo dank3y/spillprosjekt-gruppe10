@@ -19,6 +19,13 @@ export class Canvas {
         c.addEventListener('mouseup', (ev: MouseEvent) => {
             this.onmouseup.call(false, ev)
         })
+        c.addEventListener('resize', () => {
+            console.log('ree');
+            
+            this.resizeCanvas();
+            this.onresize.call(false);
+        })
+        
     }
 
     get width()  { return this.c.width; }
@@ -28,6 +35,7 @@ export class Canvas {
     public onmousemove: Function = () => {};
     public onmousedown: Function = () => { };
     public onmouseup: Function = () => {};
+    public onresize: Function = () => {};
 
 
     /**

@@ -43,6 +43,7 @@ export class Projectile extends Sprite {
     public angle: number,
     public g: number,
     public vel: number,
+    public shooter: InstanceType<typeof NPC>
   ) {
     super(x, y, _sprite, width, height,);
   }

@@ -9,6 +9,7 @@ import { BLOCKSIZE } from "./engine";
 import { Projectile } from "../assets/weapons/core";
 
 
+
 export interface RendererConfig {
     zeroDot: boolean;
     lineWidth: number;
@@ -35,6 +36,8 @@ export const RendererConfigDefault: RendererConfig = {
  * Class som tar seg av tegning
  */
 export class Renderer {
+    public get WIDTH_OFFSET() { return 0.5 * this.canvas.width};
+    public get HEIGHT_OFFSET() { return 0.5 * this.canvas.height };
     // config
     public config = RendererConfigDefault;
     // referanse som gjør at vi faktisk kan tegne
@@ -53,17 +56,18 @@ export class Renderer {
 
     //borders med relativ posisjon i henhold til camera-posisjon
     private get borderLeft(): number {
-        return -this.camera.x;
+        return this.camera.x - 0.5*this.canvas.width;
         // return this.camera.x - 0.5 * this.canvas.width;
     }
     private get borderRight(): number {
-        return -this.camera.x + this.canvas.width;
+        return this.camera.x + 0.5 * this.canvas.width;
+
     }
     private get borderTop(): number {
-        return -this.camera.y ;
+        return this.camera.y - 0.5 * this.canvas.height;
     }
     private get borderBottom(): number {
-        return -this.camera.y + this.canvas.height;
+        return this.camera.y + 0.5 * this.canvas.height;
     }
 
     private checkIfEntityInView(target: Sprite): boolean {
@@ -125,9 +129,9 @@ export class Renderer {
     private drawBiome(biome: Biome){
         biome.data.forEach((_v, yindex) => {
             _v.forEach((v, xindex) => {
-               if (this.checkIfBlockInView(xindex, yindex)){
+            //    if (this.checkIfBlockInView(xindex, yindex)){
                    this.drawBlock(BLOCKS[v], xindex, yindex);
-               }
+            //    }
             })
         })
     }
@@ -136,10 +140,13 @@ export class Renderer {
         if (block.defaultColor !== ''){
             this.ctx.beginPath();
             this.ctx.save();
-            this.ctx.translate(xindex * BLOCKSIZE + this.camera.x - (0.5 * BLOCKSIZE), yindex * BLOCKSIZE + this.camera.y - (0.5 * BLOCKSIZE));
+            this.ctx.translate(
+                (xindex * BLOCKSIZE - this.camera.x) + this.WIDTH_OFFSET,
+                (yindex * BLOCKSIZE - this.camera.y) + this.HEIGHT_OFFSET
+            );
             //midlertidig løsning, få til endring av farge senere
             this.ctx.fillStyle = block.defaultColor;
-            this.ctx.fillRect(0, 0, BLOCKSIZE, BLOCKSIZE);
+            this.ctx.fillRect(-(0.5 * BLOCKSIZE), -(0.5 * BLOCKSIZE), BLOCKSIZE, BLOCKSIZE);
             this.ctx.restore();
             this.ctx.closePath();
         }
@@ -162,7 +169,10 @@ export class Renderer {
     private drawProjectile(sprite: InstanceType<typeof Projectile>): void {
         this.ctx.beginPath();
         this.ctx.save();
-        this.ctx.translate(sprite.x + this.camera.x , sprite.y + this.camera.y );
+        this.ctx.translate(
+            (sprite.x - this.camera.x) + this.WIDTH_OFFSET,
+            (sprite.y - this.camera.y) + this.HEIGHT_OFFSET
+        );
         this.ctx.rotate(sprite.angle);
         this.ctx.drawImage(
             /* bilder tegnes fra øverste venstre hjørne,
@@ -185,14 +195,17 @@ export class Renderer {
     private drawSprite(sprite: InstanceType<typeof Sprite>): void {
         this.ctx.beginPath();
         this.ctx.save();
-        this.ctx.translate(sprite.x + this.camera.x - (0.5 * sprite.width), sprite.y + this.camera.y - (0.5 * sprite.height));
+        this.ctx.translate(
+            (sprite.x - this.camera.x) + this.WIDTH_OFFSET,
+            (sprite.y - this.camera.y) + this.HEIGHT_OFFSET
+            );
         this.ctx.drawImage(
             /* bilder tegnes fra øverste venstre hjørne,
                så man må translere halvparten av bredden og
                høyden tilbake */
             sprite.sprite,
-            0,
-            0,
+            -0.5 * sprite.width,
+            -0.5 * sprite.height,
             sprite.width,
             sprite.height
         );
@@ -201,7 +214,10 @@ export class Renderer {
         if (this.config.drawLookDirection && sprite instanceof Player) {                      
             this.ctx.beginPath();
             this.ctx.save();
-            this.ctx.translate(sprite.x + this.camera.x, sprite.y + this.camera.y);
+            this.ctx.translate(
+                (sprite.x - this.camera.x) + this.WIDTH_OFFSET,
+                (sprite.y - this.camera.y) + this.HEIGHT_OFFSET
+            );
             this.ctx.lineWidth = 3;
             this.ctx.fillStyle = '#000';
             this.ctx.moveTo(0,0);

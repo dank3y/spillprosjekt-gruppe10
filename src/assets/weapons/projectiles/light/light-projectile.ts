@@ -1,4 +1,5 @@
 import { Projectile } from "../../core";
+import { NPC } from "../../../entities/core";
 
 const _sprite = require('./sprite');
 
@@ -11,8 +12,9 @@ export class LightProjectile extends Projectile {
         height: number,
         angle: number,
         g: number,
-        vel: number
+        vel: number,
+        shooter: InstanceType<typeof NPC>
         ){
-        super(x, y, _sprite, width, height, angle, g, vel);
+        super(x, y, _sprite, width, height, angle, g, vel, shooter);
     }
 }

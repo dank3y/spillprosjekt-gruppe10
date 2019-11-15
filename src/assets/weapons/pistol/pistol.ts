@@ -23,7 +23,8 @@ export class Pistol extends Weapon {
       height,
       angle,
       g,
-      vel
+      vel,
+      shooter
     );
     list.push(proj);
   }
