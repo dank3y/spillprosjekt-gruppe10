@@ -142,8 +142,8 @@ export class GameEngine {
                     if (time - e.weapon.lastBullet > e.weapon.RPMms){
                         e.weapon.shoot(this.projectiles, e);
                         e.weapon.lastBullet = time;
-                        this.renderer.camera.actionList.push(new Screenshake(this.tick, this.tick + 5, 3));
-                        
+                        this.renderer.camera.actionList.push(new Screenshake(this.tick, this.tick + 3, 3));
+                        this.physics.applyForce(e, 3, e.angle + Math.PI)
                     }
                     
                 }
