@@ -1,5 +1,5 @@
 import { Canvas } from "./canvas";
-import { Sprite, GameObject } from "../assets/entities/core";
+import { Sprite, GameObject, NPC } from "../assets/entities/core";
 import { Camera } from "./camera";
 import { Player } from "../assets/entities/player/player";
 import { Level } from "../assets/levels/level";
@@ -100,7 +100,12 @@ export class Renderer {
         entities.forEach((s, i) => {                        
             if (s instanceof Sprite){
                 if (this.checkIfEntityInView(<Sprite>s)) {
-                    this.drawSprite(<Sprite>s);                    
+                    this.drawSprite(<Sprite>s);
+                    //if NPC has a weapon
+                    if ((<NPC>s).weapon){
+                        this.drawWeapon((<NPC>s))
+                    }
+                    
                 }
             }
         });        
@@ -124,6 +129,28 @@ export class Renderer {
         level.forEach((biome: Biome, biomeIndex: number) => {
             this.drawBiome(biome);
         })
+    }
+
+    drawWeapon(target: InstanceType<typeof NPC>): void {
+        this.ctx.beginPath();
+        this.ctx.save();
+        this.ctx.translate(
+            (target.x - this.camera.x) + this.WIDTH_OFFSET + 20 * Math.cos(target.angle),
+            (target.y - this.camera.y) + this.HEIGHT_OFFSET + 20 * Math.sin(target.angle)
+        );
+        this.ctx.rotate(target.angle)
+        if (target.angle > Math.PI / 2 || target.angle < -Math.PI / 2){
+            this.ctx.scale(1,-1);
+        }
+        this.ctx.drawImage(
+            target.weapon.sprite,
+            -0.5 * target.weapon.width,
+            -0.5 * target.weapon.height,
+            target.weapon.width,
+            target.weapon.height
+        )
+        this.ctx.restore();
+        this.ctx.closePath();
     }
 
     private drawBiome(biome: Biome){

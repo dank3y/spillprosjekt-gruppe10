@@ -8,8 +8,8 @@ const sprite = require('./sprite.png')
 const magSize = 15;
 const reloadTime = 1.5;
 const ROF = 250;
-const width = 10;
-const height = 4;
+const width = 33;
+const height = 20;
 const g = 1;
 const vel = 20;
 
@@ -19,8 +19,6 @@ export class Pistol extends Weapon {
     const proj = new LightProjectile(
       shooter.x,
       shooter.y,
-      width,
-      height,
       angle,
       g,
       vel,
@@ -31,8 +29,6 @@ export class Pistol extends Weapon {
   constructor(
     x: number,
     y: number,
-    width: number,
-    height: number
   ){
     super(x, y, sprite, magSize, reloadTime, ROF, width, height);
     super.shoot = this._shoot;

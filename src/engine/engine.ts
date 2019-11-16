@@ -56,7 +56,7 @@ export class GameEngine {
         this.player = new Player(32, 300, 32, 64);
         this.entities.push(this.player);
         this.player.weapons.push(
-            new Pistol(this.player.x, this.player.y, 16, 32)
+            new Pistol(this.player.x, this.player.y)
         );
         
 

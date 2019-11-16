@@ -2,14 +2,13 @@ import { Projectile } from "../../core";
 import { NPC } from "../../../entities/core";
 
 const _sprite = require('./sprite');
-
+const width = 10;
+const height = 4;
 
 export class LightProjectile extends Projectile {
     constructor(
         x: number,
         y: number,
-        width: number,
-        height: number,
         angle: number,
         g: number,
         vel: number,
