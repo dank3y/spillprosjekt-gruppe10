@@ -12,7 +12,20 @@ export class Canvas {
         this.ctx.imageSmoothingEnabled = false;
         c.addEventListener('mousemove', (ev: MouseEvent) => {
             this.onmousemove.call(false, ev);
+        });
+        c.addEventListener('mousedown', (ev: MouseEvent) => {
+            this.onmousedown.call(false, ev)
         })
+        c.addEventListener('mouseup', (ev: MouseEvent) => {
+            this.onmouseup.call(false, ev)
+        })
+        c.addEventListener('resize', () => {
+            console.log('ree');
+            
+            this.resizeCanvas();
+            this.onresize.call(false);
+        })
+        
     }
 
     get width()  { return this.c.width; }
@@ -20,6 +33,9 @@ export class Canvas {
 
     // event til når mus beveger seg
     public onmousemove: Function = () => {};
+    public onmousedown: Function = () => { };
+    public onmouseup: Function = () => {};
+    public onresize: Function = () => {};
 
 
     /**

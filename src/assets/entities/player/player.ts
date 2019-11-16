@@ -1,4 +1,5 @@
 import { PhysicsBody, NPC } from "../core";
+import { Weapon } from "../../weapons/core";
 // definer sprite-en her
 const sprite = require('./sprite.png');
 
@@ -25,7 +26,7 @@ export class Player extends NPC {
         window.onkeyup = (ev: KeyboardEvent) => this.KEYUP_EVENT_HANDLER(ev);
     }
 
-    private KEYDOWN_EVENT_HANDLER(event: KeyboardEvent): void {
+    private KEYDOWN_EVENT_HANDLER(event: KeyboardEvent): void {        
         switch (event.key) {
             case 'w': this.w = true; break;
             case 'a': this.a = true; break;
@@ -42,4 +43,5 @@ export class Player extends NPC {
             case 'd': this.d = false; break;
         }
     }
+
 }

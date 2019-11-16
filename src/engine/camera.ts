@@ -3,6 +3,25 @@ import { Canvas } from "./canvas";
 
 const ZOOM_DEFAULT = 1;
 
+export class Action {
+    constructor(public startTick: number, public endTick: number, ...args: any[]){
+    }
+    update: Function = () => {}
+}
+
+export class Screenshake extends Action {
+    constructor(startTick: number, endTick: number, public factor: number){
+        super(startTick, endTick);
+        super.update = (tick: number, camera: Camera) => {
+            let angle = 2 * Math.PI * Math.random();
+            camera.x = camera.x + this.factor * Math.cos(angle);
+            camera.y = camera.y + this.factor * Math.sin(angle);
+        }
+    }
+}
+
+
+
 interface Point {
     x: number,
     y: number
@@ -16,8 +35,12 @@ interface Point {
 export class Camera {
     
     private lastTarget: InstanceType<typeof GameObject>;
-    private lastTick: number;
     private target: InstanceType<typeof GameObject> | Point;
+    
+    private lastTick: number = 0;
+    public actionList: (Action | null)[] = [];
+
+
 
     constructor(
         public x: number = 0,
@@ -35,9 +58,17 @@ export class Camera {
         this.target = target;
     }
 
-    public update(): void {
-        this.x = (-this.target.x) + 0.5 * this.canvas.width;
-        this.y = (-this.target.y) + 0.5 * this.canvas.height;
+    public update(tick: number): void {
+        this.x = this.target.x;
+        this.y = this.target.y;
+        this.actionList.forEach((action: Action, i: number) => {
+            if (action.endTick === tick) {
+                this.actionList.splice(i, 1);
+            } else {
+                action.update(tick, this);
+            }
+        })
+        this.lastTick = tick;
     }
 
     /**

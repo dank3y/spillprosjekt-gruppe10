@@ -1,11 +1,13 @@
-import { Sprite } from "../entities/core";
+import { Sprite, NPC, GameObject } from "../entities/core";
 
+export interface Shoot {
+  shoot: Function;
+}
 
-
-// ROF er Rate Of Fire, med enhet Rounds/min
-export class Weapon extends Sprite {
+// RPM er Rounds Per Minute
+export class Weapon extends Sprite implements Shoot {
   public leftInMag: number;
-  public lastBullet: number;
+  public lastBullet: number = 0;
 
   constructor(
     x: number,
@@ -13,7 +15,7 @@ export class Weapon extends Sprite {
     _sprite: string,
     public magSize: number,
     public reloadTime: number,
-    public ROF: number,
+    public RPM: number,
     width: number,
     height: number,
   ) {
@@ -21,7 +23,12 @@ export class Weapon extends Sprite {
 
     this.leftInMag = this.magSize;
   }
-  shoot(): void {}
+
+  get RPMms() {
+    return (60 / this.RPM) * 1000;
+  }
+
+  public shoot(list: Projectile[], shooter: NPC): void {};
 }
 
 // "g" tilsier hvor mye prosjektilet skal falle,
@@ -36,6 +43,7 @@ export class Projectile extends Sprite {
     public angle: number,
     public g: number,
     public vel: number,
+    public shooter: InstanceType<typeof NPC>
   ) {
     super(x, y, _sprite, width, height,);
   }

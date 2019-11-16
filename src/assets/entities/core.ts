@@ -1,4 +1,5 @@
 import { Player } from "./player/player";
+import { Weapon } from "../weapons/core";
 
 
 /**
@@ -65,13 +66,6 @@ export class Sprite extends GameObject {
             this.height = this.sprite.naturalHeight; 
         }
 
-        // check om bredde eller høyde er delelig på blocksize
-        if (
-            this.width  % 32 !== 0 ||
-            this.height % 32 !== 0
-        ) {
-            throw new Error('Sprite har ikke korrekt bredde/høyde')
-        }
     }
 
     public get left() { return this.x - 0.5 * this.width; }
@@ -110,6 +104,13 @@ export class NPC extends PhysicsBody {
     public a: boolean = false;
     public d: boolean = false;
     public s: boolean = false;
+    public attack: boolean = false;
+
+    public weapons: Weapon[] = [];
+    // null skal etterhvert være kniv
+    public currentWeaponIndex = 0;
+
+    get weapon() { return this.weapons[this.currentWeaponIndex] };
     
     constructor(
         x: number,
@@ -125,6 +126,13 @@ export class NPC extends PhysicsBody {
         public jumpheight: number = 12
     ){
         super(x, y, _sprite, width, height, mass, vx, vy);
+        // check om bredde eller høyde er delelig på blocksize
+        if (
+            this.width % 32 !== 0 ||
+            this.height % 32 !== 0
+        ) {
+            throw new Error('Sprite har ikke korrekt bredde/høyde')
+        }
     }
 
     //skal senere gjøre slik at store tall kan minskes
