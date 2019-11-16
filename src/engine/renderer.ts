@@ -328,7 +328,7 @@ export class Renderer {
         this.ctx.save();
         this.ctx.translate(5, 20);
         this.ctx.font = '20px gamefont';
-        this.ctx.fillText(String(this.fps), 0, 0);
+        this.ctx.fillText(String(this.fps) + 'FPS', 0, 0);
         this.ctx.restore();
         this.ctx.closePath();
         
