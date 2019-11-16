@@ -4,7 +4,7 @@ import { LightProjectile } from "../projectiles/light/light-projectile";
 
 const sprite = require('./sprite.png')
 
-
+const recoil = 10;
 const magSize = 15;
 const reloadTime = 1.5;
 const ROF = 250;
@@ -20,7 +20,6 @@ export class Pistol extends Weapon {
       shooter.x,
       shooter.y,
       angle,
-      g,
       vel,
       shooter
     );
@@ -30,7 +29,7 @@ export class Pistol extends Weapon {
     x: number,
     y: number,
   ){
-    super(x, y, sprite, magSize, reloadTime, ROF, width, height);
+    super(x, y, sprite, magSize, reloadTime, ROF, recoil, width, height);
     super.shoot = this._shoot;
   }
 

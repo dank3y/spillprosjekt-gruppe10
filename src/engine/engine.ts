@@ -9,6 +9,7 @@ import { Enemy } from "../assets/entities/enemy/enemy";
 import { Pistol } from "../assets/weapons/pistol/pistol";
 import { Projectile, Weapon } from "../assets/weapons/core";
 import { Screenshake } from "./camera";
+import { SMG } from "../assets/weapons/smg/smg"
 
 
 export const BLOCKSIZE: number = 32;
@@ -56,7 +57,7 @@ export class GameEngine {
         this.player = new Player(32, 300, 32, 64);
         this.entities.push(this.player);
         this.player.weapons.push(
-            new Pistol(this.player.x, this.player.y)
+            new SMG(this.player.x, this.player.y)
         );
         
 
@@ -142,8 +143,8 @@ export class GameEngine {
                     if (time - e.weapon.lastBullet > e.weapon.RPMms){
                         e.weapon.shoot(this.projectiles, e);
                         e.weapon.lastBullet = time;
-                        this.renderer.camera.actionList.push(new Screenshake(this.tick, this.tick + 3, 3));
-                        this.physics.applyForce(e, 3, e.angle + Math.PI)
+                        this.renderer.camera.actionList.push(new Screenshake(this.tick, this.tick + 3, e.weapon.recoil));
+                        this.physics.applyForce(e, e.weapon.recoil / 2, e.angle + Math.PI)
                     }
                     
                 }

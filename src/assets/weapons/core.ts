@@ -16,6 +16,7 @@ export class Weapon extends Sprite implements Shoot {
     public magSize: number,
     public reloadTime: number,
     public RPM: number,
+    public recoil: number,
     width: number,
     height: number,
   ) {
