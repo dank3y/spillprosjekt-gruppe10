@@ -112,6 +112,20 @@ export class NPC extends PhysicsBody {
 
     get weapon() { return this.weapons[this.currentWeaponIndex] };
     
+    public healthCurrent: number;
+    get healthColor(): string {
+
+        let factor = this.healthCurrent / this.healthMax;
+
+        if (factor >= 0.00 && factor < 0.33){
+            return 'rgba(245, 66, 66, 1)';
+        } else if (factor >= 0.33 && factor < 0.66){
+            return 'rgba(237, 100, 21, 1)';
+        } else if (factor >= 0.66){
+            return 'rgba(15, 219, 32, 1)';
+        }
+    }
+
     constructor(
         x: number,
         y: number,
@@ -123,7 +137,8 @@ export class NPC extends PhysicsBody {
         vy?: number,
         public _angle = 0,
         public speed: number = 1,
-        public jumpheight: number = 12
+        public jumpheight: number = 12,
+        public healthMax = 100
     ){
         super(x, y, _sprite, width, height, mass, vx, vy);
         // check om bredde eller høyde er delelig på blocksize
@@ -133,6 +148,8 @@ export class NPC extends PhysicsBody {
         ) {
             throw new Error('Sprite har ikke korrekt bredde/høyde')
         }
+        //initialverdi
+        this.healthCurrent = this.healthMax;
     }
 
     //skal senere gjøre slik at store tall kan minskes

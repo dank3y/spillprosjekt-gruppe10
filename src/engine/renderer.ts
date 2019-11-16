@@ -101,11 +101,13 @@ export class Renderer {
             if (s instanceof Sprite){
                 if (this.checkIfEntityInView(<Sprite>s)) {
                     this.drawSprite(<Sprite>s);
-                    //if NPC has a weapon
-                    if ((<NPC>s).weapon){
-                        this.drawWeapon((<NPC>s))
-                    }
-                    
+                    //if NPC
+                    if ((<NPC>s)){
+                        this.drawHealthbar((<NPC>s))
+                        if ((<NPC>s).weapon){
+                            this.drawWeapon((<NPC>s))
+                        }
+                    }                    
                 }
             }
         });        
@@ -131,7 +133,33 @@ export class Renderer {
         })
     }
 
-    drawWeapon(target: InstanceType<typeof NPC>): void {
+    private drawHealthbar(target: InstanceType<typeof NPC>): void {        
+        this.ctx.beginPath();
+        this.ctx.save();
+        this.ctx.translate(target.x - this.camera.x + this.WIDTH_OFFSET, target.y - this.camera.y + this.HEIGHT_OFFSET);
+        let factor = target.healthCurrent / target.healthMax;
+        let width = 2 * target.width;
+        let height = 15;
+        let x = -0.5 * width;
+        let y = -0.5 * target.height - height - 10;
+        this.ctx.fillStyle = target.healthColor;
+        this.ctx.fillRect(x, y, width * factor, height);
+        
+        let text = String(Math.floor(factor * 100)) + '%';
+        this.ctx.font = '10px Arial';
+        this.ctx.fillStyle = '#000';
+        this.ctx.fillText(text, -0.5 * this.ctx.measureText(text).width, y + 10.5)
+        
+        
+        this.ctx.strokeStyle = '#000';
+        this.ctx.lineWidth = 3;
+        this.ctx.strokeRect(x, y, width, height);
+
+        this.ctx.restore();
+        this.ctx.closePath();
+    }
+
+    private drawWeapon(target: InstanceType<typeof NPC>): void {
         this.ctx.beginPath();
         this.ctx.save();
         this.ctx.translate(
