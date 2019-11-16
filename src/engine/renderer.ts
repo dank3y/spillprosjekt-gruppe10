@@ -146,7 +146,7 @@ export class Renderer {
         this.ctx.fillRect(x, y, width * factor, height);
         
         let text = String(Math.floor(factor * 100)) + '%';
-        this.ctx.font = '10px Arial';
+        this.ctx.font = '10px gamefont';
         this.ctx.fillStyle = '#000';
         this.ctx.fillText(text, -0.5 * this.ctx.measureText(text).width, y + 10.5)
         
@@ -327,7 +327,7 @@ export class Renderer {
         this.ctx.beginPath();
         this.ctx.save();
         this.ctx.translate(5, 20);
-        this.ctx.font = '20px Arial';
+        this.ctx.font = '20px gamefont';
         this.ctx.fillText(String(this.fps), 0, 0);
         this.ctx.restore();
         this.ctx.closePath();

@@ -1,8 +1,10 @@
-/* @font-face {
+@font-face {
     font-family: gamefont;
-    src: 
-} */
-
+    src: url('./font.ttf') 
+}
+* {
+    font-family: gamefont;
+}
 body, html {
     width: 100%;
     height: 100%;
