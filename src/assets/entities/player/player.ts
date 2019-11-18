@@ -26,12 +26,13 @@ export class Player extends NPC {
         window.onkeyup = (ev: KeyboardEvent) => this.KEYUP_EVENT_HANDLER(ev);
     }
 
-    private KEYDOWN_EVENT_HANDLER(event: KeyboardEvent): void {        
+    private KEYDOWN_EVENT_HANDLER(event: KeyboardEvent): void {                
         switch (event.key) {
             case 'w': this.w = true; break;
             case 'a': this.a = true; break;
             case 's': this.s = true; break;
             case 'd': this.d = true; break;
+            case ' ': this.w = true; break;
         }
     }
 
@@ -41,6 +42,7 @@ export class Player extends NPC {
             case 'a': this.a = false; break;
             case 's': this.s = false; break;
             case 'd': this.d = false; break;
+            case ' ': this.w = false; break;
         }
     }
 
