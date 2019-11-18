@@ -1,4 +1,4 @@
-import { ROOMDATA, ROOMIMAGE } from "../assets/rooms/room4/room4.room";
+import { ROOMDATA, ROOMIMAGE } from "../assets/rooms/room5/room5.room";
 
 export const blocksHex: { [key: string]: string } = {
   '#ffffff': 'air',
