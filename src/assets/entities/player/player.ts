@@ -21,6 +21,7 @@ export class Player extends NPC {
         angle: number = 0,
         ){
         super(x, y, sprite, width, height, mass, vx, vy, angle);
+        this.d = false;
         // legg til key-events
         window.onkeydown = (ev: KeyboardEvent) => this.KEYDOWN_EVENT_HANDLER(ev);
         window.onkeyup = (ev: KeyboardEvent) => this.KEYUP_EVENT_HANDLER(ev);

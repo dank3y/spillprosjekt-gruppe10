@@ -2,7 +2,7 @@ import { Canvas } from "./canvas";
 import { Sprite, GameObject, PhysicsBody, NPC } from "../assets/entities/core";
 import { Renderer } from "./renderer";
 import { PhysicsEngine } from './physics-engine';
-import { Biome, BiomeList } from "../assets/levels/biomes/biome";
+import { Room } from "../assets/rooms/room";
 import { Player } from "../assets/entities/player/player";
 import { EnemyBehaviour } from "./enemy-behaviour";
 import { Enemy } from "../assets/entities/enemy/enemy";
@@ -10,6 +10,7 @@ import { Pistol } from "../assets/weapons/pistol/pistol";
 import { Projectile, Weapon } from "../assets/weapons/core";
 import { Screenshake } from "./camera";
 import { SMG } from "../assets/weapons/smg/smg"
+import { LevelGen } from "./levelgen";
 
 
 export const BLOCKSIZE: number = 32;
@@ -17,7 +18,7 @@ export const BLOCKSIZE: number = 32;
 
 export class GameEngine {
 
-    level: Biome[] = [];
+    public level: Room;
 
     public paused = false;
 
@@ -26,16 +27,17 @@ export class GameEngine {
     public mouseY: number = 0;
 
     public player: Player;
-    public enemy: Enemy;
+
     public renderer: Renderer;
     public physics: PhysicsEngine;
     public enemyBehaviour: EnemyBehaviour;
+    public levelGen: LevelGen;
     /**
      * liste som inneholder alle objekter i spillet
      */
     entities: InstanceType<typeof GameObject>[] = [];
     /**
-     * tick som brukes til forskjellige ting, som f.eks aminasjoner
+     * tick som brukes til forskjellige ting, som f.eks animasjoner
      */
     public projectiles: Projectile[] = [];
     
@@ -46,25 +48,35 @@ export class GameEngine {
         // gjør klar canvas
         canvas.resizeCanvas();
         canvas.clear();
+
+        // spawner inn spiller
+        this.player = new Player(0, 0, 32, 64);
+        this.entities.push(this.player);
+        this.player.weapons.push(new SMG(0,0))
+
+        // starter level-generator og setter opp level.
+        this.levelGen = new LevelGen();
+        this.newLevel();
+
         // start physics-engine
         this.physics = new PhysicsEngine();
         // start renderer
         this.renderer = new Renderer(canvas);
         this.runRenderer();
-        // Start enemy-behaviour
+        // Start enemy-engine
         this.enemyBehaviour = new EnemyBehaviour();
-        // legg til spiller
-        this.player = new Player(32, 300, 32, 64);
-        this.entities.push(this.player);
-        this.player.weapons.push(
-            new SMG(this.player.x, this.player.y)
-        );
+        // // legg til spiller
+        // this.player = new Player(32, 300, 32, 64);
+        // this.entities.push(this.player);
+        // this.player.weapons.push(
+        //     new SMG(this.player.x, this.player.y)
+        // );
         
 
         // FOR TESTING
-        this.enemy = new Enemy(500, 300, 32, 64);
-        this.enemy.d = true;
-        this.entities.push(this.enemy);
+        let enemy = new Enemy(500, 300, 32, 64);
+        enemy.d = true;
+        this.entities.push(enemy);
 
         this.renderer.camera.lookAt(this.player);
 
@@ -100,12 +112,16 @@ export class GameEngine {
         // gjør utregninger
         if (!this.paused){
             this.updatePlayerAngle();
-            this.physics.update(this.entities, this.level[0]);
-            this.enemyBehaviour.update(this.entities, this.level[0], this.player);
+            this.physics.update(this.entities, this.level);
+            this.enemyBehaviour.update(this.entities, this.level, this.player);
             this.updateWeapons(this.entities);
             this.updateProjectiles(this.projectiles)
             this.renderer.camera.update(this.tick);
             this.tick++;
+            
+            if(this.touches(this.player, this.entities[this.entities.length-1])) {
+                this.newLevel();
+            }
         }
     }
 
@@ -117,14 +133,15 @@ export class GameEngine {
         this.player._angle = angle;
     }
 
-    // legg til 
-    public addBiome(biome: Biome, side: 'left' | 'right'){
-        // vurder om biomen skal legges til på venstre eller høyre side
-        if (side === 'left'){
-            this.level.unshift(biome);
-        } else {
-            this.level.push(biome);
+    private touches(object1: GameObject, object2: GameObject): boolean {
+        if(!(object1 instanceof Sprite) || !(object2 instanceof Sprite)) return;
+
+        if(object1.right > object2.left && object1.left < object2.right) {
+            if(object1.top < object2.bottom && object1.bottom > object2.top) {
+                return true;
+            }
         }
+        return false;
     }
 
     public updateProjectiles(entitites: GameObject[]): void {
@@ -153,4 +170,17 @@ export class GameEngine {
         })
     }
 
+    private newLevel(): void {
+        while(this.entities.length > 1) { this.entities.pop(); }
+        this.level = this.levelGen.makeLevel();
+        this.spawnEntities();
+        this.player.x = 128;
+        this.player.y = 448;
+    }
+
+    private spawnEntities():void {
+        this.level.entities.forEach(entity => {
+            this.entities.push(entity);
+        });
+    }
 }

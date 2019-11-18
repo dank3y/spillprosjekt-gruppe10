@@ -102,7 +102,7 @@ export class PhysicsBody extends Sprite {
 export class NPC extends PhysicsBody {
     public w: boolean = false;
     public a: boolean = false;
-    public d: boolean = false;
+    public d: boolean = true;
     public s: boolean = false;
     public attack: boolean = false;
 

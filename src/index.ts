@@ -1,18 +1,12 @@
 import '../main.css';
 import { Canvas } from "./engine/canvas";
 import { GameEngine } from "./engine/engine";
-import { Player } from './assets/entities/player/player';
-import { Dummy } from './assets/entities/dummy/dummy'
-import { BLOCKS } from './utility/level.loader';
-import { DefaultBiome } from './assets/levels/biomes/default/default.biome';
 
 
 const c = <HTMLCanvasElement>document.getElementById('canvas');
 const canvas = new Canvas(c);
 
 const engine = new GameEngine(canvas);
-
-engine.addBiome(DefaultBiome, 'left');
 
 engine.renderer.config.zeroDot = false;
 engine.renderer.config.drawLookDirection = true;

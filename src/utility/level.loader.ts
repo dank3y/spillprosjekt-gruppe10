@@ -1,4 +1,4 @@
-import { BIOMEDATA, BIOMEIMAGE } from "../assets/levels/biomes/default/default.biome";
+import { ROOMDATA, ROOMIMAGE } from "../assets/rooms/room4/room4.room";
 
 export const blocksHex: { [key: string]: string } = {
   '#ffffff': 'air',
@@ -68,15 +68,14 @@ export function writeToNewWindow(data: string[][]): void {
   w.document.write(JSON.stringify(data));
 }
 
-// (async () => {
-//   // endre på denne
-//   let img = BIOMEIMAGE;
-//   let data = await convertImage(img);
-//   // console.log(data);
-//   let fin = convertData(data);
-//   // console.log(fin);
-//   writeToNewWindow(fin)  
-// })()
-
-
-
+/*
+(async () => {
+   // endre på denne
+   let img = ROOMIMAGE;
+   let data = await convertImage(img);
+  console.log(data);
+   let fin = convertData(data);
+   console.log(fin);
+   writeToNewWindow(fin);
+})()
+*/

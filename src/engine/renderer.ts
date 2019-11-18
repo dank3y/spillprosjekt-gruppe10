@@ -2,8 +2,7 @@ import { Canvas } from "./canvas";
 import { Sprite, GameObject, NPC } from "../assets/entities/core";
 import { Camera } from "./camera";
 import { Player } from "../assets/entities/player/player";
-import { Level } from "../assets/levels/level";
-import { Biome } from "../assets/levels/biomes/biome";
+import { Room } from "../assets/rooms/room";
 import { Block, BLOCKS } from "../utility/level.loader";
 import { BLOCKSIZE } from "./engine";
 import { Projectile } from "../assets/weapons/core";
@@ -75,7 +74,7 @@ export class Renderer {
             if (
                 target.right < this.borderLeft ||
                 target.left > this.borderRight ||
-                target.top < this.borderTop ||
+                target.top < this.borderTop - target.height ||
                 target.bottom > this.borderBottom + target.height
             ) {
                 return false;
@@ -127,10 +126,10 @@ export class Renderer {
         }
     }
 
-    public renderLevel(level: Level){
-        level.forEach((biome: Biome, biomeIndex: number) => {
-            this.drawBiome(biome);
-        })
+    public renderLevel(level: Room){
+        // level.forEach((biome: Biome, biomeIndex: number) => {
+            this.drawBiome(level);
+        // })
     }
 
     private drawHealthbar(target: InstanceType<typeof NPC>): void {        
@@ -181,12 +180,14 @@ export class Renderer {
         this.ctx.closePath();
     }
 
-    private drawBiome(biome: Biome){
-        biome.data.forEach((_v, yindex) => {
+    private drawBiome(level: Room){
+        // biome.data.forEach((_v, yindex) => {
+    // public renderLevel(level: Room){
+        level.data.forEach((_v, yindex) => {
             _v.forEach((v, xindex) => {
-            //    if (this.checkIfBlockInView(xindex, yindex)){
+               if (this.checkIfBlockInView(xindex, yindex)){
                    this.drawBlock(BLOCKS[v], xindex, yindex);
-            //    }
+               }
             })
         })
     }
