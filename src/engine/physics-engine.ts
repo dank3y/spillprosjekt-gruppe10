@@ -150,7 +150,7 @@ export class PhysicsEngine {
 
     public applyForce(target: PhysicsBody, factor: number, angle: number): void {
         target.vx += factor * Math.cos(angle);
-        target.vy -= factor * Math.sin(angle);
+        target.vy += factor * Math.sin(angle);
     }
 
     private updatePlayer(player: Player): void{
@@ -165,7 +165,7 @@ export class PhysicsEngine {
             if (player.d) player.x += step;
 
         } else {
-            if (player.w && player.vy === 0) this.applyForce(player, 12, Math.PI/2);
+            if (player.w && player.vy === 0) this.applyForce(player, 12, -Math.PI/2);
             // if (player.w) player.y -= step;
             if (player.a) this.applyForce(player, 1.5, -Math.PI);
             // if (player.s) player.y += step;
@@ -181,7 +181,7 @@ export class PhysicsEngine {
             this.applyForce(npc, npc.speed, 0);
         }
         if(npc.w && npc.vy <= 1e-15 && npc.vy >= -1e-15) {
-            this.applyForce(npc, npc.jumpheight, Math.PI/2);
+            this.applyForce(npc, npc.jumpheight, -Math.PI/2);
         }
     }
 }

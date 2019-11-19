@@ -10,6 +10,7 @@ import { Pistol } from "../assets/weapons/pistol/pistol";
 import { Projectile, Weapon } from "../assets/weapons/core";
 import { Screenshake } from "./camera";
 import { SMG } from "../assets/weapons/smg/smg"
+import { Shotgun } from '../assets/weapons/shotgun/shotgun';
 import { LevelGen } from "./levelgen";
 
 
@@ -52,7 +53,7 @@ export class GameEngine {
         // spawner inn spiller
         this.player = new Player(0, 0, 32, 64);
         this.entities.push(this.player);
-        this.player.weapons.push(new SMG(0,0))
+        this.player.weapons.push(new Shotgun(0,0))
 
         // starter level-generator og setter opp level.
         this.levelGen = new LevelGen();
@@ -154,7 +155,7 @@ export class GameEngine {
                         e.weapon.shoot(this.projectiles, e);
                         e.weapon.lastBullet = time;
                         this.renderer.camera.actionList.push(new Screenshake(this.tick, this.tick + 3, e.weapon.recoil));
-                        this.physics.applyForce(e, e.weapon.recoil / 2, e.angle + Math.PI)
+                        this.physics.applyForce(e, e.weapon.recoil / 2, e.angle - Math.PI)
                     }
                     
                 }
