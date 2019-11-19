@@ -17,7 +17,7 @@ const projectiles = 5;
 export class Shotgun extends Weapon {
   _shoot(list: Projectile[], shooter: NPC): void {
     for(let i: number = 0; i < projectiles; i++) {
-      let angle = shooter.angle + (0.5 * Math.random() - 0.05);
+      let angle = shooter.angle + (0.5 * Math.random() - 0.25);
       const proj = new LightProjectile(
         shooter.x,
         shooter.y,
