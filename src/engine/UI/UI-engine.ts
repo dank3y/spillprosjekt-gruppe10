@@ -2,6 +2,7 @@ import { Canvas } from "../canvas";
 
 export type UIGroup = UIElement[];
 export type pct = 'start' | 'middle' | 'end' | string;
+
 /**
  * @param width bredde på "boksen"
  * @param height høyde på "boksen"
@@ -23,6 +24,13 @@ export class UIElement {
     * @param height høyde på "boksen"
     */
     constructor(width: number, height: number)
+
+    // /**
+    //  *  UI Element  
+    //  *
+    //  */
+    // constructor(x: number | pct, y: number | pct)
+
     /**
     * UI Element med nøyaktig posisjon
     * @param width bredde på "boksen"
@@ -103,10 +111,12 @@ export class UIEngine {
             if (Array.isArray(elem)){
                 this.ctx.beginPath();
                 this.ctx.save();
+                
+                // elem.forEach(elem => {                    
+                    
+                // })
                 this.ctx.restore();
                 this.ctx.closePath();
-                elem.forEach(elem => {                    
-                })
             } else {
                 this.ctx.beginPath();
                 this.ctx.save();                
