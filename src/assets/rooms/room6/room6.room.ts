@@ -6,5 +6,5 @@ export const ROOMENTITIES = require('./room.entities.json');
 
 export const Room6: Room = new Room(
     ROOMDATA,
-    []
+    ROOMENTITIES
 );

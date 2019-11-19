@@ -7,6 +7,10 @@ import { Room3 } from '../assets/rooms/room3/room3.room';
 import { Room4 } from '../assets/rooms/room4/room4.room';
 import { Room5 } from '../assets/rooms/room5/room5.room';
 import { Room6 } from '../assets/rooms/room6/room6.room';
+import { Room7 } from '../assets/rooms/room7/room7.room';
+import { Room8 } from '../assets/rooms/room8/room8.room';
+import { Room9 } from '../assets/rooms/room9/room9.room';
+import { Room10 } from '../assets/rooms/room10/room10.room';
 import { BLOCKSIZE } from "./engine";
 import { Enemy } from "../assets/entities/enemy/enemy";
 import { Goal } from "../assets/entities/goal/goal";
@@ -19,10 +23,10 @@ export class LevelGen {
      * Genererer et level med et visst antall rom.
      */
     public makeLevel(): Room {
-        const DEBUG_MODE = true;
+        const DEBUG_MODE = false;
 
         let ROOM_AMOUNT: number = 5;
-        let AVAILABLE_ROOMS: Room[] = [Room1, Room2, Room3, Room4, Room5, Room6];
+        let AVAILABLE_ROOMS: Room[] = [Room1, Room2, Room3, Room4, Room5, Room6, Room7, Room8, Room9, Room10];
 
         // Antall rom som skal genereres. Start- og sluttrom legges til utenom.
         if(DEBUG_MODE) {
