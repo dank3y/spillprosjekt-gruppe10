@@ -106,6 +106,7 @@ export class NPC extends PhysicsBody {
     public s: boolean = false;
     public attack: boolean = false;
     public aniTick: number = 0;
+    public reload: boolean = false;
 
     public weapons: Weapon[] = [];
     // null skal etterhvert være kniv

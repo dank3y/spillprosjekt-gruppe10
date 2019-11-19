@@ -12,7 +12,8 @@ import { Screenshake } from "./camera";
 import { SMG } from "../assets/weapons/smg/smg"
 import { Shotgun } from '../assets/weapons/shotgun/shotgun';
 import { LevelGen } from "./levelgen";
-import { ENETDOWN } from "constants";
+import { UIEngine } from "./UI/UI-engine";
+import { AmmoCounter } from "./UI/ammo-counter";
 
 
 export const BLOCKSIZE: number = 32;
@@ -34,6 +35,7 @@ export class GameEngine {
     public physics: PhysicsEngine;
     public enemyBehaviour: EnemyBehaviour;
     public levelGen: LevelGen;
+    public UIEngine: UIEngine;
     /**
      * liste som inneholder alle objekter i spillet
      */
@@ -59,6 +61,10 @@ export class GameEngine {
         // starter level-generator og setter opp level.
         this.levelGen = new LevelGen();
         this.newLevel();
+
+        // start UIEngine
+        this.UIEngine = new UIEngine(canvas);
+        this.UIEngine.addElement(new AmmoCounter(this.player))
 
         // start physics-engine
         this.physics = new PhysicsEngine();
@@ -101,6 +107,7 @@ export class GameEngine {
         that.renderer.renderLevel(this.level);        
         that.renderer.renderEntities(this.entities);
         that.renderer.renderProjectiles(this.projectiles);
+        that.UIEngine.renderElements();
         window.requestAnimationFrame(this.runRenderer.bind(that));
     }
     
@@ -149,19 +156,37 @@ export class GameEngine {
     public updateWeapons(entitites: InstanceType<typeof GameObject>[]): void {
         entitites.forEach(e => {
             if (e instanceof NPC){
-                
-                if (e.attack && e.weapon){                    
+                if (e.weapon){
                     const time = Date.now();
-                                                                                
-                    if (time - e.weapon.lastBullet > e.weapon.RPMms){
-                        e.weapon.shoot(this.projectiles, e);
-                        e.weapon.lastBullet = time;
-                        this.renderer.camera.actionList.push(new Screenshake(this.tick, this.tick + 3, e.weapon.recoil));
-                        this.physics.applyForce(e, e.weapon.recoil / 2, e.angle - Math.PI)
+                    if (time - e.weapon.reloadStart > e.weapon.reloadTime * 1000){
+                        if (e.weapon.reloading){
+                            e.weapon.reloading = false;
+                            if (e.weapon.leftInMag > 0) {
+                                e.weapon.leftInMag = e.weapon.magSize + 1;
+                            } else {
+                                e.weapon.leftInMag = e.weapon.magSize;
+                            }
+                        }
+                        if (e.reload && !e.weapon.reloading){
+                            e.weapon.reloadStart = time;
+                            e.weapon.reloading = true;
+                        }
                     }
                     
+                    if (e.attack && e.weapon.leftInMag && !e.weapon.reloading){                    
+                                                                                    
+                        if (time - e.weapon.lastBullet > e.weapon.RPMms){
+                            e.weapon.shoot(this.projectiles, e);
+                            e.weapon.lastBullet = time;
+                            this.renderer.camera.actionList.push(new Screenshake(this.tick, this.tick + 3, e.weapon.recoil));
+                            this.physics.applyForce(e, e.weapon.recoil / 2, e.angle + Math.PI)
+                            if (e.weapon.leftInMag > 0){
+                                e.weapon.leftInMag--;
+                            }
+                        }
+                        
+                    }
                 }
-                
             }
         })
     }

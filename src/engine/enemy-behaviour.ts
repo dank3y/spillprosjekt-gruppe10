@@ -8,7 +8,8 @@ export class EnemyBehaviour {
     constructor(){}
 
     // Lengden NPC ser spilleren fra. Ikke fastsatt enda.
-    private CHASE_RANGE: number = 300;
+    private CHASE_RANGE_X: number = 300;
+    private CHASE_RANGE_Y: number = 150;
 
     /**
      * Oppdaterer fiende-logikk.
@@ -19,9 +20,11 @@ export class EnemyBehaviour {
     public update(entities: GameObject[], gameLevel: Room, player: Player): void {
         entities.forEach(entity => {
             if(entity instanceof NPC && !(entity instanceof Player)) {
-                if(entity.x - player.x <= this.CHASE_RANGE && entity.x - player.x >= -this.CHASE_RANGE) {
-                    this.chasePlayer(entity, gameLevel, player);
-                    this.aimAt(entity, player);
+                if(entity.x - player.x <= this.CHASE_RANGE_X && entity.x - player.x >= -this.CHASE_RANGE_X) {
+                    if(entity.y - player.y <= this.CHASE_RANGE_Y && entity.y - player.y >= -this.CHASE_RANGE_Y) {
+                        this.chasePlayer(entity, gameLevel, player);
+                        this.aimAt(entity, player);
+                    }
                 } else {
                     this.patrolSimple(entity, gameLevel);
                 }

@@ -99,9 +99,9 @@ export class PhysicsEngine {
         if (targetBlock){            
             if (!targetBlock.solid) {
                 if (targetBlock.friction) {
-                    if (target.vx > 0.05) {
+                    if (target.vx > 0.09) {
                         target.vx -= targetBlock.friction;
-                    } else if (target.vx < -0.05) {
+                    } else if (target.vx < -0.09) {
                         target.vx += targetBlock.friction;
                     } else {
                         target.vx = 0;

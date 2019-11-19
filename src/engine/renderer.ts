@@ -256,6 +256,11 @@ export class Renderer {
             (sprite.x - this.camera.x) + this.WIDTH_OFFSET,
             (sprite.y - this.camera.y) + this.HEIGHT_OFFSET
             );
+        if (sprite instanceof NPC){
+            if (sprite.angle > Math.PI / 2 || sprite.angle < -Math.PI / 2){
+                this.ctx.scale(-1,1);
+            }
+        }
         this.ctx.drawImage(
             /* bilder tegnes fra øverste venstre hjørne,
                så man må translere halvparten av bredden og
