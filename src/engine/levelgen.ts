@@ -6,6 +6,7 @@ import { Room2 } from '../assets/rooms/room2/room2.room';
 import { Room3 } from '../assets/rooms/room3/room3.room';
 import { Room4 } from '../assets/rooms/room4/room4.room';
 import { Room5 } from '../assets/rooms/room5/room5.room';
+import { Room6 } from '../assets/rooms/room6/room6.room';
 import { BLOCKSIZE } from "./engine";
 import { Enemy } from "../assets/entities/enemy/enemy";
 import { Goal } from "../assets/entities/goal/goal";
@@ -22,7 +23,7 @@ export class LevelGen {
         // Antall rom som skal genereres. Start- og sluttrom legges til utenom.
         const ROOM_AMOUNT: number = 5;
         // De tilgjengelige romene som kan genereres.
-        const AVAILABLE_ROOMS: Room[] = [Room1, Room2, Room3, Room4, Room5];
+        const AVAILABLE_ROOMS: Room[] = [Room1, Room2, Room3, Room4, Room5, Room6];
 
         // Brukes for å plassere data riktig.
         let roomOffset: number = 0;

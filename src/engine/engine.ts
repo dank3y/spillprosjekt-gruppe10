@@ -169,7 +169,7 @@ export class GameEngine {
         this.level = this.levelGen.makeLevel();
         this.spawnEntities();
         this.player.x = 128;
-        this.player.y = 448;
+        this.player.y = 800;
     }
 
     private spawnEntities():void {
