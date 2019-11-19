@@ -55,7 +55,7 @@ export class GameEngine {
         // spawner inn spiller
         this.player = new Player(0, 0, 32, 64);
         this.entities.push(this.player);
-        this.player.weapons.push(new SMG(0,0))
+        this.player.weapons.push(new Pistol(0,0))
 
         // starter level-generator og setter opp level.
         this.levelGen = new LevelGen();
