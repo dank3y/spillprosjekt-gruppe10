@@ -12,6 +12,7 @@ import { Screenshake } from "./camera";
 import { SMG } from "../assets/weapons/smg/smg"
 import { Shotgun } from '../assets/weapons/shotgun/shotgun';
 import { LevelGen } from "./levelgen";
+import { ENETDOWN } from "constants";
 
 
 export const BLOCKSIZE: number = 32;
@@ -116,6 +117,7 @@ export class GameEngine {
             if(this.touches(this.player, this.entities[this.entities.length-1])) {
                 this.newLevel();
             }
+            if(this.tick % 3 === 0) this.updateAni(this.entities);
         }
     }
 
@@ -175,6 +177,14 @@ export class GameEngine {
     private spawnEntities():void {
         this.level.entities.forEach(entity => {
             this.entities.push(entity);
+        });
+    }
+
+    private updateAni(entities: GameObject[]): void {
+        entities.forEach(entity => {
+            if(entity instanceof Player) {
+                entity.animate();
+            }
         });
     }
 }
