@@ -3,12 +3,14 @@ import { Room } from "../assets/rooms/room";
 import { BLOCKSIZE } from "./engine";
 import { BLOCKS } from "../utility/level.loader";
 import { Player } from "../assets/entities/player/player";
+import { difficulty } from "../engine/engine";
 
 export class EnemyBehaviour {
     constructor(){}
 
     // Lengden NPC ser spilleren fra. Ikke fastsatt enda.
-    private CHASE_RANGE: number = 300;
+    private CHASE_RANGE: number = 300 * difficulty;
+    private SHOOT_RANGE: number = 100 * difficulty;
 
     /**
      * Oppdaterer fiende-logikk.
@@ -19,7 +21,10 @@ export class EnemyBehaviour {
     public update(entities: GameObject[], gameLevel: Room, player: Player): void {
         entities.forEach(entity => {
             if(entity instanceof NPC && !(entity instanceof Player)) {
-                if(entity.x - player.x <= this.CHASE_RANGE && entity.x - player.x >= -this.CHASE_RANGE) {
+                if(entity.x - player.x <= this.SHOOT_RANGE && entity.x - player.x >= -this.SHOOT_RANGE) {
+                    this.shootPlayer(entity, player);
+                    this.aimAt(entity, player);
+                } else if(entity.x - player.x <= this.CHASE_RANGE && entity.x - player.x >= -this.CHASE_RANGE) {
                     this.chasePlayer(entity, gameLevel, player);
                     this.aimAt(entity, player);
                 } else {
@@ -40,6 +45,7 @@ export class EnemyBehaviour {
         target.w = false;
         target.speed = 1;
         target.vx = 0;
+        target.attack = false;
 
         const level = gameLevel.data;
         
@@ -52,12 +58,14 @@ export class EnemyBehaviour {
            if(this.blockedRight(level, gridX, gridY)) {
                target.d = false;
                target.a = true;
+               target._angle = -Math.PI;
            }
         } 
         if(target.a) {
             if(this.blockedLeft(level, gridX, gridY)) {
                 target.a = false;
                 target.d = true;
+                target._angle = 0;
             }
         }
     }
@@ -71,7 +79,8 @@ export class EnemyBehaviour {
     private chasePlayer(target: GameObject, gameLevel: Room, player: Player) {
         if(!(target instanceof NPC) || target instanceof Player) return;
 
-        target.speed = 1.2;
+        target.speed = 2.4 * difficulty / 2;
+        target.attack = false;
 
         const level = gameLevel.data;
         
@@ -93,6 +102,24 @@ export class EnemyBehaviour {
             target.d = true;
             target.a = false;
         }
+    }
+
+    private shootPlayer(origin: GameObject, target: GameObject) {
+        if(!(target instanceof NPC) || !(origin instanceof NPC) || origin instanceof Player) return;
+
+        origin.w = false;
+        origin.a = false;
+        origin.s = false;
+        origin.d = false;
+        origin.vx = 0;
+
+        let goalAngle = Math.atan2(target.y - origin.y, target.x - origin.x);
+        if(origin._angle - goalAngle < 0.27 && origin._angle - goalAngle > -0.27) {
+            origin.attack = true;
+        } else {
+            origin.attack = false;
+        }
+        
     }
 
     /**
@@ -151,6 +178,12 @@ export class EnemyBehaviour {
     private aimAt(origin: GameObject, target: GameObject): void {
         if(!(origin instanceof NPC) || !(target instanceof NPC)) return;
 
-        origin._angle = Math.atan2(target.y - origin.y, target.x - origin.x);
+        let goalAngle = Math.atan2(target.y - origin.y, target.x - origin.x);
+        let originAngle = origin._angle;
+        origin._angle = this.lerp(originAngle, goalAngle, 0.03 * (difficulty / 0.5));
     }
+
+    private lerp (start: number, end: number, amt: number){
+        return (1-amt)*start+amt*end;
+      }
 }

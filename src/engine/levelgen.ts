@@ -7,10 +7,13 @@ import { Room3 } from '../assets/rooms/room3/room3.room';
 import { Room4 } from '../assets/rooms/room4/room4.room';
 import { Room5 } from '../assets/rooms/room5/room5.room';
 import { Room6 } from '../assets/rooms/room6/room6.room';
-import { BLOCKSIZE } from "./engine";
+import { BLOCKSIZE, difficulty } from "./engine";
 import { Enemy } from "../assets/entities/enemy/enemy";
 import { Goal } from "../assets/entities/goal/goal";
 import { GameObject } from "../assets/entities/core";
+import { NPC } from "../assets/entities/core";
+import { SMG } from '../assets/weapons/smg/smg';
+import { Pistol } from '../assets/weapons/pistol/pistol';
 
 export class LevelGen {
     constructor(){}
@@ -35,8 +38,9 @@ export class LevelGen {
         roomOffset += RoomStart.data[0].length;
 
         // Legger til et tilfeldig rom fra listen og øker offset for hver gang.
-        for(let i: number = 0; i < ROOM_AMOUNT; i++) {
+        while(rooms.length <= ROOM_AMOUNT) {
             let randomRoom: number = Math.floor(Math.random()*AVAILABLE_ROOMS.length);
+            if(AVAILABLE_ROOMS[randomRoom] === rooms[rooms.length-1][0]) continue;
             rooms.push([AVAILABLE_ROOMS[randomRoom], roomOffset]);
 
             roomOffset += AVAILABLE_ROOMS[randomRoom].data[0].length;
@@ -64,9 +68,22 @@ export class LevelGen {
                 let entityY: number = entity[1];
                 let entityType: string = entity[2];
                 let entityObject: GameObject;
-                if(entityType == "enemy") {
+
+                let weaponRng: number = Math.floor(Math.random()*100)+1;
+                let smgChance: number = Math.floor(difficulty*100) - 100;
+
+                if(entityType === "enemy") {
                     entityObject = new Enemy(entityX, entityY, 32, 64);
-                } else if (entityType == "goal") {
+                    if(entityObject instanceof NPC) {
+                        if(weaponRng < smgChance) {
+                            entityObject.weapons.push(new SMG(0, 0));
+                        } else {
+                            entityObject.weapons.push(new Pistol(0, 0));
+                        }
+                        entityObject.healthMax = entityObject.healthMax * difficulty;
+                        entityObject.healthCurrent = entityObject.healthCurrent * difficulty;
+                    }
+                } else if (entityType === "goal") {
                     entityObject = new Goal(entityX, entityY, 32, 64);
                 }
                 levelEntities.push(entityObject);

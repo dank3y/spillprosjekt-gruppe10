@@ -14,6 +14,7 @@ import { LevelGen } from "./levelgen";
 
 
 export const BLOCKSIZE: number = 32;
+export let difficulty: number = 1;
 
 
 export class GameEngine {
@@ -57,6 +58,7 @@ export class GameEngine {
         // starter level-generator og setter opp level.
         this.levelGen = new LevelGen();
         this.newLevel();
+        difficulty = 1;
 
         // start physics-engine
         this.physics = new PhysicsEngine();
@@ -154,7 +156,9 @@ export class GameEngine {
                     if (time - e.weapon.lastBullet > e.weapon.RPMms){
                         e.weapon.shoot(this.projectiles, e);
                         e.weapon.lastBullet = time;
-                        this.renderer.camera.actionList.push(new Screenshake(this.tick, this.tick + 3, e.weapon.recoil));
+                        if (e instanceof Player) {
+                            this.renderer.camera.actionList.push(new Screenshake(this.tick, this.tick + 3, e.weapon.recoil));
+                        }
                         this.physics.applyForce(e, e.weapon.recoil / 2, e.angle + Math.PI)
                     }
                     
@@ -166,6 +170,7 @@ export class GameEngine {
 
     private newLevel(): void {
         while(this.entities.length > 1) { this.entities.pop(); }
+        difficulty *= 1.1;
         this.level = this.levelGen.makeLevel();
         this.spawnEntities();
         this.player.x = 128;
