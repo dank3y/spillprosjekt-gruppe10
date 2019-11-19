@@ -12,7 +12,7 @@ export class PhysicsEngine {
 
     public g = 9.81;
 
-    public noclip: boolean = true;
+    public noclip: boolean = false;
 
 
     update(entities: GameObject[], gameLevel: Room): void{        
