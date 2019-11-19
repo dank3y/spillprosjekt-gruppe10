@@ -102,7 +102,7 @@ export class Renderer {
                 if (this.checkIfEntityInView(<Sprite>s)) {
                     this.drawSprite(<Sprite>s);
                     //if NPC
-                    if ((<NPC>s && s !instanceof Goal)){
+                    if ((<NPC>s && !(s instanceof Goal))){
                         this.drawHealthbar((<NPC>s))
                         if ((<NPC>s).weapon){
                             this.drawWeapon((<NPC>s))
