@@ -12,7 +12,7 @@ import { Screenshake } from "./camera";
 import { SMG } from "../assets/weapons/smg/smg"
 import { Shotgun } from '../assets/weapons/shotgun/shotgun';
 import { LevelGen } from "./levelgen";
-import { UIEngine } from "./UI/UI-engine";
+import { UIEngine, UIElementGroup } from "./UI/UI-engine";
 import { AmmoCounter } from "./UI/ammo-counter";
 
 
@@ -64,7 +64,15 @@ export class GameEngine {
 
         // start UIEngine
         this.UIEngine = new UIEngine(canvas);
-        this.UIEngine.addElement(new AmmoCounter(this.player))
+        this.UIEngine.addElements(
+            new AmmoCounter(this.player),
+            new UIElementGroup('middle', 'end', 'column', new AmmoCounter(this.player), new AmmoCounter(this.player)),
+            new UIElementGroup('start', 'end', 'row', new AmmoCounter(this.player), new AmmoCounter(this.player)),
+            new UIElementGroup('80%', '20%', 'row', new AmmoCounter(this.player), new AmmoCounter(this.player)),
+            new UIElementGroup('30%', 'start', 'column', new AmmoCounter(this.player), new AmmoCounter(this.player)),
+            new UIElementGroup('60%', 'start', 'column', new AmmoCounter(this.player), new AmmoCounter(this.player)),
+            
+        )
 
         // start physics-engine
         this.physics = new PhysicsEngine();
