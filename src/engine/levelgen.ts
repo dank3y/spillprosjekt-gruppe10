@@ -40,8 +40,9 @@ export class LevelGen {
         roomOffset += RoomStart.data[0].length;
 
         // Legger til et tilfeldig rom fra listen og øker offset for hver gang.
-        for(let i: number = 0; i < ROOM_AMOUNT; i++) {
+        while(rooms.length <= ROOM_AMOUNT) {
             let randomRoom: number = Math.floor(Math.random()*AVAILABLE_ROOMS.length);
+            if(AVAILABLE_ROOMS[randomRoom] === rooms[rooms.length-1][0]) continue;
             rooms.push([AVAILABLE_ROOMS[randomRoom], roomOffset]);
 
             roomOffset += AVAILABLE_ROOMS[randomRoom].data[0].length;
