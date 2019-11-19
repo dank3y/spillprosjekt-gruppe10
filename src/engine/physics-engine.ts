@@ -12,6 +12,9 @@ export class PhysicsEngine {
 
     public g = 9.81;
 
+    public noclip: boolean = true;
+
+
     update(entities: GameObject[], gameLevel: Room): void{        
         entities.forEach((entity, index) => {
             //særtilfelle for spiller               
@@ -51,6 +54,7 @@ export class PhysicsEngine {
     }
 
     private checkGridCollision(target: PhysicsBody, gameLevel: Room){
+        if (this.noclip && target instanceof Player) return;
         const level = gameLevel.data;
         
         // Få posisjon i grid
@@ -151,12 +155,22 @@ export class PhysicsEngine {
 
     private updatePlayer(player: Player): void{
         // Midlertidig
-        const step = 1;
-        if (player.w && player.vy === 0) this.applyForce(player, 12, Math.PI/2);
-        // if (player.w) player.y -= step;
-        if (player.a) this.applyForce(player, 1.5, -Math.PI);
-        // if (player.s) player.y += step;
-        if (player.d) this.applyForce(player, 1.5, 0);
+        const step = 10;
+        if (this.noclip){
+            player.vx = 0;
+            player.vy = 0;
+            if (player.w) player.y -= step;
+            if (player.a) player.x -= step;
+            if (player.s) player.y += step;
+            if (player.d) player.x += step;
+
+        } else {
+            if (player.w && player.vy === 0) this.applyForce(player, 12, Math.PI/2);
+            // if (player.w) player.y -= step;
+            if (player.a) this.applyForce(player, 1.5, -Math.PI);
+            // if (player.s) player.y += step;
+            if (player.d) this.applyForce(player, 1.5, 0);
+        }
     }
 
     private updateNPC(npc: NPC): void {
