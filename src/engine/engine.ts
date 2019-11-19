@@ -116,9 +116,8 @@ export class GameEngine {
             this.enemyBehaviour.update(this.entities, this.level, this.player);
             this.updateWeapons(this.entities);
             this.updateProjectiles(this.projectiles)
-            this.renderer.camera.update(this.tick);
-            this.tick++;
-            
+            this.renderer.camera.update(this.tick, this.mouseX, this.mouseY);
+            this.tick++;            
             if(this.touches(this.player, this.entities[this.entities.length-1])) {
                 this.newLevel();
             }
