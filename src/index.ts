@@ -9,7 +9,7 @@ const canvas = new Canvas(c);
 const engine = new GameEngine(canvas);
 
 engine.renderer.config.zeroDot = false;
-engine.renderer.config.drawLookDirection = true;
+engine.renderer.config.drawLookDirection = false;
 engine.renderer.config.drawZeroLine = false;
 engine.renderer.config.drawWireframe = false;
 

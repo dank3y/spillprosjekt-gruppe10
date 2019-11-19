@@ -6,6 +6,7 @@ import { Room } from "../assets/rooms/room";
 import { Block, BLOCKS } from "../utility/level.loader";
 import { BLOCKSIZE } from "./engine";
 import { Projectile } from "../assets/weapons/core";
+import { Goal } from "../assets/entities/goal/goal";
 
 
 
@@ -36,7 +37,7 @@ export const RendererConfigDefault: RendererConfig = {
  */
 export class Renderer {
     public get WIDTH_OFFSET() { return 0.5 * this.canvas.width};
-    public get HEIGHT_OFFSET() { return 0.5 * this.canvas.height };
+    public get HEIGHT_OFFSET() { return 0.5 * this.canvas.height};
     // config
     public config = RendererConfigDefault;
     // referanse som gjør at vi faktisk kan tegne
@@ -101,7 +102,7 @@ export class Renderer {
                 if (this.checkIfEntityInView(<Sprite>s)) {
                     this.drawSprite(<Sprite>s);
                     //if NPC
-                    if ((<NPC>s)){
+                    if ((<NPC>s && s !instanceof Goal)){
                         this.drawHealthbar((<NPC>s))
                         if ((<NPC>s).weapon){
                             this.drawWeapon((<NPC>s))

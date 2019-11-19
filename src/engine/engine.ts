@@ -71,12 +71,6 @@ export class GameEngine {
         // this.player.weapons.push(
         //     new SMG(this.player.x, this.player.y)
         // );
-        
-
-        // FOR TESTING
-        let enemy = new Enemy(500, 300, 32, 64);
-        enemy.d = true;
-        this.entities.push(enemy);
 
         this.renderer.camera.lookAt(this.player);
 
@@ -174,7 +168,7 @@ export class GameEngine {
         this.level = this.levelGen.makeLevel();
         this.spawnEntities();
         this.player.x = 128;
-        this.player.y = 448;
+        this.player.y = 800;
     }
 
     private spawnEntities():void {
