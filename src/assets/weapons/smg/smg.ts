@@ -8,8 +8,8 @@ const recoil = 5;
 const magSize = 30;
 const reloadTime = 2.5;
 const RPM = 650;
-const width = 60;
-const height = 50;
+const width = 64;
+const height = 32;
 const vel = 30;
 
 export class SMG extends Weapon{
