@@ -19,11 +19,16 @@ export class LevelGen {
      * Genererer et level med et visst antall rom.
      */
     public makeLevel(): Room {
+        const DEBUG_MODE = true;
+
+        let ROOM_AMOUNT: number = 5;
+        let AVAILABLE_ROOMS: Room[] = [Room1, Room2, Room3, Room4, Room5, Room6];
 
         // Antall rom som skal genereres. Start- og sluttrom legges til utenom.
-        const ROOM_AMOUNT: number = 5;
-        // De tilgjengelige romene som kan genereres.
-        const AVAILABLE_ROOMS: Room[] = [Room1, Room2, Room3, Room4, Room5, Room6];
+        if(DEBUG_MODE) {
+            ROOM_AMOUNT = 1;
+            AVAILABLE_ROOMS = [Room3];
+        }
 
         // Brukes for å plassere data riktig.
         let roomOffset: number = 0;
