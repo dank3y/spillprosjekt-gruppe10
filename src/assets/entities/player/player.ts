@@ -34,6 +34,7 @@ export class Player extends NPC {
             case 's': this.s = true; break;
             case 'd': this.d = true; break;
             case ' ': this.w = true; break;
+            case 'r': this.reload = true; break;
         }
     }
 
@@ -44,6 +45,7 @@ export class Player extends NPC {
             case 's': this.s = false; break;
             case 'd': this.d = false; break;
             case ' ': this.w = false; break;
+            case 'r': this.reload = false; break;
         }
     }
 

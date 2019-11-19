@@ -9,6 +9,9 @@ export class Weapon extends Sprite implements Shoot {
   public leftInMag: number;
   public lastBullet: number = 0;
 
+  public reloadStart: number = 0;
+  public reloading: boolean = false;
+
   constructor(
     x: number,
     y: number,
