@@ -37,7 +37,7 @@ export const RendererConfigDefault: RendererConfig = {
  */
 export class Renderer {
     public get WIDTH_OFFSET() { return 0.5 * this.canvas.width};
-    public get HEIGHT_OFFSET() { return 0.5 * this.canvas.height };
+    public get HEIGHT_OFFSET() { return 0.5 * this.canvas.height};
     // config
     public config = RendererConfigDefault;
     // referanse som gjør at vi faktisk kan tegne

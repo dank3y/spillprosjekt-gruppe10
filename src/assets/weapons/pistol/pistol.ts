@@ -8,8 +8,8 @@ const recoil = 10;
 const magSize = 15;
 const reloadTime = 1.5;
 const ROF = 250;
-const width = 33;
-const height = 20;
+const width = 64;
+const height = 32;
 const g = 1;
 const vel = 20;
 
