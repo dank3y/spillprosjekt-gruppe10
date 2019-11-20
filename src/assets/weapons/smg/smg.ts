@@ -8,8 +8,8 @@ const recoil = 5;
 const magSize = 30;
 const reloadTime = 2.5;
 const RPM = 650;
-const width = 64;
-const height = 32;
+const width = 58;
+const height = 22;
 const vel = 30;
 
 export class SMG extends Weapon{
@@ -29,7 +29,7 @@ export class SMG extends Weapon{
     x: number,
     y: number
   ){
-    super(x, y, _sprite, magSize, reloadTime, RPM, recoil, width, height);
+    super(x, y, _sprite, magSize, reloadTime, RPM, recoil, width, height, 'SMG');
     super.shoot = this._shoot;
   }
   

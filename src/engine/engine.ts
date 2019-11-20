@@ -13,6 +13,9 @@ import { UIEngine } from "./UI/UI-engine";
 import { AmmoCounter } from "./UI/ammo-counter";
 import { EndScreen } from "./UI/end-screen";
 import { Pause } from "./UI/pause";
+import { Hotbar } from "./UI/hotbar";
+import { Pistol } from "../assets/weapons/pistol/pistol";
+import { SMG } from "../assets/weapons/smg/smg";
 
 
 export const BLOCKSIZE: number = 32;
@@ -55,7 +58,11 @@ export class GameEngine {
         // spawner inn spiller
         this.player = new Player(0, 0, 32, 64);
         this.entities.push(this.player);
-        this.player.weapons.push(new Shotgun(0,0));
+        this.player.weapons.push(
+            new Pistol(1,1),
+            new Shotgun(0,0),
+            new SMG(1,1)
+        );
 
         // starter level-generator og setter opp level.
         this.levelGen = new LevelGen();
@@ -64,7 +71,8 @@ export class GameEngine {
         // start UIEngine
         this.UIEngine = new UIEngine(canvas);
         this.UIEngine.addElements(
-            new AmmoCounter(this.player)            
+            new AmmoCounter(this.player),
+            new Hotbar(this.player) 
         )
 
         // start physics-engine
@@ -75,11 +83,6 @@ export class GameEngine {
         // Start enemy-engine
         this.enemyBehaviour = new EnemyBehaviour();
         // // legg til spiller
-        // this.player = new Player(32, 300, 32, 64);
-        // this.entities.push(this.player);
-        // this.player.weapons.push(
-        //     new SMG(this.player.x, this.player.y)
-        // );
 
         this.renderer.camera.lookAt(this.player);
 
@@ -250,6 +253,10 @@ export class GameEngine {
             case 'd': this.player.d = true; break;
             case ' ': this.player.w = true; break;
             case 'r': this.player.reload = true; break;
+            //hotbar
+            case '1': this.player.currentWeaponIndex = 0; break;
+            case '2': this.player.currentWeaponIndex = 1; break;
+            case '3': this.player.currentWeaponIndex = 2; break;
         }
     }
 

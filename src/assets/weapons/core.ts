@@ -22,6 +22,7 @@ export class Weapon extends Sprite implements Shoot {
     public recoil: number,
     width: number,
     height: number,
+    public title: string
   ) {
     super(x, y, _sprite, width, height);
 

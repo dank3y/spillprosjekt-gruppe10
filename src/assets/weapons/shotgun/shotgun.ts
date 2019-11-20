@@ -8,8 +8,8 @@ const recoil = 20;
 const magSize = 5;
 const reloadTime = 0.8;
 const ROF = 100;
-const width = 64;
-const height = 32;
+const width = 58;
+const height = 22;
 const g = 1;
 const vel = 20;
 const projectiles = 5;
@@ -32,7 +32,7 @@ export class Shotgun extends Weapon {
     x: number,
     y: number,
   ){
-    super(x, y, sprite, magSize, reloadTime, ROF, recoil, width, height);
+    super(x, y, sprite, magSize, reloadTime, ROF, recoil, width, height, 'Shotgun');
     super.shoot = this._shoot;
   }
 

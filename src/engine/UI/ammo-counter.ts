@@ -30,7 +30,15 @@ export class AmmoCounter extends UIElement{
         ctx.restore();
         ctx.closePath();
     }
-
+    drawTitle(ctx: CanvasRenderingContext2D){
+        ctx.beginPath();
+        ctx.save();
+        ctx.font = '23px gamefont';
+        let text = this.target.weapon.title;
+        ctx.fillText(text, 0.5 * (this.width - ctx.measureText(text).width), this.height - 90);
+        ctx.restore();
+        ctx.closePath();
+    }
     drawAmmo(ctx: CanvasRenderingContext2D){
         ctx.beginPath();
         ctx.save();
@@ -59,6 +67,7 @@ export class AmmoCounter extends UIElement{
     _draw(ctx: CanvasRenderingContext2D): void {
         // console.log(this.x);
         this.drawBox(ctx);
+        this.drawTitle(ctx);
         this.drawAmmo(ctx);
         this.drawDesc(ctx);
         this.drawReloadProgress(ctx);
@@ -66,7 +75,7 @@ export class AmmoCounter extends UIElement{
     }
 
     constructor(public target: InstanceType<typeof NPC>){
-        super(120, 100, 'end', 'end');
+        super(120, 120, 'end', 'end');
         super.draw = this._draw;
         
     }

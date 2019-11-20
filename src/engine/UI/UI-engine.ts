@@ -61,8 +61,8 @@ export class UIElementGroup{
  */
 export class UIElement {
 
-    public onclick: Function = (): void => {}
-    public draw: (ctx: CanvasRenderingContext2D) => void;
+    public onclick: (mousex: number, mousey: number) => void = () => {};
+    public draw: (ctx: CanvasRenderingContext2D) => void = () => {};
 
     public width: number;
     public height: number;
@@ -75,12 +75,6 @@ export class UIElement {
     * @param height høyde på "boksen"
     */
     constructor(width: number, height: number)
-
-    // /**
-    //  *  UI Element  
-    //  *
-    //  */
-    // constructor(x: number | pct, y: number | pct)
 
     /**
     * UI Element med nøyaktig posisjon
