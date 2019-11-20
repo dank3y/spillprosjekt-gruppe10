@@ -153,6 +153,7 @@ export class GameEngine {
             if(this.touches(this.player, this.entities[this.entities.length-1])) {
                 this.paused = true;
                 this.levelCleared = true;
+                score += Math.floor(kills * difficulty * 10);
                 this.UIEngine.addElements(new EndScreen());
             }
             if(this.tick % 3 === 0) this.updateAni(this.entities);
