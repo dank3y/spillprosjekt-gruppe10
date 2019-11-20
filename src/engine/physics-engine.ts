@@ -188,6 +188,7 @@ export class PhysicsEngine {
         }
     }
 
+    //foreløpig ikke kollisjon med bakke
     public checkCollisionProjectiles(entities: InstanceType<typeof GameObject>[], projectiles: InstanceType<typeof Projectile>[]){
         let filtered = entities.filter(<(t: GameObject) => t is NPC>(t => t instanceof NPC))
         
@@ -198,6 +199,10 @@ export class PhysicsEngine {
                 // få lengden mellom prosjektil og NPC
                 let len = Math.hypot(filtered[n].x - projectiles[p].x, filtered[n].y - projectiles[p].y);
                 if (len > THRESHOLD_ACCURATE_PROJECTILE_MODE) continue;
+                let target = filtered[n];
+                let proj = projectiles[p];
+
+                // if (proj.right > )
 
             }
         }
