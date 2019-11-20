@@ -16,7 +16,7 @@ export class PhysicsEngine {
 
     public g = 9.81;
 
-    public noclip: boolean = true;
+    public noclip: boolean = false;
 
     public projectileHit: (target: any) => void = () => {};
     public onjump: () => void = () => { };
