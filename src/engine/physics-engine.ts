@@ -3,6 +3,9 @@ import { Player } from "../assets/entities/player/player";
 import { Room } from "../assets/rooms/room";
 import { BLOCKSIZE } from "./engine";
 import { BLOCKS } from "../utility/level.loader";
+import { Projectile } from "../assets/weapons/core";
+
+const THRESHOLD_ACCURATE_PROJECTILE_MODE = 64;
 
 /**
  * Skal håndtere tyngdekraft osv
@@ -184,5 +187,22 @@ export class PhysicsEngine {
             this.applyForce(npc, npc.jumpheight, -Math.PI/2);
         }
     }
+
+    public checkCollisionProjectiles(entities: InstanceType<typeof GameObject>[], projectiles: InstanceType<typeof Projectile>[]){
+        let filtered = entities.filter(<(t: GameObject) => t is NPC>(t => t instanceof NPC))
+        
+        //ytre lykke som går igjennom NPC
+        for (let n = 0; n < filtered.length; n++){
+            // indre lykke som går igjennom prosjektiler
+            for (let p = 0; p < projectiles.length; p++){
+                // få lengden mellom prosjektil og NPC
+                let len = Math.hypot(filtered[n].x - projectiles[p].x, filtered[n].y - projectiles[p].y);
+                if (len > THRESHOLD_ACCURATE_PROJECTILE_MODE) continue;
+
+            }
+        }
+        
+    }
+
 }
 
