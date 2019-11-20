@@ -2,9 +2,6 @@ import { NPC } from "../core";
 // definer sprite-en her
 const sprite = require('./sprite.png');
 
-export let kills: number = 0;
-export let score: number = 0;
-
 /**
  * @param width valgfritt, hvis ikke oppgitt så finner den bredde utifra bildets bredde
  * @param height valgfritt, hvis ikke oppgitt så finner den bredde utifra bildets bredde

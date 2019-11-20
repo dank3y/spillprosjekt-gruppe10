@@ -21,7 +21,9 @@ import { Enemy } from "../assets/entities/enemy/enemy";
 
 export const BLOCKSIZE: number = 32;
 export let difficulty: number = 1;
-
+export let levelCount: number = 0;
+export let score: number = 0;
+export let kills: number = 0;
 
 export class GameEngine {
 
@@ -41,6 +43,7 @@ export class GameEngine {
     public enemyBehaviour: EnemyBehaviour;
     public levelGen: LevelGen;
     public UIEngine: UIEngine;
+
     /**
      * liste som inneholder alle objekter i spillet
      */
@@ -70,7 +73,6 @@ export class GameEngine {
         // starter level-generator og setter opp level.
         this.levelGen = new LevelGen();
         this.newLevel();
-        difficulty = 1;
 
         // start UIEngine
         this.UIEngine = new UIEngine(canvas);
@@ -228,7 +230,8 @@ export class GameEngine {
 
     private newLevel(): void {
         while(this.entities.length > 1) { this.entities.pop(); }
-        difficulty *= 1.1;
+        levelCount++;
+        difficulty = 1.1 ** (levelCount-1);
         this.level = this.levelGen.makeLevel();
         this.spawnEntities();
         this.player.x = 128;

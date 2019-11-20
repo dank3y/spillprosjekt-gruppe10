@@ -1,6 +1,7 @@
 import { UIElement } from "./UI-engine";
-import { kills } from "../../assets/entities/player/player";
-import { score } from "../../assets/entities/player/player";
+import { kills } from "../engine";
+import { score } from "../engine";
+import { levelCount } from "../engine";
 
 export class EndScreen extends UIElement{
 
@@ -46,21 +47,33 @@ export class EndScreen extends UIElement{
         ctx.closePath();
     }
 
-    drawScore(ctx: CanvasRenderingContext2D):void {
+    drawLevelCount(ctx: CanvasRenderingContext2D):void {
         ctx.beginPath();
         ctx.save();
-        ctx.font = '30px gamefont';
-        let text = `Total score: ${score}`;
+        ctx.font = '20px gamefont';
+        let text = `Level: ${levelCount}`;
         ctx.fillText(text, 0.5 * (this.width - ctx.measureText(text).width), this.height / 2 + 40);
         ctx.restore();
         ctx.closePath();
     }
 
+    drawScore(ctx: CanvasRenderingContext2D):void {
+        ctx.beginPath();
+        ctx.save();
+        ctx.font = '30px gamefont';
+        let text = `Total score: ${score}`;
+        ctx.fillText(text, 0.5 * (this.width - ctx.measureText(text).width), this.height / 2 + 80);
+        ctx.restore();
+        ctx.closePath();
+    }
+
+    
     _draw(ctx: CanvasRenderingContext2D): void {
         // console.log(this.x);
         this.drawBox(ctx);
         this.drawDesc(ctx);
         this.drawKills(ctx);
+        this.drawLevelCount(ctx);
         this.drawScore(ctx);
         this.drawOutline(ctx);
     }
