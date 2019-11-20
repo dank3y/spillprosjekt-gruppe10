@@ -13,6 +13,7 @@ import { UIEngine } from "./UI/UI-engine";
 import { AmmoCounter } from "./UI/ammo-counter";
 import { EndScreen } from "./UI/end-screen";
 import { Pause } from "./UI/pause";
+import { Enemy } from "../assets/entities/enemy/enemy";
 
 
 export const BLOCKSIZE: number = 32;
