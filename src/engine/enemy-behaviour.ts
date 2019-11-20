@@ -23,7 +23,6 @@ export class EnemyBehaviour {
         entities.forEach(entity => {
             if(entity instanceof NPC && !(entity instanceof Player)) {
                 entity.weapon.leftInMag === 0 ? entity.reload = true : entity.reload = false;
-                console.log(entity.reload);
 
                 if(entity.y - player.y <= this.CHASE_RANGE_Y && entity.y - player.y >= -this.CHASE_RANGE_Y) {
                     if(entity.x - player.x <= this.SHOOT_RANGE && entity.x - player.x >= -this.SHOOT_RANGE) {
