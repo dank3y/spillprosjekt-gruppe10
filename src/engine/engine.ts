@@ -1,18 +1,15 @@
 import { Canvas } from "./canvas";
-import { Sprite, GameObject, PhysicsBody, NPC } from "../assets/entities/core";
+import { Sprite, GameObject, NPC } from "../assets/entities/core";
 import { Renderer } from "./renderer";
 import { PhysicsEngine } from './physics-engine';
 import { Room } from "../assets/rooms/room";
 import { Player } from "../assets/entities/player/player";
 import { EnemyBehaviour } from "./enemy-behaviour";
-import { Enemy } from "../assets/entities/enemy/enemy";
-import { Pistol } from "../assets/weapons/pistol/pistol";
-import { Projectile, Weapon } from "../assets/weapons/core";
+import { Projectile } from "../assets/weapons/core";
 import { Screenshake } from "./camera";
-import { SMG } from "../assets/weapons/smg/smg"
 import { Shotgun } from '../assets/weapons/shotgun/shotgun';
 import { LevelGen } from "./levelgen";
-import { UIEngine, UIElementGroup } from "./UI/UI-engine";
+import { UIEngine } from "./UI/UI-engine";
 import { AmmoCounter } from "./UI/ammo-counter";
 
 
@@ -94,6 +91,14 @@ export class GameEngine {
         this.canvas.onmouseup = () => {
             this.player.attack = false;
         }
+
+        // legg til key-events
+        window.onkeydown = (ev: KeyboardEvent) => {
+            this.KEYDOWN_EVENT_HANDLER_PLAYER(ev)
+        };
+        window.onkeyup = (ev: KeyboardEvent) => {
+            this.KEYUP_EVENT_HANDLER_PLAYER(ev)
+        };
 
         window.onresize  = (event: UIEvent) => {
             // må ta hensyn til at objektet "forsvinner" når nettleseren
@@ -220,4 +225,28 @@ export class GameEngine {
             }
         });
     }
+
+
+    private KEYDOWN_EVENT_HANDLER_PLAYER(event: KeyboardEvent): void {
+        switch (event.key) {
+            case 'w': this.player.w = true; break;
+            case 'a': this.player.a = true; break;
+            case 's': this.player.s = true; break;
+            case 'd': this.player.d = true; break;
+            case ' ': this.player.w = true; break;
+            case 'r': this.player.reload = true; break;
+        }
+    }
+
+    private KEYUP_EVENT_HANDLER_PLAYER(event: KeyboardEvent): void {
+        switch (event.key) {
+            case 'w': this.player.w = false; break;
+            case 'a': this.player.a = false; break;
+            case 's': this.player.s = false; break;
+            case 'd': this.player.d = false; break;
+            case ' ': this.player.w = false; break;
+            case 'r': this.player.reload = false; break;
+        }
+    }
+
 }
