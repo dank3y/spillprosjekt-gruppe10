@@ -74,7 +74,7 @@ export class Sprite extends GameObject {
     public get bottom() { return this.y + 0.5 * this.height; }
 
 
-    private createSpriteImage(src: string): HTMLImageElement{
+    public createSpriteImage(src: string): HTMLImageElement{
         let img = new Image();
             img.src = src;        
         return img;
@@ -105,6 +105,8 @@ export class NPC extends PhysicsBody {
     public d: boolean = true;
     public s: boolean = false;
     public attack: boolean = false;
+    public aniTick: number = 0;
+    public reload: boolean = false;
 
     public weapons: Weapon[] = [];
     // null skal etterhvert være kniv
@@ -138,7 +140,7 @@ export class NPC extends PhysicsBody {
         public _angle = 0,
         public speed: number = 1,
         public jumpheight: number = 12,
-        public healthMax = 100
+        public healthMax = 100,
     ){
         super(x, y, _sprite, width, height, mass, vx, vy);
         // check om bredde eller høyde er delelig på blocksize
@@ -150,6 +152,7 @@ export class NPC extends PhysicsBody {
         }
         //initialverdi
         this.healthCurrent = this.healthMax;
+
     }
 
     //skal senere gjøre slik at store tall kan minskes

@@ -58,7 +58,7 @@ export class EnemyBehaviour {
            if(this.blockedRight(level, gridX, gridY)) {
                target.d = false;
                target.a = true;
-               target._angle = -Math.PI;
+               target._angle = Math.PI;
            }
         } 
         if(target.a) {

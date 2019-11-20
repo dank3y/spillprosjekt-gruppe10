@@ -25,7 +25,7 @@ export class LevelGen {
         const DEBUG_MODE = true;
 
         let ROOM_AMOUNT: number = 5;
-        let AVAILABLE_ROOMS: Room[] = [Room1, Room2, Room3, Room4, Room5, Room6];
+        let AVAILABLE_ROOMS: Room[] = [Room1, Room2, Room3, Room4, Room5, Room6, Room7, Room8, Room9, Room10];
 
         // Antall rom som skal genereres. Start- og sluttrom legges til utenom.
         if(DEBUG_MODE) {
