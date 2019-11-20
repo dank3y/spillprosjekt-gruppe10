@@ -54,7 +54,7 @@ export class Player extends NPC {
         this.walk6 = super.createSpriteImage(this._walk6);
         this.walk7 = super.createSpriteImage(this._walk7);
         this.walkSq = [this.walk0, this.walk1, this.walk2, this.walk3, this.walk4, this.walk5, this.walk6, this.walk7];
-        this.healthMax = 500;
+        this.healthMax = 1000;
         this.healthCurrent = this.healthMax;
     }
 
