@@ -17,6 +17,7 @@ import { Hotbar } from "./UI/hotbar";
 import { Pistol } from "../assets/weapons/pistol/pistol";
 import { SMG } from "../assets/weapons/smg/smg";
 import { Enemy } from "../assets/entities/enemy/enemy";
+import { GameOver } from "./UI/game-over";
 
 
 export const BLOCKSIZE: number = 32;
@@ -32,6 +33,7 @@ export class GameEngine {
 
     public paused: boolean = false;
     public levelCleared: boolean = false;
+    public gameEnded: boolean = false;
 
     //holde styr på muskordinater
     public mouseX: number = 0;
@@ -117,6 +119,12 @@ export class GameEngine {
                         this.paused = false;
                         this.UIEngine.elements.splice(this.UIEngine.elements.indexOf(new EndScreen));
                     }
+                    if(this.gameEnded) {
+                        this.gameEnded = false;
+                        this.newGame();
+                        this.paused = false;
+                        this.UIEngine.elements.splice(this.UIEngine.elements.indexOf(new GameOver));
+                    }
             }
         };
         window.onkeyup = (ev: KeyboardEvent) => {
@@ -155,10 +163,13 @@ export class GameEngine {
             if(this.touches(this.player, this.entities[this.entities.length-1])) {
                 this.paused = true;
                 this.levelCleared = true;
+                kills = this.player.kills;
+                this.player.kills = 0;
                 totalKills += kills;
                 score += Math.floor(kills * difficulty * 10);
                 this.UIEngine.addElements(new EndScreen());
             }
+            if(this.player.healthCurrent <= 0) this.gameOver();
             if(this.tick % 3 === 0) this.updateAni(this.entities);
         }
     }
@@ -234,6 +245,8 @@ export class GameEngine {
 
     private newLevel(): void {
         while(this.entities.length > 1) { this.entities.pop(); }
+        this.player.healthCurrent += 250;
+        this.player.healthCurrent = this.player.healthCurrent > this.player.healthMax ? this.player.healthMax : this.player.healthCurrent;
         levelCount++;
         kills = 0;
         difficulty = 1.1 ** (levelCount-1);
@@ -295,4 +308,19 @@ export class GameEngine {
         }
     }
 
+    private gameOver() {
+        this.paused = true;
+        this.gameEnded = true;
+        this.UIEngine.addElements(new GameOver);
+    }
+
+    private newGame() {
+        this.player.healthCurrent = this.player.healthMax;
+        difficulty = 1;
+        levelCount = 0;
+        score = 0;
+        totalKills = 0;
+        kills = 0;
+        this.newLevel();
+    }
 }

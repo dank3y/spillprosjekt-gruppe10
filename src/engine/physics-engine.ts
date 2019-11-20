@@ -26,7 +26,10 @@ export class PhysicsEngine {
             if(entity instanceof NPC && !(entity instanceof Player)) {
                 this.updateNPC(entity);
                 //sjekk om de er døde
-                if (entity.healthCurrent <= 0) entities.splice(index, 1);
+                if (entity.healthCurrent <= 0) {
+                    entities.splice(index, 1); 
+                    this.increaseKills(entities);
+                }
             }
             //alle ting som reagerer på tyngdekraft
             if (entity.isExtensionOf(PhysicsBody)){
@@ -215,6 +218,7 @@ export class PhysicsEngine {
                         proj.hit.call(false, targ);
 
                         targ.healthCurrent -= proj.damage;
+                        targ.healthCurrent = targ.healthCurrent < 0 ? 0 : targ.healthCurrent;
 
                         projectiles.splice(p, 1);
                         p--;     
@@ -251,6 +255,12 @@ export class PhysicsEngine {
             }
         }
         
+    }
+
+    private increaseKills(entities: GameObject[]): void {
+        entities.forEach(entity => {
+            if(entity instanceof Player) entity.kills++;
+        });
     }
 
 }
