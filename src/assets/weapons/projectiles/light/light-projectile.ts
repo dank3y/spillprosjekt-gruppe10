@@ -17,9 +17,5 @@ export class LightProjectile extends Projectile {
         shooter: InstanceType<typeof NPC>,
         ){
         super(x, y, _sprite, width, height, angle, g, vel, shooter, damage);
-        this.hit = (t: any) => {
-            console.log(t);
-            
-        }
     }
 }
