@@ -1,6 +1,6 @@
 {
   "name": "spillprosjekt",
-  "version": "1.0",
+  "version": "1.0.0",
   "description": "Spill som vi skal jobbe med i INFT1003",
   "main": "index.js",
   "scripts": {
