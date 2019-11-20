@@ -245,7 +245,7 @@ export class GameEngine {
 
     private newLevel(): void {
         while(this.entities.length > 1) { this.entities.pop(); }
-        this.player.healthCurrent += 250;
+        this.player.healthCurrent += 500;
         this.player.healthCurrent = this.player.healthCurrent > this.player.healthMax ? this.player.healthMax : this.player.healthCurrent;
         levelCount++;
         kills = 0;
