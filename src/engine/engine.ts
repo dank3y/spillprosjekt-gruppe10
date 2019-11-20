@@ -133,6 +133,7 @@ export class GameEngine {
             switch (ev.key){
                 case 'p':
                 case 'Escape': this.togglePause(); break;
+                case 'Enter': this.newLevel(); break;
                 case ' ': 
                     if(this.levelCleared) {
                         this.levelCleared = false;
@@ -145,7 +146,7 @@ export class GameEngine {
                         this.newGame();
                         this.paused = false;
                         this.UIEngine.elements.splice(this.UIEngine.elements.indexOf(new GameOver));
-                    }
+                    } break;
             }
         };
         window.onkeyup = (ev: KeyboardEvent) => {
