@@ -23,6 +23,7 @@ export const BLOCKSIZE: number = 32;
 export let difficulty: number = 1;
 export let levelCount: number = 0;
 export let score: number = 0;
+export let totalKills: number = 0;
 export let kills: number = 0;
 
 export class GameEngine {
@@ -78,7 +79,7 @@ export class GameEngine {
         this.UIEngine = new UIEngine(canvas);
         this.UIEngine.addElements(
             new AmmoCounter(this.player),
-            new Hotbar(this.player) 
+            new Hotbar(this.player)
         )
 
         // start physics-engine
@@ -153,6 +154,7 @@ export class GameEngine {
             if(this.touches(this.player, this.entities[this.entities.length-1])) {
                 this.paused = true;
                 this.levelCleared = true;
+                totalKills += kills;
                 score += Math.floor(kills * difficulty * 10);
                 this.UIEngine.addElements(new EndScreen());
             }
@@ -232,6 +234,7 @@ export class GameEngine {
     private newLevel(): void {
         while(this.entities.length > 1) { this.entities.pop(); }
         levelCount++;
+        kills = 0;
         difficulty = 1.1 ** (levelCount-1);
         this.level = this.levelGen.makeLevel();
         this.spawnEntities();
