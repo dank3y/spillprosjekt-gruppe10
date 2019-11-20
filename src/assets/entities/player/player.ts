@@ -2,12 +2,14 @@ import { NPC } from "../core";
 // definer sprite-en her
 const sprite = require('./sprite.png');
 
+export let kills: number = 0;
+export let score: number = 0;
+
 /**
  * @param width valgfritt, hvis ikke oppgitt så finner den bredde utifra bildets bredde
  * @param height valgfritt, hvis ikke oppgitt så finner den bredde utifra bildets bredde
  */
 export class Player extends NPC {
-
     // Animasjoner
     private _stand:string = require('./sprite.png');
     private _walk0:string = require('./walk0.png');
@@ -64,7 +66,7 @@ export class Player extends NPC {
             case 'a': this.a = true; break;
             case 's': this.s = true; break;
             case 'd': this.d = true; break;
-            case ' ': this.w = true; break;
+            case ' ': event.preventDefault(); this.w = true; break;
             case 'r': this.reload = true; break;
         }
     }

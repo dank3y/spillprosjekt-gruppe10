@@ -14,6 +14,7 @@ import { Shotgun } from '../assets/weapons/shotgun/shotgun';
 import { LevelGen } from "./levelgen";
 import { UIEngine, UIElementGroup } from "./UI/UI-engine";
 import { AmmoCounter } from "./UI/ammo-counter";
+import { EndScreen } from "./UI/end-screen";
 
 
 export const BLOCKSIZE: number = 32;
@@ -65,7 +66,8 @@ export class GameEngine {
         // start UIEngine
         this.UIEngine = new UIEngine(canvas);
         this.UIEngine.addElements(
-            new AmmoCounter(this.player)
+            new AmmoCounter(this.player),
+            
         )
 
         // start physics-engine
@@ -94,7 +96,13 @@ export class GameEngine {
         this.canvas.onmouseup = () => {
             this.player.attack = false;
         }
-
+        /*
+        window.onkeydown = (ev: KeyboardEvent) => {
+            if(ev.key === ' ' && this.paused) {
+                this.newLevel();
+            }
+        }
+        */
         window.onresize  = (event: UIEvent) => {
             // må ta hensyn til at objektet "forsvinner" når nettleseren
             // skal tegne en ny frame
@@ -124,7 +132,8 @@ export class GameEngine {
             this.renderer.camera.update(this.tick, this.mouseX, this.mouseY);
             this.tick++;            
             if(this.touches(this.player, this.entities[this.entities.length-1])) {
-                this.newLevel();
+                this.paused = true;
+                this.UIEngine.addElements(new EndScreen());
             }
             if(this.tick % 3 === 0) this.updateAni(this.entities);
         }
