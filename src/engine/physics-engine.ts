@@ -2,7 +2,10 @@ import { PhysicsBody, GameObject, NPC } from "../assets/entities/core";
 import { Player } from "../assets/entities/player/player";
 import { Room } from "../assets/rooms/room";
 import { BLOCKSIZE } from "./engine";
-import { BLOCKS } from "../utility/level.loader";
+import { BLOCKS, Block } from "../utility/level.loader";
+import { Projectile } from "../assets/weapons/core";
+
+const THRESHOLD_ACCURATE_PROJECTILE_MODE = 64;
 
 /**
  * Skal håndtere tyngdekraft osv
@@ -20,8 +23,10 @@ export class PhysicsEngine {
             //særtilfelle for spiller               
             if (entity.isExtensionOf(Player)) this.updatePlayer(<Player>entity);
             // Beveg NPCer
-            if(entity.isExtensionOf(NPC) && !(entity.isExtensionOf(Player))) {
-                this.updateNPC(<NPC>entity);
+            if(entity instanceof NPC && !(entity instanceof Player)) {
+                this.updateNPC(entity);
+                //sjekk om de er døde
+                if (entity.healthCurrent <= 0) entities.splice(index, 1);
             }
             //alle ting som reagerer på tyngdekraft
             if (entity.isExtensionOf(PhysicsBody)){
@@ -183,6 +188,70 @@ export class PhysicsEngine {
         if(npc.w && npc.vy <= 1e-15 && npc.vy >= -1e-15) {
             this.applyForce(npc, npc.jumpheight, -Math.PI/2);
         }
+
+        if (npc.healthCurrent <= 0){
+
+        }
+
     }
+
+    //foreløpig ikke kollisjon med bakke
+    public checkCollisionProjectiles(entities: InstanceType<typeof GameObject>[], projectiles: InstanceType<typeof Projectile>[], level: Room){
+        let filtered = entities.filter(<(t: GameObject) => t is NPC>(t => t instanceof NPC))
+        
+        //ytre lykke som går igjennom NPC
+        for (let n = 0; n < filtered.length; n++){
+            // indre lykke som går igjennom prosjektiler
+            for (let p = 0; p < projectiles.length; p++){
+                // få lengden mellom prosjektil og NPC
+                let len = Math.hypot(filtered[n].x - projectiles[p].x, filtered[n].y - projectiles[p].y);
+                if (len > THRESHOLD_ACCURATE_PROJECTILE_MODE) continue;
+                let targ = filtered[n];
+                let proj = projectiles[p];
+                if (proj.shooter === targ) continue;                
+
+                if (proj.bottom > targ.top && proj.top < targ.bottom){
+                    if (proj.right > targ.left && proj.left < targ.right){
+                        proj.hit.call(false, targ);
+
+                        targ.healthCurrent -= proj.damage;
+
+                        projectiles.splice(p, 1);
+                        p--;     
+                    }
+                }
+            }
+        }
+
+        for (let p = 0; p < projectiles.length; p++){
+            let proj = projectiles[p];
+            let gridX = Math.round(proj.x / BLOCKSIZE);
+            let gridY = Math.round(proj.y / BLOCKSIZE);
+
+            let grid = level.data;
+            
+            if (grid[gridY] && grid[gridY][gridX]){                
+                if (BLOCKS[grid[gridY][gridX]].solid){                                                            
+                    if (
+                        proj.x > gridX * BLOCKSIZE - 0.5 * BLOCKSIZE ||
+                        proj.x < gridX * BLOCKSIZE + 0.5 * BLOCKSIZE ||
+                        proj.y > gridY * BLOCKSIZE - 0.5 * BLOCKSIZE ||
+                        proj.y < gridY * BLOCKSIZE + 0.5 * BLOCKSIZE 
+                    ){                        
+                        
+                        proj.hit.call(false, new Block)
+
+                        projectiles.splice(p, 1);
+                        p--;
+                        continue;
+                        
+                    }
+
+                }
+            }
+        }
+        
+    }
+
 }
 
