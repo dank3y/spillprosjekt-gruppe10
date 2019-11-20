@@ -23,8 +23,10 @@ export class PhysicsEngine {
             //særtilfelle for spiller               
             if (entity.isExtensionOf(Player)) this.updatePlayer(<Player>entity);
             // Beveg NPCer
-            if(entity.isExtensionOf(NPC) && !(entity.isExtensionOf(Player))) {
-                this.updateNPC(<NPC>entity);
+            if(entity instanceof NPC && !(entity instanceof Player)) {
+                this.updateNPC(entity);
+                //sjekk om de er døde
+                if (entity.healthCurrent <= 0) entities.splice(index, 1);
             }
             //alle ting som reagerer på tyngdekraft
             if (entity.isExtensionOf(PhysicsBody)){
@@ -186,6 +188,11 @@ export class PhysicsEngine {
         if(npc.w && npc.vy <= 1e-15 && npc.vy >= -1e-15) {
             this.applyForce(npc, npc.jumpheight, -Math.PI/2);
         }
+
+        if (npc.healthCurrent <= 0){
+
+        }
+
     }
 
     //foreløpig ikke kollisjon med bakke
@@ -199,11 +206,20 @@ export class PhysicsEngine {
                 // få lengden mellom prosjektil og NPC
                 let len = Math.hypot(filtered[n].x - projectiles[p].x, filtered[n].y - projectiles[p].y);
                 if (len > THRESHOLD_ACCURATE_PROJECTILE_MODE) continue;
-                let target = filtered[n];
+                let targ = filtered[n];
                 let proj = projectiles[p];
+                if (proj.shooter === targ) continue;                
 
-                // if (proj.right > )
+                if (proj.bottom > targ.top && proj.top < targ.bottom){
+                    if (proj.right > targ.left && proj.left < targ.right){
+                        proj.hit.call(false, targ);
 
+                        targ.healthCurrent -= proj.damage;
+
+                        projectiles.splice(p, 1);
+                        p--;     
+                    }
+                }
             }
         }
         

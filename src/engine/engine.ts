@@ -140,7 +140,7 @@ export class GameEngine {
         that.UIEngine.renderElements();
         window.requestAnimationFrame(this.runRenderer.bind(that));
     }
-    
+     
     public loop(): void{
         // gjør utregninger
         if (!this.paused){

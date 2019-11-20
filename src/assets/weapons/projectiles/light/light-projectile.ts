@@ -6,6 +6,7 @@ const width = 10;
 const height = 4;
 
 const g = 1;
+const damage = 34;
 
 export class LightProjectile extends Projectile {
     constructor(
@@ -13,8 +14,12 @@ export class LightProjectile extends Projectile {
         y: number,
         angle: number,
         vel: number,
-        shooter: InstanceType<typeof NPC>
+        shooter: InstanceType<typeof NPC>,
         ){
-        super(x, y, _sprite, width, height, angle, g, vel, shooter);
+        super(x, y, _sprite, width, height, angle, g, vel, shooter, damage);
+        // this.hit = (t: any) => {
+        //     console.log('hit');
+            
+        // }
     }
 }
