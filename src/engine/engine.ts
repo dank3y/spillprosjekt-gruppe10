@@ -65,13 +65,7 @@ export class GameEngine {
         // start UIEngine
         this.UIEngine = new UIEngine(canvas);
         this.UIEngine.addElements(
-            new AmmoCounter(this.player),
-            new UIElementGroup('middle', 'end', 'column', new AmmoCounter(this.player), new AmmoCounter(this.player)),
-            new UIElementGroup('start', 'end', 'row', new AmmoCounter(this.player), new AmmoCounter(this.player)),
-            new UIElementGroup('80%', '20%', 'row', new AmmoCounter(this.player), new AmmoCounter(this.player)),
-            new UIElementGroup('30%', 'start', 'column', new AmmoCounter(this.player), new AmmoCounter(this.player)),
-            new UIElementGroup('60%', 'start', 'column', new AmmoCounter(this.player), new AmmoCounter(this.player)),
-            
+            new AmmoCounter(this.player)            
         )
 
         // start physics-engine
@@ -169,10 +163,16 @@ export class GameEngine {
                     if (time - e.weapon.reloadStart > e.weapon.reloadTime * 1000){
                         if (e.weapon.reloading){
                             e.weapon.reloading = false;
-                            if (e.weapon.leftInMag > 0) {
-                                e.weapon.leftInMag = e.weapon.magSize + 1;
+                            if (e.weapon instanceof Shotgun && e.weapon.leftInMag < e.weapon.magSize){
+                                e.weapon.leftInMag++;
+                                e.weapon.reloading = true;
+                                e.weapon.reloadStart = time;
                             } else {
-                                e.weapon.leftInMag = e.weapon.magSize;
+                                if (e.weapon.leftInMag > 0) {
+                                    e.weapon.leftInMag = e.weapon.magSize + 1;
+                                } else {
+                                    e.weapon.leftInMag = e.weapon.magSize;
+                                }
                             }
                         }
                         if (e.reload && !e.weapon.reloading){
@@ -181,8 +181,8 @@ export class GameEngine {
                         }
                     }
                     
-                    if (e.attack && e.weapon.leftInMag && !e.weapon.reloading){                    
-                                                                                    
+                    if (e.attack && e.weapon.leftInMag){                    
+                        e.weapon.reloading = false;                               
                         if (time - e.weapon.lastBullet > e.weapon.RPMms){
                             e.weapon.shoot(this.projectiles, e);
                             e.weapon.lastBullet = time;
