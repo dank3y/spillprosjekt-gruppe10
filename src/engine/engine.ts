@@ -213,7 +213,7 @@ export class GameEngine {
                         if (time - e.weapon.lastBullet > e.weapon.RPMms){
                             e.weapon.shoot(this.projectiles, e);
                             e.weapon.lastBullet = time;
-                            this.renderer.camera.actionList.push(new Screenshake(this.tick, this.tick + 3, e.weapon.recoil));
+                            if(e instanceof Player) this.renderer.camera.actionList.push(new Screenshake(this.tick, this.tick + 3, e.weapon.recoil));
                             this.physics.applyForce(e, e.weapon.recoil / 2, e.angle + Math.PI)
                             if (e.weapon.leftInMag > 0){
                                 e.weapon.leftInMag--;
