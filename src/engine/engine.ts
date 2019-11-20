@@ -233,9 +233,7 @@ export class GameEngine {
         });
     }
 
-    private togglePause(): void{
-        console.log(this.UIEngine.elements);
-        
+    private togglePause(): void{        
         this.paused = !this.paused;
         if (this.paused){
             this.UIEngine.addElements(new Pause());
