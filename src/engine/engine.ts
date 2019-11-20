@@ -12,6 +12,7 @@ import { LevelGen } from "./levelgen";
 import { UIEngine } from "./UI/UI-engine";
 import { AmmoCounter } from "./UI/ammo-counter";
 import { EndScreen } from "./UI/end-screen";
+import { Pause } from "./UI/pause";
 
 
 export const BLOCKSIZE: number = 32;
@@ -94,8 +95,12 @@ export class GameEngine {
         }
 
         // legg til key-events
-        window.onkeydown = (ev: KeyboardEvent) => {
+        window.onkeydown = (ev: KeyboardEvent) => {            
             this.KEYDOWN_EVENT_HANDLER_PLAYER(ev)
+            switch (ev.key){
+                case 'p':
+                case 'Escape': this.togglePause();
+            }
         };
         window.onkeyup = (ev: KeyboardEvent) => {
             this.KEYUP_EVENT_HANDLER_PLAYER(ev)
@@ -228,6 +233,16 @@ export class GameEngine {
         });
     }
 
+    private togglePause(): void{
+        console.log(this.UIEngine.elements);
+        
+        this.paused = !this.paused;
+        if (this.paused){
+            this.UIEngine.addElements(new Pause());
+        } else {
+            this.UIEngine.elements.splice(this.UIEngine.elements.indexOf(new Pause))
+        }
+    }
 
     private KEYDOWN_EVENT_HANDLER_PLAYER(event: KeyboardEvent): void {
         switch (event.key) {
