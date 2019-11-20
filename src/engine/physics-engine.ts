@@ -4,6 +4,7 @@ import { Room } from "../assets/rooms/room";
 import { BLOCKSIZE } from "./engine";
 import { BLOCKS, Block } from "../utility/level.loader";
 import { Projectile } from "../assets/weapons/core";
+import { Enemy } from "../assets/entities/enemy/enemy";
 
 const THRESHOLD_ACCURATE_PROJECTILE_MODE = 64;
 
@@ -16,6 +17,11 @@ export class PhysicsEngine {
     public g = 9.81;
 
     public noclip: boolean = false;
+
+    public projectileHit: (target: any) => void = () => {};
+    public onjump: () => void = () => { };
+    public onland: () => void = () => {};
+
 
 
     update(entities: GameObject[], gameLevel: Room): void{        
@@ -117,9 +123,10 @@ export class PhysicsEngine {
 
         // BOTTOM
         if (bottom && (target.bottom >= bottom)) {
-            if (bottomBlock.solid){
+            if (bottomBlock.solid){                
                 target.vy = 0;
-                target.y  = bottom - 0.5 * target.height;                
+                target.y  = bottom - 0.5 * target.height;
+                // this.onland.call(false)
             }
         }
 
@@ -170,7 +177,10 @@ export class PhysicsEngine {
             if (player.d) player.x += step;
 
         } else {
-            if (player.w && player.vy === 0) this.applyForce(player, 12, -Math.PI/2);
+            if (player.w && player.vy === 0) {
+                this.applyForce(player, 12, -Math.PI / 2)
+                this.onjump.call(false);
+            };
             // if (player.w) player.y -= step;
             if (player.a) this.applyForce(player, 1.5, -Math.PI);
             // if (player.s) player.y += step;
@@ -212,8 +222,9 @@ export class PhysicsEngine {
 
                 if (proj.bottom > targ.top && proj.top < targ.bottom){
                     if (proj.right > targ.left && proj.left < targ.right){
-                        proj.hit.call(false, targ);
-
+                        
+                        this.projectileHit.call(false, targ);
+                        
                         targ.healthCurrent -= proj.damage;
 
                         projectiles.splice(p, 1);
@@ -239,7 +250,7 @@ export class PhysicsEngine {
                         proj.y < gridY * BLOCKSIZE + 0.5 * BLOCKSIZE 
                     ){                        
                         
-                        proj.hit.call(false, new Block)
+                        this.projectileHit.call(false, new Block)
 
                         projectiles.splice(p, 1);
                         p--;

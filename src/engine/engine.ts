@@ -17,6 +17,8 @@ import { Hotbar } from "./UI/hotbar";
 import { Pistol } from "../assets/weapons/pistol/pistol";
 import { SMG } from "../assets/weapons/smg/smg";
 import { Enemy } from "../assets/entities/enemy/enemy";
+import { AudioEngine } from "./audio/audio";
+import { Block } from "../utility/level.loader";
 
 
 export const BLOCKSIZE: number = 32;
@@ -44,6 +46,7 @@ export class GameEngine {
     public enemyBehaviour: EnemyBehaviour;
     public levelGen: LevelGen;
     public UIEngine: UIEngine;
+    public audio: AudioEngine;
 
     /**
      * liste som inneholder alle objekter i spillet
@@ -81,9 +84,27 @@ export class GameEngine {
             new AmmoCounter(this.player),
             new Hotbar(this.player)
         )
-
+        //start audio engine
+        this.audio = new AudioEngine();
         // start physics-engine
         this.physics = new PhysicsEngine();
+        this.physics.projectileHit = (target: NPC | Block) => {
+            if (target instanceof NPC){
+                this.audio.hit_npc();
+                if (target instanceof Player) {
+                    this.audio.hit_player();
+                } else if (target instanceof Enemy){
+                    this.audio.hit_enemy();
+                }
+            }
+            if (target instanceof Block){
+                this.audio.hit_world();
+            }
+        }
+        this.physics.onjump = () => this.audio.jump();
+        this.physics.onland = () => this.audio.land();
+        // this.physics.hit_player = () => this.audio.hit_player();
+        
         // start renderer
         this.renderer = new Renderer(canvas);
         this.runRenderer();
@@ -211,6 +232,7 @@ export class GameEngine {
                         if (e.reload && !e.weapon.reloading){
                             e.weapon.reloadStart = time;
                             e.weapon.reloading = true;
+
                         }
                     }
                     
@@ -224,6 +246,7 @@ export class GameEngine {
                             if (e.weapon.leftInMag > 0){
                                 e.weapon.leftInMag--;
                             }
+                            this.audio.shoot(e.weapon);
                         }
                         
                     }
