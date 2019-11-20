@@ -6,7 +6,7 @@ const sprite = require('./sprite.png')
 
 const recoil = 20;
 const magSize = 5;
-const reloadTime = 5;
+const reloadTime = 0.8;
 const ROF = 100;
 const width = 64;
 const height = 32;

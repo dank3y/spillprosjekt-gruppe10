@@ -66,8 +66,12 @@ export class GameEngine {
         // start UIEngine
         this.UIEngine = new UIEngine(canvas);
         this.UIEngine.addElements(
+<<<<<<< HEAD
             new AmmoCounter(this.player),
             
+=======
+            new AmmoCounter(this.player)            
+>>>>>>> 7865597f32f64a6b9574b5db4ac38e90fcbea972
         )
 
         // start physics-engine
@@ -172,10 +176,16 @@ export class GameEngine {
                     if (time - e.weapon.reloadStart > e.weapon.reloadTime * 1000){
                         if (e.weapon.reloading){
                             e.weapon.reloading = false;
-                            if (e.weapon.leftInMag > 0) {
-                                e.weapon.leftInMag = e.weapon.magSize + 1;
+                            if (e.weapon instanceof Shotgun && e.weapon.leftInMag < e.weapon.magSize){
+                                e.weapon.leftInMag++;
+                                e.weapon.reloading = true;
+                                e.weapon.reloadStart = time;
                             } else {
-                                e.weapon.leftInMag = e.weapon.magSize;
+                                if (e.weapon.leftInMag > 0) {
+                                    e.weapon.leftInMag = e.weapon.magSize + 1;
+                                } else {
+                                    e.weapon.leftInMag = e.weapon.magSize;
+                                }
                             }
                         }
                         if (e.reload && !e.weapon.reloading){
@@ -184,8 +194,8 @@ export class GameEngine {
                         }
                     }
                     
-                    if (e.attack && e.weapon.leftInMag && !e.weapon.reloading){                    
-                                                                                    
+                    if (e.attack && e.weapon.leftInMag){                    
+                        e.weapon.reloading = false;                               
                         if (time - e.weapon.lastBullet > e.weapon.RPMms){
                             e.weapon.shoot(this.projectiles, e);
                             e.weapon.lastBullet = time;
