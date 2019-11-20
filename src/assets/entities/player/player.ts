@@ -45,9 +45,7 @@ export class Player extends NPC {
         ){
         super(x, y, sprite, width, height, mass, vx, vy, angle);
         this.d = false;
-        // legg til key-events
-        window.onkeydown = (ev: KeyboardEvent) => this.KEYDOWN_EVENT_HANDLER(ev);
-        window.onkeyup = (ev: KeyboardEvent) => this.KEYUP_EVENT_HANDLER(ev);
+        
         this.stand = super.createSpriteImage(this._stand);
         this.walk0 = super.createSpriteImage(this._walk0);
         this.walk1 = super.createSpriteImage(this._walk1);
@@ -60,6 +58,7 @@ export class Player extends NPC {
         this.walkSq = [this.walk0, this.walk1, this.walk2, this.walk3, this.walk4, this.walk5, this.walk6, this.walk7];
     }
 
+<<<<<<< HEAD
     private KEYDOWN_EVENT_HANDLER(event: KeyboardEvent): void {                
         switch (event.key) {
             case 'w': this.w = true; break;
@@ -81,6 +80,9 @@ export class Player extends NPC {
             case 'r': this.reload = false; break;
         }
     }
+=======
+    
+>>>>>>> 4b591596ec8744f459f2e28c0b7dcff2a3fbb53b
 
     public animate(): void {
         if(this.vy > 0.5 || this.vy < -0.5) {

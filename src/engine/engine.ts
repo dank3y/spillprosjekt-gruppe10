@@ -1,18 +1,15 @@
 import { Canvas } from "./canvas";
-import { Sprite, GameObject, PhysicsBody, NPC } from "../assets/entities/core";
+import { Sprite, GameObject, NPC } from "../assets/entities/core";
 import { Renderer } from "./renderer";
 import { PhysicsEngine } from './physics-engine';
 import { Room } from "../assets/rooms/room";
 import { Player } from "../assets/entities/player/player";
 import { EnemyBehaviour } from "./enemy-behaviour";
-import { Enemy } from "../assets/entities/enemy/enemy";
-import { Pistol } from "../assets/weapons/pistol/pistol";
-import { Projectile, Weapon } from "../assets/weapons/core";
+import { Projectile } from "../assets/weapons/core";
 import { Screenshake } from "./camera";
-import { SMG } from "../assets/weapons/smg/smg"
 import { Shotgun } from '../assets/weapons/shotgun/shotgun';
 import { LevelGen } from "./levelgen";
-import { UIEngine, UIElementGroup } from "./UI/UI-engine";
+import { UIEngine } from "./UI/UI-engine";
 import { AmmoCounter } from "./UI/ammo-counter";
 import { EndScreen } from "./UI/end-screen";
 
@@ -67,11 +64,15 @@ export class GameEngine {
         this.UIEngine = new UIEngine(canvas);
         this.UIEngine.addElements(
 <<<<<<< HEAD
+<<<<<<< HEAD
             new AmmoCounter(this.player),
             
 =======
             new AmmoCounter(this.player)            
 >>>>>>> 7865597f32f64a6b9574b5db4ac38e90fcbea972
+=======
+            new AmmoCounter(this.player)            
+>>>>>>> 4b591596ec8744f459f2e28c0b7dcff2a3fbb53b
         )
 
         // start physics-engine
@@ -100,6 +101,7 @@ export class GameEngine {
         this.canvas.onmouseup = () => {
             this.player.attack = false;
         }
+<<<<<<< HEAD
         /*
         window.onkeydown = (ev: KeyboardEvent) => {
             if(ev.key === ' ' && this.paused) {
@@ -107,6 +109,17 @@ export class GameEngine {
             }
         }
         */
+=======
+
+        // legg til key-events
+        window.onkeydown = (ev: KeyboardEvent) => {
+            this.KEYDOWN_EVENT_HANDLER_PLAYER(ev)
+        };
+        window.onkeyup = (ev: KeyboardEvent) => {
+            this.KEYUP_EVENT_HANDLER_PLAYER(ev)
+        };
+
+>>>>>>> 4b591596ec8744f459f2e28c0b7dcff2a3fbb53b
         window.onresize  = (event: UIEvent) => {
             // må ta hensyn til at objektet "forsvinner" når nettleseren
             // skal tegne en ny frame
@@ -233,4 +246,28 @@ export class GameEngine {
             }
         });
     }
+
+
+    private KEYDOWN_EVENT_HANDLER_PLAYER(event: KeyboardEvent): void {
+        switch (event.key) {
+            case 'w': this.player.w = true; break;
+            case 'a': this.player.a = true; break;
+            case 's': this.player.s = true; break;
+            case 'd': this.player.d = true; break;
+            case ' ': this.player.w = true; break;
+            case 'r': this.player.reload = true; break;
+        }
+    }
+
+    private KEYUP_EVENT_HANDLER_PLAYER(event: KeyboardEvent): void {
+        switch (event.key) {
+            case 'w': this.player.w = false; break;
+            case 'a': this.player.a = false; break;
+            case 's': this.player.s = false; break;
+            case 'd': this.player.d = false; break;
+            case ' ': this.player.w = false; break;
+            case 'r': this.player.reload = false; break;
+        }
+    }
+
 }
