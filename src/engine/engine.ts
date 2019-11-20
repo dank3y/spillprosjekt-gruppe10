@@ -120,7 +120,8 @@ export class GameEngine {
             this.updateWeapons(this.entities);
             this.updateProjectiles(this.projectiles)
             this.renderer.camera.update(this.tick, this.mouseX, this.mouseY);
-            this.tick++;            
+            this.tick++;
+            console.log(this.player.angle)            
             if(this.touches(this.player, this.entities[this.entities.length-1])) {
                 this.newLevel();
             }
@@ -207,7 +208,7 @@ export class GameEngine {
 
     private updateAni(entities: GameObject[]): void {
         entities.forEach(entity => {
-            if(entity instanceof Player) {
+            if(entity instanceof Player || entity instanceof Enemy) {
                 entity.animate();
             }
         });

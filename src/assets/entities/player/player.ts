@@ -1,6 +1,4 @@
 import { PhysicsBody, NPC } from "../core";
-import { Weapon } from "../../weapons/core";
-import { Http2SecureServer } from "http2";
 // definer sprite-en her
 const sprite = require('./sprite.png');
 
@@ -82,8 +80,18 @@ export class Player extends NPC {
     }
 
     public animate(): void {
-        if(this.a || this.d) {
-            if(this.aniTick > this.walkSq.length-1) this.aniTick = 0;
+        if(this.d && (this.angle < -Math.PI/2 || this.angle > Math.PI/2)) {
+            if(this.aniTick > this.walkSq.length-1 || this.aniTick < 0) this.aniTick = this.walkSq.length-1;
+            this.sprite = this.walkSq[this.aniTick];
+            this.aniTick--;
+        }
+        else if(this.a && (this.angle >= -Math.PI/2 || this.angle <= Math.PI/2)) {
+            if(this.aniTick > this.walkSq.length-1 || this.aniTick < 0) this.aniTick = this.walkSq.length-1;
+            this.sprite = this.walkSq[this.aniTick];
+            this.aniTick--;
+        }
+        else if(this.a || this.d) {
+            if(this.aniTick > this.walkSq.length-1 || this.aniTick < 0) this.aniTick = 0;
             this.sprite = this.walkSq[this.aniTick];
             this.aniTick++;
         }else {
