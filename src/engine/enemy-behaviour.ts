@@ -9,7 +9,8 @@ export class EnemyBehaviour {
     constructor(){}
 
     // Lengden NPC ser spilleren fra. Ikke fastsatt enda.
-    private CHASE_RANGE: number = 300 * difficulty;
+    private CHASE_RANGE_X: number = 300 * difficulty;
+    private CHASE_RANGE_Y: number = 150 * difficulty;
     private SHOOT_RANGE: number = 100 * difficulty;
 
     /**
@@ -21,12 +22,17 @@ export class EnemyBehaviour {
     public update(entities: GameObject[], gameLevel: Room, player: Player): void {
         entities.forEach(entity => {
             if(entity instanceof NPC && !(entity instanceof Player)) {
-                if(entity.x - player.x <= this.SHOOT_RANGE && entity.x - player.x >= -this.SHOOT_RANGE) {
-                    this.shootPlayer(entity, player);
-                    this.aimAt(entity, player);
-                } else if(entity.x - player.x <= this.CHASE_RANGE && entity.x - player.x >= -this.CHASE_RANGE) {
-                    this.chasePlayer(entity, gameLevel, player);
-                    this.aimAt(entity, player);
+                entity.weapon.leftInMag === 0 ? entity.reload = true : entity.reload = false;
+                console.log(entity.reload);
+
+                if(entity.y - player.y <= this.CHASE_RANGE_Y && entity.y - player.y >= -this.CHASE_RANGE_Y) {
+                    if(entity.x - player.x <= this.SHOOT_RANGE && entity.x - player.x >= -this.SHOOT_RANGE) {
+                        this.shootPlayer(entity, player);
+                        this.aimAt(entity, player);
+                    } else if(entity.x - player.x <= this.CHASE_RANGE_X && entity.x - player.x >= -this.CHASE_RANGE_X) {
+                        this.chasePlayer(entity, gameLevel, player);
+                        this.aimAt(entity, player);
+                    }
                 } else {
                     this.patrolSimple(entity, gameLevel);
                 }
