@@ -249,7 +249,7 @@ export class GameEngine {
             case 'a': this.player.a = true; break;
             case 's': this.player.s = true; break;
             case 'd': this.player.d = true; break;
-            case ' ': this.player.w = true; break;
+            case ' ': this.player.w = true; event.preventDefault(); break;
             case 'r': this.player.reload = true; break;
         }
     }
