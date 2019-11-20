@@ -133,7 +133,7 @@ export class GameEngine {
             switch (ev.key){
                 case 'p':
                 case 'Escape': this.togglePause(); break;
-                case 'Enter': this.newLevel(); break;
+                case 'Enter': this.resetPlayer(); break;
                 case ' ': 
                     if(this.levelCleared) {
                         this.levelCleared = false;
@@ -276,8 +276,7 @@ export class GameEngine {
         difficulty = 1.1 ** (levelCount-1);
         this.level = this.levelGen.makeLevel();
         this.spawnEntities();
-        this.player.x = 128;
-        this.player.y = 800;
+        this.resetPlayer();
         this.player.weapons.forEach(weapon => {
             weapon.leftInMag = weapon.magSize
         });
@@ -346,5 +345,10 @@ export class GameEngine {
         totalKills = 0;
         kills = 0;
         this.newLevel();
+    }
+
+    private resetPlayer() {
+        this.player.x = 128;
+        this.player.y = 800;
     }
 }
