@@ -11,6 +11,7 @@ import { Shotgun } from '../assets/weapons/shotgun/shotgun';
 import { LevelGen } from "./levelgen";
 import { UIEngine } from "./UI/UI-engine";
 import { AmmoCounter } from "./UI/ammo-counter";
+import { EndScreen } from "./UI/end-screen";
 
 
 export const BLOCKSIZE: number = 32;
@@ -53,7 +54,7 @@ export class GameEngine {
         // spawner inn spiller
         this.player = new Player(0, 0, 32, 64);
         this.entities.push(this.player);
-        this.player.weapons.push(new Shotgun(0,0))
+        this.player.weapons.push(new Shotgun(0,0));
 
         // starter level-generator og setter opp level.
         this.levelGen = new LevelGen();
@@ -129,7 +130,8 @@ export class GameEngine {
             this.renderer.camera.update(this.tick, this.mouseX, this.mouseY);
             this.tick++;            
             if(this.touches(this.player, this.entities[this.entities.length-1])) {
-                this.newLevel();
+                this.paused = true;
+                this.UIEngine.addElements(new EndScreen());
             }
             if(this.tick % 3 === 0) this.updateAni(this.entities);
         }

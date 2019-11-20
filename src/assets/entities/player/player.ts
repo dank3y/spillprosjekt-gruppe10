@@ -1,15 +1,16 @@
-import { PhysicsBody, NPC } from "../core";
-import { Weapon } from "../../weapons/core";
-import { Http2SecureServer } from "http2";
+import { NPC } from "../core";
 // definer sprite-en her
 const sprite = require('./sprite.png');
+
+export let kills: number = 0;
+export let score: number = 0;
 
 /**
  * @param width valgfritt, hvis ikke oppgitt så finner den bredde utifra bildets bredde
  * @param height valgfritt, hvis ikke oppgitt så finner den bredde utifra bildets bredde
  */
 export class Player extends NPC {
-
+    // Animasjoner
     private _stand:string = require('./sprite.png');
     private _walk0:string = require('./walk0.png');
     private _walk1:string = require('./walk1.png');
@@ -57,14 +58,15 @@ export class Player extends NPC {
         this.walkSq = [this.walk0, this.walk1, this.walk2, this.walk3, this.walk4, this.walk5, this.walk6, this.walk7];
     }
 
-    
-
     public animate(): void {
-        if(this.a || this.d) {
+        if(this.vy > 0.5 || this.vy < -0.5) {
+            this.sprite = this.walk4;
+            this.aniTick = 0;
+        } else if(this.a || this.d) {
             if(this.aniTick > this.walkSq.length-1) this.aniTick = 0;
             this.sprite = this.walkSq[this.aniTick];
             this.aniTick++;
-        }else {
+        } else {
             this.sprite = this.stand;
             this.aniTick = 0;
         }
