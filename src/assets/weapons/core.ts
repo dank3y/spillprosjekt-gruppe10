@@ -39,6 +39,9 @@ export class Weapon extends Sprite implements Shoot {
 // "g" tilsier hvor mye prosjektilet skal falle,
 // vel tilsier hastighet
 export class Projectile extends Sprite {
+
+  public hit: (target: any) => void = () => { }
+
   constructor(
     x: number,
     y: number,
@@ -48,7 +51,8 @@ export class Projectile extends Sprite {
     public angle: number,
     public g: number,
     public vel: number,
-    public shooter: InstanceType<typeof NPC>
+    public shooter: InstanceType<typeof NPC>,
+    public damage: number = 34
   ) {
     super(x, y, _sprite, width, height,);
   }

@@ -140,7 +140,7 @@ export class GameEngine {
         that.UIEngine.renderElements();
         window.requestAnimationFrame(this.runRenderer.bind(that));
     }
-    
+     
     public loop(): void{
         // gjør utregninger
         if (!this.paused){
@@ -150,7 +150,8 @@ export class GameEngine {
             this.updateWeapons(this.entities);
             this.updateProjectiles(this.projectiles)
             this.renderer.camera.update(this.tick, this.mouseX, this.mouseY);
-            this.tick++;       
+            this.physics.checkCollisionProjectiles(this.entities.filter(t => t instanceof NPC), this.projectiles, this.level)
+            this.tick++;   
             if(this.touches(this.player, this.entities[this.entities.length-1])) {
                 this.paused = true;
                 this.levelCleared = true;
