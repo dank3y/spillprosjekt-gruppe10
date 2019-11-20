@@ -18,7 +18,7 @@ import { Pistol } from "../assets/weapons/pistol/pistol";
 import { SMG } from "../assets/weapons/smg/smg";
 import { Enemy } from "../assets/entities/enemy/enemy";
 import { GameOver } from "./UI/game-over";
-import { AudioEngine } from "./audio/audio";
+import { AudioEngine, Sounds } from "./audio/audio";
 import { Block } from "../utility/level.loader";
 
 
@@ -183,6 +183,7 @@ export class GameEngine {
             this.physics.checkCollisionProjectiles(this.entities.filter(t => t instanceof NPC), this.projectiles, this.level)
             this.tick++;   
             if(this.touches(this.player, this.entities[this.entities.length-1])) {
+                this.audio.playSound(Sounds.WTF);
                 this.paused = true;
                 this.levelCleared = true;
                 kills = this.player.kills;
@@ -233,6 +234,7 @@ export class GameEngine {
                                 e.weapon.leftInMag++;
                                 e.weapon.reloading = true;
                                 e.weapon.reloadStart = time;
+                                this.audio.playSound(Sounds.SHOT_RELOAD)
                             } else {
                                 if (e.weapon.leftInMag > 0) {
                                     e.weapon.leftInMag = e.weapon.magSize + 1;
@@ -244,24 +246,31 @@ export class GameEngine {
                         if (e.reload && !e.weapon.reloading){
                             e.weapon.reloadStart = time;
                             e.weapon.reloading = true;
+                            if (e.weapon instanceof Pistol) this.audio.playSound(Sounds.GUN_RELOAD);
+                            if (e.weapon instanceof SMG) this.audio.playSound(Sounds.SUB_RELOAD);
+                            if (e.weapon instanceof Shotgun) this.audio.playSound(Sounds.SHOT_RELOAD);
 
                         }
                     }
                     
-                    if (e.attack && e.weapon.leftInMag){                    
-                        e.weapon.reloading = false;                               
-                        if (time - e.weapon.lastBullet > e.weapon.RPMms){
-                            e.weapon.shoot(this.projectiles, e);
-                            e.weapon.lastBullet = time;
-                            if(e instanceof Player) this.renderer.camera.actionList.push(new Screenshake(this.tick, this.tick + 3, e.weapon.recoil));
-                            this.physics.applyForce(e, e.weapon.recoil / 2, e.angle + Math.PI)
-                            if (e.weapon.leftInMag > 0){
-                                e.weapon.leftInMag--;
+                    if (e.attack){
+                        if (time - e.weapon.lastBullet > e.weapon.RPMms){               
+                            if (e.weapon.leftInMag){
+                                e.weapon.reloading = false;                               
+                                e.weapon.shoot(this.projectiles, e);
+                                e.weapon.lastBullet = time;
+                                if(e instanceof Player) this.renderer.camera.actionList.push(new Screenshake(this.tick, this.tick + 3, e.weapon.recoil));
+                                this.physics.applyForce(e, e.weapon.recoil / 2, e.angle + Math.PI)
+                                if (e.weapon.leftInMag > 0){
+                                    e.weapon.leftInMag--;
+                                }
+                                this.audio.shoot(e.weapon);
+                            } else {
+                                this.audio.playSound(Sounds.TOM_KLIKK)
+                                e.weapon.lastBullet = time;
                             }
-                            this.audio.shoot(e.weapon);
-                        }
-                        
-                    }
+                        } 
+                    } 
                 }
             }
         })

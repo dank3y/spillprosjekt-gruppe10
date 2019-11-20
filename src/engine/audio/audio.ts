@@ -17,7 +17,11 @@ export const Sounds: {[key: string]: string} = {
     AUCH_ENEMY: require('./auch_enemy.mp3'),
     AUCH_PLAYER: require('./auch_player.mp3'),
     GUN: require('./gun.mp3'),
-    SHOTGUN: require('./shotgun.mp3')
+    SHOTGUN: require('./shotgun.mp3'),
+    GUN_RELOAD: require('./gun_reload.mp3'),
+    SUB_RELOAD: require('./sub_reload.mp3'),
+    SHOT_RELOAD: require('./shot_reload.mp3'),
+    TOM_KLIKK: require('./tom_klikk.mp3')
 }
 
 
