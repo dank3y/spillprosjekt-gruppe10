@@ -27,7 +27,7 @@ export class LevelGen {
      * Genererer et level med et visst antall rom.
      */
     public makeLevel(): Room {
-        const DEBUG_MODE = false;
+        const DEBUG_MODE = true;
 
         let ROOM_AMOUNT: number = 5;
         let AVAILABLE_ROOMS: Room[] = [Room1, Room2, Room3, Room4, Room5, Room6, Room7, Room8, Room9, Room10];
@@ -82,8 +82,6 @@ export class LevelGen {
                 let weaponRng: number = Math.floor(Math.random()*100)+1;
                 let smgChance: number = Math.floor(difficulty*100) - 100;
                 let shotgunChance: number = Math.floor(difficulty * 100) - 130;
-
-                console.log(weaponRng, smgChance, shotgunChance);
 
                 if(entityType === "enemy") {
                     entityObject = new Enemy(entityX, entityY, 32, 64);
