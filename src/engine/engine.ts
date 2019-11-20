@@ -240,6 +240,9 @@ export class GameEngine {
         this.spawnEntities();
         this.player.x = 128;
         this.player.y = 800;
+        this.player.weapons.forEach(weapon => {
+            weapon.leftInMag = weapon.magSize
+        });
     }
 
     private spawnEntities():void {
