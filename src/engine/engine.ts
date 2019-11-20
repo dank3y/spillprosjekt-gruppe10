@@ -23,7 +23,8 @@ export class GameEngine {
 
     public level: Room;
 
-    public paused = false;
+    public paused: boolean = false;
+    public levelCleared: boolean = false;
 
     //holde styr på muskordinater
     public mouseX: number = 0;
@@ -100,7 +101,14 @@ export class GameEngine {
             this.KEYDOWN_EVENT_HANDLER_PLAYER(ev)
             switch (ev.key){
                 case 'p':
-                case 'Escape': this.togglePause();
+                case 'Escape': this.togglePause(); break;
+                case ' ': 
+                    if(this.levelCleared) {
+                        this.levelCleared = false;
+                        this.newLevel();
+                        this.paused = false;
+                        this.UIEngine.elements.splice(this.UIEngine.elements.indexOf(new EndScreen));
+                    }
             }
         };
         window.onkeyup = (ev: KeyboardEvent) => {
@@ -137,6 +145,7 @@ export class GameEngine {
             this.tick++;       
             if(this.touches(this.player, this.entities[this.entities.length-1])) {
                 this.paused = true;
+                this.levelCleared = true;
                 this.UIEngine.addElements(new EndScreen());
             }
             if(this.tick % 3 === 0) this.updateAni(this.entities);
