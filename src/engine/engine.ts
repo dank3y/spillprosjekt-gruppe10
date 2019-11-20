@@ -56,7 +56,7 @@ export class GameEngine {
         // spawner inn spiller
         this.player = new Player(0, 0, 32, 64);
         this.entities.push(this.player);
-        this.player.weapons.push(new Shotgun(0,0))
+        this.player.weapons.push(new Shotgun(0,0));
 
         // starter level-generator og setter opp level.
         this.levelGen = new LevelGen();
@@ -65,13 +65,7 @@ export class GameEngine {
         // start UIEngine
         this.UIEngine = new UIEngine(canvas);
         this.UIEngine.addElements(
-            new AmmoCounter(this.player),
-            new UIElementGroup('middle', 'end', 'column', new AmmoCounter(this.player), new AmmoCounter(this.player)),
-            new UIElementGroup('start', 'end', 'row', new AmmoCounter(this.player), new AmmoCounter(this.player)),
-            new UIElementGroup('80%', '20%', 'row', new AmmoCounter(this.player), new AmmoCounter(this.player)),
-            new UIElementGroup('30%', 'start', 'column', new AmmoCounter(this.player), new AmmoCounter(this.player)),
-            new UIElementGroup('60%', 'start', 'column', new AmmoCounter(this.player), new AmmoCounter(this.player)),
-            
+            new AmmoCounter(this.player)
         )
 
         // start physics-engine
