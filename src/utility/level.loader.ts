@@ -1,11 +1,13 @@
-import { ROOMDATA, ROOMIMAGE } from "../assets/rooms/room10/room10.room";
+import { ROOMDATA, ROOMIMAGE } from "../assets/rooms/room4/room4.room";
 
 export const blocksHex: { [key: string]: string } = {
   '#ffffff': 'air',
   '#000': 'base',
+  '#00FF00': 'wall'
 }
 
 export const BLOCKS: { [key: string]: Block } = {
+  'wall' : { solid: false, friction: 1, defaultColor: '#FFFFFF'},
   'air' : { solid: false, friction: 1, defaultColor: ''},
   'base': { solid: true,  bounce: 0.0, friction: 1.0, defaultColor: '#000000' },
   'bouncePad': { solid: true, bounce: 1.1, friction: 1.0, defaultColor: '#FF0000' },
