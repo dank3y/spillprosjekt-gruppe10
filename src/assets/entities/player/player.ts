@@ -59,11 +59,18 @@ export class Player extends NPC {
     }
 
     public animate(): void {
-        if(this.vy > 0.5 || this.vy < -0.5) {
-            this.sprite = this.walk4;
-            this.aniTick = 0;
-        } else if(this.a || this.d) {
-            if(this.aniTick > this.walkSq.length-1) this.aniTick = 0;
+        if(this.d && (this.angle < -Math.PI/2 || this.angle > Math.PI/2)) {
+            if(this.aniTick > this.walkSq.length-1 || this.aniTick < 0) this.aniTick = this.walkSq.length-1;
+            this.sprite = this.walkSq[this.aniTick];
+            this.aniTick--;
+        }
+        else if(this.a && (this.angle >= -Math.PI/2 || this.angle <= Math.PI/2)) {
+            if(this.aniTick > this.walkSq.length-1 || this.aniTick < 0) this.aniTick = this.walkSq.length-1;
+            this.sprite = this.walkSq[this.aniTick];
+            this.aniTick--;
+        }
+        else if(this.a || this.d) {
+            if(this.aniTick > this.walkSq.length-1 || this.aniTick < 0) this.aniTick = 0;
             this.sprite = this.walkSq[this.aniTick];
             this.aniTick++;
         } else {
