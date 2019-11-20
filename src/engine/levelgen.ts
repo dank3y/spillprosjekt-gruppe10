@@ -18,6 +18,7 @@ import { GameObject } from "../assets/entities/core";
 import { NPC } from "../assets/entities/core";
 import { SMG } from '../assets/weapons/smg/smg';
 import { Pistol } from '../assets/weapons/pistol/pistol';
+import { Shotgun } from '../assets/weapons/shotgun/shotgun';
 
 export class LevelGen {
     constructor(){}
@@ -26,7 +27,7 @@ export class LevelGen {
      * Genererer et level med et visst antall rom.
      */
     public makeLevel(): Room {
-        const DEBUG_MODE = true;
+        const DEBUG_MODE = false;
 
         let ROOM_AMOUNT: number = 5;
         let AVAILABLE_ROOMS: Room[] = [Room1, Room2, Room3, Room4, Room5, Room6, Room7, Room8, Room9, Room10];
@@ -80,11 +81,16 @@ export class LevelGen {
 
                 let weaponRng: number = Math.floor(Math.random()*100)+1;
                 let smgChance: number = Math.floor(difficulty*100) - 100;
+                let shotgunChance: number = Math.floor(difficulty * 100) - 130;
+
+                console.log(weaponRng, smgChance, shotgunChance);
 
                 if(entityType === "enemy") {
                     entityObject = new Enemy(entityX, entityY, 32, 64);
                     if(entityObject instanceof NPC) {
-                        if(weaponRng < smgChance) {
+                        if(weaponRng < shotgunChance) {
+                            entityObject.weapons.push(new Shotgun(0, 0));
+                        } else if(weaponRng < smgChance) {
                             entityObject.weapons.push(new SMG(0, 0));
                         } else {
                             entityObject.weapons.push(new Pistol(0, 0));
