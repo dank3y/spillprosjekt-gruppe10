@@ -55,12 +55,14 @@ export class EnemyBehaviour {
            if(this.blockedRight(level, gridX, gridY)) {
                target.d = false;
                target.a = true;
+               target._angle = Math.PI;
            }
         } 
         if(target.a) {
             if(this.blockedLeft(level, gridX, gridY)) {
                 target.a = false;
                 target.d = true;
+                target._angle = 0;
             }
         }
     }

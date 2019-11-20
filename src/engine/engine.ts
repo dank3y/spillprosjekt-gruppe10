@@ -16,6 +16,7 @@ import { Pause } from "./UI/pause";
 import { Hotbar } from "./UI/hotbar";
 import { Pistol } from "../assets/weapons/pistol/pistol";
 import { SMG } from "../assets/weapons/smg/smg";
+import { Enemy } from "../assets/entities/enemy/enemy";
 
 
 export const BLOCKSIZE: number = 32;
@@ -25,7 +26,8 @@ export class GameEngine {
 
     public level: Room;
 
-    public paused = false;
+    public paused: boolean = false;
+    public levelCleared: boolean = false;
 
     //holde styr på muskordinater
     public mouseX: number = 0;
@@ -102,7 +104,14 @@ export class GameEngine {
             this.KEYDOWN_EVENT_HANDLER_PLAYER(ev)
             switch (ev.key){
                 case 'p':
-                case 'Escape': this.togglePause();
+                case 'Escape': this.togglePause(); break;
+                case ' ': 
+                    if(this.levelCleared) {
+                        this.levelCleared = false;
+                        this.newLevel();
+                        this.paused = false;
+                        this.UIEngine.elements.splice(this.UIEngine.elements.indexOf(new EndScreen));
+                    }
             }
         };
         window.onkeyup = (ev: KeyboardEvent) => {
@@ -136,9 +145,10 @@ export class GameEngine {
             this.updateWeapons(this.entities);
             this.updateProjectiles(this.projectiles)
             this.renderer.camera.update(this.tick, this.mouseX, this.mouseY);
-            this.tick++;            
+            this.tick++;       
             if(this.touches(this.player, this.entities[this.entities.length-1])) {
                 this.paused = true;
+                this.levelCleared = true;
                 this.UIEngine.addElements(new EndScreen());
             }
             if(this.tick % 3 === 0) this.updateAni(this.entities);
@@ -230,7 +240,7 @@ export class GameEngine {
 
     private updateAni(entities: GameObject[]): void {
         entities.forEach(entity => {
-            if(entity instanceof Player) {
+            if(entity instanceof Player || entity instanceof Enemy) {
                 entity.animate();
             }
         });
@@ -251,7 +261,7 @@ export class GameEngine {
             case 'a': this.player.a = true; break;
             case 's': this.player.s = true; break;
             case 'd': this.player.d = true; break;
-            case ' ': this.player.w = true; break;
+            case ' ': this.player.w = true; event.preventDefault(); break;
             case 'r': this.player.reload = true; break;
             //hotbar
             case '1': this.player.currentWeaponIndex = 0; break;
