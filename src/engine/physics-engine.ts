@@ -2,7 +2,7 @@ import { PhysicsBody, GameObject, NPC } from "../assets/entities/core";
 import { Player } from "../assets/entities/player/player";
 import { Room } from "../assets/rooms/room";
 import { BLOCKSIZE } from "./engine";
-import { BLOCKS } from "../utility/level.loader";
+import { BLOCKS, Block } from "../utility/level.loader";
 import { Projectile } from "../assets/weapons/core";
 
 const THRESHOLD_ACCURATE_PROJECTILE_MODE = 64;
@@ -196,7 +196,7 @@ export class PhysicsEngine {
     }
 
     //foreløpig ikke kollisjon med bakke
-    public checkCollisionProjectiles(entities: InstanceType<typeof GameObject>[], projectiles: InstanceType<typeof Projectile>[]){
+    public checkCollisionProjectiles(entities: InstanceType<typeof GameObject>[], projectiles: InstanceType<typeof Projectile>[], level: Room){
         let filtered = entities.filter(<(t: GameObject) => t is NPC>(t => t instanceof NPC))
         
         //ytre lykke som går igjennom NPC
@@ -219,6 +219,34 @@ export class PhysicsEngine {
                         projectiles.splice(p, 1);
                         p--;     
                     }
+                }
+            }
+        }
+
+        for (let p = 0; p < projectiles.length; p++){
+            let proj = projectiles[p];
+            let gridX = Math.round(proj.x / BLOCKSIZE);
+            let gridY = Math.round(proj.y / BLOCKSIZE);
+
+            let grid = level.data;
+            
+            if (grid[gridY] && grid[gridY][gridX]){                
+                if (BLOCKS[grid[gridY][gridX]].solid){                                                            
+                    if (
+                        proj.x > gridX * BLOCKSIZE - 0.5 * BLOCKSIZE ||
+                        proj.x < gridX * BLOCKSIZE + 0.5 * BLOCKSIZE ||
+                        proj.y > gridY * BLOCKSIZE - 0.5 * BLOCKSIZE ||
+                        proj.y < gridY * BLOCKSIZE + 0.5 * BLOCKSIZE 
+                    ){                        
+                        
+                        proj.hit.call(false, new Block)
+
+                        projectiles.splice(p, 1);
+                        p--;
+                        continue;
+                        
+                    }
+
                 }
             }
         }

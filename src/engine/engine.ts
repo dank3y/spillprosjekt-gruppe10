@@ -150,7 +150,7 @@ export class GameEngine {
             this.updateWeapons(this.entities);
             this.updateProjectiles(this.projectiles)
             this.renderer.camera.update(this.tick, this.mouseX, this.mouseY);
-            this.physics.checkCollisionProjectiles(this.entities.filter(t => t instanceof NPC), this.projectiles)
+            this.physics.checkCollisionProjectiles(this.entities.filter(t => t instanceof NPC), this.projectiles, this.level)
             this.tick++;   
             if(this.touches(this.player, this.entities[this.entities.length-1])) {
                 this.paused = true;
