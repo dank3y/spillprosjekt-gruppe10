@@ -40,7 +40,9 @@ export class Player extends NPC {
 	}
 
 	public animate(): void {
-		if(this.d && (this.angle < -Math.PI/2 || this.angle > Math.PI/2)) {
+		if(this.vy > 0.1 || this.vy < -0.1) {
+			this.sprite = this.walk3;
+		} else if(this.d && (this.angle < -Math.PI/2 || this.angle > Math.PI/2)) {
 			if(this.aniTick > this.walkSq.length-1 || this.aniTick < 0) this.aniTick = this.walkSq.length-1;
 			
 			this.sprite = this.walkSq[this.aniTick];
