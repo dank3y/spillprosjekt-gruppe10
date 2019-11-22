@@ -8,7 +8,7 @@ import { difficulty } from '../engine/engine';
 export class EnemyBehaviour {
 	constructor(){}
 
-	// Lengden NPC ser spilleren fra.
+	// Lengdene NPC reagerer på spilleren i X og Y retning.
 	private CHASE_RANGE_X: number = 300 * difficulty;
 	private CHASE_RANGE_Y: number = 150 * difficulty;
 	private SHOOT_RANGE: number = 100 * difficulty;
@@ -26,7 +26,7 @@ export class EnemyBehaviour {
 
 				if(entity.y - player.y <= this.CHASE_RANGE_Y && entity.y - player.y >= -this.CHASE_RANGE_Y) {
 					if(entity.x - player.x <= this.SHOOT_RANGE && entity.x - player.x >= -this.SHOOT_RANGE) {
-						this.shootPlayer(entity, player);
+						this.shootTarget(entity, player);
 						this.aimAt(entity, player);
 					} else if(entity.x - player.x <= this.CHASE_RANGE_X && entity.x - player.x >= -this.CHASE_RANGE_X) {
 						this.chasePlayer(entity, gameLevel, player);
@@ -84,12 +84,13 @@ export class EnemyBehaviour {
 	private chasePlayer(target: GameObject, gameLevel: Room, player: Player) {
 		if(!(target instanceof NPC) || target instanceof Player) return;
 
+		// Setter farten etter vanskelighetsgraden. Starter på 1.2.
 		target.speed = 2.4 * difficulty / 2;
 		target.attack = false;
 
 		const level = gameLevel.data;
 
-		// Få posisjon i grid
+		// Få targets posisjon i griden.
 		const gridX = Math.round(target.x / BLOCKSIZE);
 		const gridY = Math.round((target.y + 0.25 * target.height) / BLOCKSIZE);
 
@@ -109,7 +110,12 @@ export class EnemyBehaviour {
 		}
 	}
 
-	private shootPlayer(origin: GameObject, target: GameObject) {
+	/**
+	 * Får NPC til å stoppe opp, og skyte på target om vinkelen er innenfor en viss mengde.
+	 * @param origin Spillobjekt som skal skyte.
+	 * @param target Spillobjekt som skal bli skutt.
+	 */
+	private shootTarget(origin: GameObject, target: GameObject) {
 		if(!(target instanceof NPC) || !(origin instanceof NPC) || origin instanceof Player) return;
 
 		origin.w = false;
@@ -174,6 +180,7 @@ export class EnemyBehaviour {
 
 	/**
 	* Setter angle til en NPC direkte mot et annet.
+	* Justeres av vanskelighetsgraden.
 	* @param origin NPC som sikter.
 	* @param target NPC som blir siktet på.
 	*/
@@ -185,6 +192,13 @@ export class EnemyBehaviour {
 		origin._angle = this.lerp(originAngle, goalAngle, 0.03 * (difficulty / 0.5));
 	}
 
+	/**
+	 * Lineær interpolasjon. 
+	 * Gir en 'smooth' overgang fra ett nummer til et annet.
+	 * @param start Startnummer
+	 * @param end Sluttnummer
+	 * @param amt Hastighet
+	 */
 	private lerp (start: number, end: number, amt: number){
 		return (1-amt)*start+amt*end;
 	}

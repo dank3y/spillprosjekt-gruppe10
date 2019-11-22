@@ -1,3 +1,8 @@
+/**
+ * Spillet vårt begynner i denne filen. 
+ * Her lages spillmotoren, og så kjøres den 60 ganger i sekundet.
+ */
+
 import '../main.css';
 import { Canvas } from './engine/canvas';
 import { GameEngine } from './engine/engine';

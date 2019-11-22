@@ -24,23 +24,27 @@ export class LevelGen {
 	constructor(){}
 
 	/**
-	 * Genererer et level med et visst antall rom.
+	 * Genererer et level med et satt antall rom.
 	 */
 	public makeLevel(): Room {
 		// Rom tilgjengelig for generatoren, og antall som skal settes sammen pr. level.
 		const ROOM_AMOUNT: number = 5;
 		const AVAILABLE_ROOMS: Room[] = [Room1, Room2, Room3, Room4, Room5, Room6, Room7, Room8, Room9, Room10];
 
-		// Brukes for å plassere data riktig.
+		// Brukes for å plassere data riktig i det fullførte nivået.
 		let roomOffset: number = 0;
 
+		// Holder et rom og en offset.
 		let rooms: Array<[Room, number]> = [];
 
-		// Legger til startrom.
+		// Legger til startrommet.
 		rooms.push([RoomStart, roomOffset]);
 		roomOffset += RoomStart.data[0].length;
 
-		// Legger til et tilfeldig rom fra listen og øker offset for hver gang.
+		/** 
+		 * Legger til et tilfeldig rom fra listen og øker offset for hver gang.
+		 * Samme rom kan ikke bli valgt to ganger etter hverandre.
+		 */
 		while(rooms.length <= ROOM_AMOUNT) {
 			let randomRoom: number = Math.floor(Math.random()*AVAILABLE_ROOMS.length);
 			if(AVAILABLE_ROOMS[randomRoom] === rooms[rooms.length-1][0]) continue;
@@ -48,7 +52,7 @@ export class LevelGen {
 			roomOffset += AVAILABLE_ROOMS[randomRoom].data[0].length;
 		}
 
-		// Legger til sluttrom.
+		// Legger til sluttrommet.
 		rooms.push([RoomEnd, roomOffset]);
 
 		// SETT SAMMEN ALT TIL LEVEL
@@ -58,6 +62,11 @@ export class LevelGen {
 		rooms.forEach(room => {
 			let offset: number = room[1];
 
+			/**
+			 * For hvert rom legger vi inn romdataen i selve spillnivået.
+			 * Offset brukes her til å plassere data riktig i forhold til hvor
+			 * langt bort rommet er i selve spillnivået.
+			 */
 			room[0].data.forEach((y, yIndex) => {
 				if(!levelData[yIndex]) levelData[yIndex] = [];
 				y.forEach((x, xIndex) => {
@@ -65,6 +74,15 @@ export class LevelGen {
 				});
 			});
 
+			/**
+			 * Entities leses inn fra filen room.entities.json fra hvert rom.
+			 * Denne inneholder x- og y-posisjon til entity og hva slags type det er.
+			 * 
+			 * weaponRng, smgChance og shotgunChance brukes til å kalkulere hvilket våpen
+			 * fienden skal bruke. Jo vanskeligere vanskelighetsgraden er, jo større sjanse
+			 * for at fienden har et bedre våpen.
+			 * Antall livspoeng økes også med vanskelighetsgraden.
+			 */
 			room[0].entities.forEach(entity => {
 				let entityX: number = entity[0] + BLOCKSIZE * offset;
 				let entityY: number = entity[1];
@@ -95,6 +113,7 @@ export class LevelGen {
 			});
 		});
 
+		// Til slutt setter vi sammen data og entities til et objekt av samme type som alle rommene.
 		const gameLevel = new Room(levelData, levelEntities);
 		return gameLevel;
 	}

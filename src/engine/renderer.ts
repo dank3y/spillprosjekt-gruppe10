@@ -19,6 +19,9 @@ export interface RendererConfig {
 	drawWireframe: boolean;
 }
 
+/**
+ * Standardkonfigurasjon for hvilke debug-verktøy som skal tegnes.
+ */
 export const RendererConfigDefault: RendererConfig = {
 	zeroDot: true,
 	lineWidth: 3,
@@ -37,19 +40,22 @@ export class Renderer {
 	public get WIDTH_OFFSET() { return 0.5 * this.canvas.width};
 	public get HEIGHT_OFFSET() { return 0.5 * this.canvas.height};
 	
-	// config
+	// Konfigurasjon
 	public config = RendererConfigDefault;
 
-	// referanse som gjør at vi faktisk kan tegne
+	// Referansen til Canvas som gjør at vi kan tegne.
 	private ctx: CanvasRenderingContext2D;
 
-	// referanse til kamera
+	// Referanse til spillkameraet.
 	public camera: Camera;
 
-	// kun til å regne ut fps
+	// Brukes for å regne ut FPS.
 	public fps: number = 0;
 	private timings: number[] = [];
 
+	/**
+	 * Setter opp kameraet slik at vi kan bevege oss rundt i canvaset.
+	 */
 	constructor(private canvas: Canvas){
 		this.ctx = canvas.ctx;
 		this.camera = new Camera(0,0, canvas);
@@ -61,6 +67,10 @@ export class Renderer {
 	private get borderTop(): number { return this.camera.y - 0.5 * this.canvas.height; }
 	private get borderBottom(): number { return this.camera.y + 0.5 * this.canvas.height; }
 
+	/**
+	 * Sjekker om et spillobjekt er innenfor rekkevidden av kameraet.
+	 * @param target Et spillobjekt
+	 */
 	private checkIfEntityInView(target: Sprite): boolean {
 		if (target instanceof Sprite){            
 			if (
@@ -75,6 +85,11 @@ export class Renderer {
 		return true;
 	}
 
+	/**
+	 * Sjekker om en blokk er innenfor rekkevidden av kameraet.
+	 * @param x X-posisjon i grid.
+	 * @param y Y-posisjon i grid.
+	 */
 	private checkIfBlockInView(x: number, y: number): boolean {
 		if (
 			BLOCKSIZE * (x + 0.5) < this.borderLeft ||
@@ -87,6 +102,10 @@ export class Renderer {
 		return true;
 	}
 
+	/**
+	 * Tegner alle spillobjektene i canvas, så lenge de er innenfor kameraets rekkevidde.
+	 * @param entities Alle spillobjekter.
+	 */
 	public renderEntities(entities: GameObject[]){
 		entities.forEach((s, i) => {                        
 			if (s instanceof Sprite){
@@ -107,6 +126,10 @@ export class Renderer {
 		if (this.config.showFps) this.showFps();
 	}
 
+	/**
+	 * Tegner alle prosjektiler i canvas, så lenge de er innenfor kameraets rekkevidde.
+	 * @param proj Alle prosjektilene som finnes i spillverdenen.
+	 */
 	public renderProjectiles(proj: Projectile[]){
 		for (let i = 0; i < proj.length; i++){
 			if (this.checkIfEntityInView(<Sprite>proj[i])) {
@@ -118,6 +141,11 @@ export class Renderer {
 		}
 	}
 
+	/**
+	 * Tegner de individuelle blokkene i spillnivået så lenge de er
+	 * innenfor kameraets rekkevidde.
+	 * @param level Spillnivået.
+	 */
 	public renderLevel(level: Room){
 		level.data.forEach((_v, yindex) => {
 			_v.forEach((v, xindex) => {
@@ -128,6 +156,9 @@ export class Renderer {
 		});
 	}
 
+	/**
+	 * Tegner en "health-bar" som gjør at vi kan se % livspoeng et spillobjekt har igjen.
+	 */
 	private drawHealthbar(target: InstanceType<typeof NPC>): void {        
 		this.ctx.beginPath();
 		this.ctx.save();
@@ -153,6 +184,9 @@ export class Renderer {
 		this.ctx.closePath();
 	}
 
+	/**
+	 * Tegner våpen på et bestemt target.
+	 */
 	private drawWeapon(target: InstanceType<typeof NPC>): void {
 		this.ctx.beginPath();
 		this.ctx.save();
@@ -175,6 +209,9 @@ export class Renderer {
 		this.ctx.closePath();
 	}
 
+	/**
+	 * Tegner en blokk fra spillnivået i canvas.
+	 */
 	public drawBlock(block: Block, xindex: number, yindex: number){
 		if (block.defaultColor !== ''){
 			this.ctx.beginPath();
@@ -204,6 +241,9 @@ export class Renderer {
 		}
 	}
 
+	/**
+	 * Tegner en enkelt prosjektil i canvas.
+	 */
 	private drawProjectile(sprite: InstanceType<typeof Projectile>): void {
 		this.ctx.beginPath();
 		this.ctx.save();
@@ -227,7 +267,8 @@ export class Renderer {
 	}
 
 	/**
-	* 
+	* Tegner ett enkelt spillobjekt i canvas.
+	* Tegnes baklengs om vinkelen er på venstre side.
 	* @param sprite Et objekt som er arver fra Sprite-klassen
 	*/
 	private drawSprite(sprite: InstanceType<typeof Sprite>): void {
@@ -271,7 +312,7 @@ export class Renderer {
 		}
 	}
 
-	// debug-funksjoner
+	// Debug-funksjoner
 	private drawZeroLine(): void {
 		this.ctx.beginPath();
 		this.ctx.save();

@@ -22,6 +22,7 @@ import { Projectile } from '../assets/weapons/core';
 import { Room } from '../assets/rooms/room';
 import { Block } from '../utility/level.loader';
 
+// Størrelsen på hver enkelt blokk i spillnivået
 export const BLOCKSIZE: number = 32;
 
 // Generelle spillvariabler
@@ -54,11 +55,11 @@ export class GameEngine {
 	public player: Player;
 	public goal: Goal;
 
-	// Lister som inneholder alle spillobjekter og prosjektiler.
+	// Lister som inneholder alle spillobjekter og prosjektiler
 	public entities: InstanceType<typeof GameObject>[] = [];
 	public projectiles: Projectile[] = [];
 	
-	// Tick som brukes til forskjellige ting, som animasjoner
+	// Tick som brukes til forskjellige ting, som animasjoner og effekter
 	public tick: number = 0;
 
 	constructor(private canvas: Canvas) {
@@ -75,21 +76,21 @@ export class GameEngine {
 			new SMG(1,1)
 		);
 
-		// Start level-generator.
+		// Start level-generator
 		this.levelGen = new LevelGen();
 		this.newLevel();
 
-		// Start UI engine.
+		// Start UI engine
 		this.UIEngine = new UIEngine(canvas);
 		this.UIEngine.addElements(
 			new AmmoCounter(this.player),
 			new Hotbar(this.player)
 		);
 
-		// Start audio engine.
+		// Start audio engine
 		this.audio = new AudioEngine();
 	
-		// Start physics engine.
+		// Start physics engine
 		this.physics = new PhysicsEngine();
 		this.physics.projectileHit = (target: NPC | Block) => {
 			if (target instanceof NPC){
@@ -163,6 +164,9 @@ export class GameEngine {
 		}
 	}
 
+	/**
+	 * Kjører tegnemotoren vår, og holder den gående.
+	 */
 	private runRenderer(): void {
 		const that = this;
 		that.canvas.clear();
@@ -175,7 +179,7 @@ export class GameEngine {
 
 	/**
 	 * Hovedlogikken i spillet.
-	 * Alle spillobjekter og tegnemotoren oppdateres.
+	 * Alle spillobjekter oppdateres i denne metoden.
 	 * 
 	 * Undersøker også om spilleren har vunnet nivået eller tapt spillet.
 	 */
@@ -278,6 +282,7 @@ export class GameEngine {
 	
 	/**
 	 * Kjøres når spillet er tapt.
+	 * Endrer gameState og viser UI.
 	 */
 	private gameOver(): void {
 		this.paused = true;
@@ -318,7 +323,7 @@ export class GameEngine {
 	}
 
 	/**
-	 * Setter spillet på pause.
+	 * Setter spillet av og på pause.
 	 */
 	private togglePause(): void{        
 		this.paused = !this.paused;
@@ -329,6 +334,9 @@ export class GameEngine {
 		}
 	}
 
+	/**
+	 * Key events for spilleren defineres her.
+	 */
 	private KEYDOWN_EVENT_HANDLER_PLAYER(event: KeyboardEvent): void {
 		switch (event.key) {
 			case 'w': this.player.w = true; break;

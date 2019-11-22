@@ -8,6 +8,9 @@ export class Action {
 	update: Function = () => {}
 }
 
+/**
+ * Brukes til å riste på kameraet når spilleren skyter.
+ */
 export class Screenshake extends Action {
 	constructor(startTick: number, endTick: number, public factor: number) {
 		super(startTick, endTick);
@@ -57,6 +60,10 @@ export class Camera {
 		this.target = target;
 	}
 
+	/**
+	 * 'Drar' kamera litt mot musepekeren.
+	 * Gir en mer dynamisk følelse mens man spiller.
+	 */
 	private offsetToMouse(mouseX: number, mouseY: number){
 		if (this.target){
 			let angle = Math.atan2(this.HEIGHT_OFFSET - mouseY, this.WIDTH_OFFSET - mouseX);
@@ -67,6 +74,9 @@ export class Camera {
 		}
 	}
 
+	/**
+	 * Oppdaterer kameraets posisjon og evt. effekter. 
+	 */
 	public update(tick: number, mouseX: number, mouseY: number): void {
 		this.x = this.target.x;
 		this.y = this.target.y;
