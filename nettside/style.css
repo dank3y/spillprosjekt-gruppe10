@@ -1,0 +1,189 @@
+body, html {
+    margin: 0;
+    width: 100%;
+}
+h2, h3, p {
+    font-family: 'Open Sans';
+}
+body {
+    padding-bottom: 20px;
+}
+
+
+#navbar {
+    width: 100%;
+    height: 80px;
+    background-color: #4CAF50;
+    box-shadow: 0 1px 2px 0 rgba(60, 64, 67, .3),
+    0 2px 6px 2px rgba(60, 64, 67, .15);
+    display: flex;
+    align-items: center;
+}
+#navbar a, #navbar a:visited {
+    color: #FFF;
+    text-decoration: none;
+}
+
+nav h2 {
+    font-weight: 600;
+    padding: 0 20px;
+    color: #FFF;
+}
+#links {
+    display: flex;
+    padding: 0;
+}
+.pagelink {
+    display: flex;
+    justify-content: center;
+    position: relative;
+}
+.pagelink:hover::after {
+   width: 100%;
+}
+.pagelink h2 {
+    margin: 0;
+    padding: 10px 20px;
+    font-weight: 400;
+}
+.pagelink::after {
+    display: block;
+    position: absolute;
+    bottom: 0;
+    content: '';
+    width: 0%;
+    height: 2px;
+    background-color: #FFF;
+    transition: width 300ms ease;
+}
+
+.card {
+    border-top-right-radius: 5px;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    background-color: #FFF;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16),
+      0 3px 6px rgba(0, 0, 0, 0.23);
+    padding: 20px 40px;
+    box-sizing: border-box;
+    margin-top: 10px;
+}
+
+.grow {
+    width: 100%;
+    max-width: 960px;
+    margin: 10px auto 0 auto;
+    position: relative;
+}
+
+.table {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    width: 100%;
+}
+.table .row {
+    width: 480px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 20px;
+    position: relative;
+    box-sizing: border-box;
+}
+.table .row:nth-of-type(2n + 3){
+    background-color: lightgrey;
+}
+.table .row:first-of-type::after {
+    display: block;
+    position: absolute;
+    bottom: 0;
+    content: '';
+    width: 100%;
+    height: 1px;
+    background-color: rgba(0,0,0, .23);
+}
+.table .row * { margin: 0 }
+.table .row span {
+    flex: 1 1 auto;
+}
+.tutorial {
+    width: 100%;
+    position: relative;
+}
+.tutorial h2 {
+    font-weight: 600;
+    width: 100%;
+}
+.tutorial .content {
+    width: 100%;
+    box-sizing: border-box;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 50px;
+}
+.tutorial .content .pics {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    flex: 0 1 auto;
+    width: 100%;
+    box-sizing: border-box;
+}
+.tutorial .content .pics div {
+    width: 100%;
+}
+.personer {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    position: relative;
+}
+.personer .person {
+    box-sizing: border-box;
+    width: 100%;
+    height: 200px;
+    padding: 10px 20px;
+    display: flex;
+    align-items: center;
+}
+.personer .person .pic {
+    width: 100px;
+    height: 80px;
+    border-radius: 50%;
+    overflow: hidden;
+    /* flex: 0 1 100px; */
+}
+
+.personer .person .pic img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+}
+.personer .person .content {
+    flex: 1 1 100%;
+}
+.personer .person .content h3 {
+    padding: 5px 20px;
+    margin: 0;
+}
+.personer .person .content ul {
+    margin: 0;
+}
+.personer .person .content li {
+    list-style: none;
+    display: flex;
+}
+.personer .person .content li::before {
+    display: block;
+    position: relative;
+    content: '–';
+    padding: 0 10px 0 0;
+}
+.personer .person .content li p{
+    margin: 0;
+}
